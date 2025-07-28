@@ -1,13 +1,12 @@
-// src/Tiptap.tsx
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
-import { FloatingMenu, BubbleMenu } from "@tiptap/react/menus";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import styled from "styled-components";
 
 // define your extension array
 const extensions = [StarterKit];
 
-const content = "<p>Hello World!</p>";
+const content = "<p>Write or paste your script here</p>";
 
 const StyledEditorContainer = styled.div`
   display: flex;
@@ -22,10 +21,17 @@ const StyledEditorContainer = styled.div`
     outline: none;
   }
 `;
+
 const Script = () => {
   const editor = useEditor({
+    // register extensions
     extensions,
+    // set initial content
     content,
+    // place the cursor in the editor after initialization
+    autofocus: true,
+    // prevent loading the default CSS
+    injectCSS: false,
   });
 
   const editorState = useEditorState({
@@ -48,10 +54,10 @@ const Script = () => {
   return (
     <>
       <StyledEditorContainer>
+        <div>Fixed menu goes here</div>
         <EditorContent editor={editor} />
       </StyledEditorContainer>
 
-      <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
       <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
     </>
   );
