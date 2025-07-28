@@ -2,66 +2,94 @@
 import { Mark } from "@tiptap/core";
 import { ReactMarkViewRenderer, MarkViewContent } from "@tiptap/react";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+export const inlineEditTypes = {
+  sfx: "SFX",
+  vfx: "VFX",
+  graphic: "GRAPHIC",
+  broll: "BROLL",
+  music: "MUSIC",
+};
 
 const markHeightPx = 5;
+const spaceBetweenMarksPx = 10;
 
 const StyledMark = styled.mark`
-  position: relative;
   background-color: transparent;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: -${markHeightPx}px;
-    left: 0;
-    width: 100%;
-    height: ${markHeightPx}px;
-    background-color: blue;
-    border-radius: 8px;
-    opacity: 0.8;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    transform-origin: center;
-    transform: scaleY(1);
-  }
+  ${(props) =>
+    props.editType === inlineEditTypes.sfx &&
+    css`
+      border-bottom: ${markHeightPx}px solid red;
+    `}
 
-  &:hover::before {
-    opacity: 1;
-    background-color: red;
-    transform: scaleY(1.2);
-  }
+  ${(props) =>
+    props.editType === inlineEditTypes.vfx &&
+    css`
+      border-top: ${markHeightPx}px solid blue;
+    `}
+
+  ${(props) =>
+    props.editType === inlineEditTypes.graphic &&
+    css`
+      border-top: ${markHeightPx}px solid green;
+      padding-top: ${spaceBetweenMarksPx}px;
+    `}
+
+  ${(props) =>
+    props.editType === inlineEditTypes.broll &&
+    css`
+      border-top: ${markHeightPx}px solid purple;
+      padding-top: ${spaceBetweenMarksPx * 2}px;
+    `}
+
+  ${(props) =>
+    props.editType === inlineEditTypes.music &&
+    css`
+      background-color: lightgray;
+    `}
 `;
 
-const MyCustomMark = (props) => (
-  <StyledMark>
-    <MarkViewContent {...props} />
-  </StyledMark>
-);
+const InlineMark = (props) => {
+  const { editType } = props.extension.options;
 
-// Define la extensión
-const InlineEdit = Mark.create({
-  name: "inlineEdit",
+  return (
+    <StyledMark editType={editType}>
+      <MarkViewContent {...props} />
+    </StyledMark>
+  );
+};
 
-  addOptions() {
-    return {
-      HTMLAttributes: {},
-    };
-  },
+const inlineEditFactory = (editType) => {
+  return Mark.create({
+    name: `inlineEdit${editType}`,
 
-  addMarkView() {
-    // Custom react component for the mark
-    return ReactMarkViewRenderer(MyCustomMark);
-  },
+    addOptions() {
+      return {
+        HTMLAttributes: {},
+        editType,
+      };
+    },
 
-  parseHTML() {
-    // How to recognize this mark in the HTML
-    return [{ tag: "mark[data-inline-edit]" }];
-  },
+    addMarkView() {
+      // Custom react component for the mark
+      return ReactMarkViewRenderer(InlineMark);
+    },
 
-  renderHTML({ HTMLAttributes }) {
-    return ["mark", { ...HTMLAttributes, "data-inline-edit": "" }, 0];
-  },
-});
+    parseHTML() {
+      // How to recognize this mark in the HTML
+      return [{ tag: `mark[data-inline-edit-${editType}]` }];
+    },
 
-export default InlineEdit;
+    renderHTML({ HTMLAttributes }) {
+      return [
+        "mark",
+        { ...HTMLAttributes, [`data-inline-edit-${editType}`]: "" },
+        0,
+      ];
+    },
+  });
+};
+
+export default inlineEditFactory;

@@ -3,10 +3,17 @@ import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import styled from "styled-components";
 
-import InlineEdit from "../edit/InlineEdit";
+import inlineEditFactory, { inlineEditTypes } from "../edit/InlineEdit";
 
 // define your extension array
-const extensions = [StarterKit, InlineEdit];
+const extensions = [
+  StarterKit,
+  inlineEditFactory(inlineEditTypes.sfx),
+  inlineEditFactory(inlineEditTypes.vfx),
+  inlineEditFactory(inlineEditTypes.graphic),
+  inlineEditFactory(inlineEditTypes.broll),
+  inlineEditFactory(inlineEditTypes.music),
+];
 
 const content = `
 <p>
@@ -31,7 +38,7 @@ const StyledEditorContainer = styled.div`
     border-radius: 8px;
     padding: 1rem;
     outline: none;
-    line-height: 2.5;
+    line-height: 3.5;
   }
 `;
 
@@ -67,17 +74,50 @@ const Script = () => {
   return (
     <>
       <StyledEditorContainer>
-        <button
-          onClick={() => {
-            editor.chain().focus().toggleMark("inlineEdit").run();
-          }}
-        >
-          Toggle Mark
-        </button>
         <EditorContent editor={editor} />
-      </StyledEditorContainer>
 
-      <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu>
+        <BubbleMenu editor={editor}>
+          <button
+            onClick={() => {
+              editor.chain().focus().toggleMark("inlineEditSFX").run();
+            }}
+          >
+            Add SFX
+          </button>
+
+          <button
+            onClick={() => {
+              editor.chain().focus().toggleMark("inlineEditVFX").run();
+            }}
+          >
+            Add VFX
+          </button>
+
+          <button
+            onClick={() => {
+              editor.chain().focus().toggleMark("inlineEditGRAPHIC").run();
+            }}
+          >
+            Add Graphic
+          </button>
+
+          <button
+            onClick={() => {
+              editor.chain().focus().toggleMark("inlineEditBROLL").run();
+            }}
+          >
+            Add B-Roll
+          </button>
+
+          <button
+            onClick={() => {
+              editor.chain().focus().toggleMark("inlineEditMUSIC").run();
+            }}
+          >
+            Add Music
+          </button>
+        </BubbleMenu>
+      </StyledEditorContainer>
     </>
   );
 };
