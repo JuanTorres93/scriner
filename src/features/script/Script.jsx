@@ -1,5 +1,5 @@
 // src/Tiptap.tsx
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import { FloatingMenu, BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import styled from "styled-components";
@@ -26,6 +26,23 @@ const Script = () => {
   const editor = useEditor({
     extensions,
     content,
+  });
+
+  const editorState = useEditorState({
+    editor,
+    // the selector function is used to select the state you want to react to
+    selector: ({ editor }) => {
+      if (!editor) return null;
+
+      return {
+        isEditable: editor.isEditable,
+        currentSelection: editor.state.selection,
+        currentContent: editor.getJSON(),
+        // you can add more state properties here e.g.:
+        // isBold: editor.isActive('bold'),
+        // isItalic: editor.isActive('italic'),
+      };
+    },
   });
 
   return (
