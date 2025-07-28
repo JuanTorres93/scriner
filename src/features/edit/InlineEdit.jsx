@@ -54,41 +54,58 @@ const StyledMark = styled.mark`
 const InlineMark = (props) => {
   const { editType } = props.extension.options;
 
+  function handleClick(event) {
+    event.preventDefault();
+
+    // TODO Handle the click event for the inline mark
+    console.log(`Clicked on inline edit mark of type: ${editType}`);
+  }
+
   return (
-    <StyledMark editType={editType}>
+    <StyledMark editType={editType} onClick={handleClick}>
       <MarkViewContent {...props} />
     </StyledMark>
   );
 };
 
 const inlineEditFactory = (editType) => {
-  return Mark.create({
-    name: `inlineEdit${editType}`,
+  return Mark.create(() => {
+    function onCreate() {}
 
-    addOptions() {
-      return {
-        HTMLAttributes: {},
-        editType,
-      };
-    },
+    function onUpdate() {
+      // TODO Open modal to add the inline edit
+    }
 
-    addMarkView() {
-      // Custom react component for the mark
-      return ReactMarkViewRenderer(InlineMark);
-    },
+    return {
+      name: `inlineEdit${editType}`,
+      onCreate,
+      onUpdate,
 
-    parseHTML() {
-      // How to recognize this mark in the HTML
-      return [{ tag: `mark[data-inline-edit-${editType}]` }];
-    },
+      addOptions() {
+        return {
+          HTMLAttributes: {},
+          editType,
+        };
+      },
 
-    renderHTML({ HTMLAttributes }) {
-      return [
-        "mark",
-        { ...HTMLAttributes, [`data-inline-edit-${editType}`]: "" },
-        0,
-      ];
-    },
+      addMarkView() {
+        // Custom react component for the mark
+        return ReactMarkViewRenderer(InlineMark);
+      },
+
+      parseHTML() {
+        // How to recognize this mark in the HTML
+        return [{ tag: `mark[data-inline-edit-${editType}]` }];
+      },
+
+      renderHTML({ HTMLAttributes }) {
+        return [
+          "mark",
+          { ...HTMLAttributes, [`data-inline-edit-${editType}`]: "" },
+          0,
+        ];
+      },
+    };
   });
 };
 
