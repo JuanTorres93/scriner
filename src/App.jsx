@@ -1,5 +1,11 @@
+import Script from "./features/script/Script";
+
 function App() {
-  return <div>App</div>;
+  return (
+    <div>
+      <Script />
+    </div>
+  );
 }
 
 export default App;
