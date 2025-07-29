@@ -28,13 +28,18 @@ const StyledEditorContainer = styled.div`
 
   & .ProseMirror {
     /* font-family: "Aleo", serif; */
-    border: 2px solid #ccc;
+    border: 2px solid var(--color-primary-t1);
+    background-color: var(--color-grey-t1);
+    color: var(--color-grey-s2);
     border-radius: 8px;
     padding: 1rem;
     outline: none;
     line-height: 4.5;
 
-    font-size: 1.8rem;
+    &:focus,
+    &:hover {
+      border-color: var(--color-primary);
+    }
   }
 `;
 

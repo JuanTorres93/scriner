@@ -23,12 +23,12 @@ function ScriptEditor() {
 
   return (
     <StyledScriptEditor>
-      <EditList title="Music" />
+      <EditList title="MUSIC" />
       <EditList title="SFX" />
       {initialContent && <Script initialContent={initialContent} />}
       <EditList title="VFX" />
-      <EditList title="Graphics" />
-      <EditList title="B-Roll" />
+      <EditList title="GRAPHICS" />
+      <EditList title="B-ROLL" />
     </StyledScriptEditor>
   );
 }

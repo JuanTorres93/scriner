@@ -17,30 +17,31 @@ const spaceBetweenMarksPx = 10;
 
 const StyledMark = styled.mark`
   background-color: transparent;
+  font-weight: var(--font-weight-thinest);
 
   ${(props) =>
     props.editType === inlineEditTypes.sfx &&
     css`
-      border-bottom: ${markHeightPx}px solid red;
+      border-bottom: ${markHeightPx}px solid var(--color-sfx);
     `}
 
   ${(props) =>
     props.editType === inlineEditTypes.vfx &&
     css`
-      border-top: ${markHeightPx}px solid blue;
+      border-top: ${markHeightPx}px solid var(--color-vfx);
     `}
 
   ${(props) =>
     props.editType === inlineEditTypes.graphic &&
     css`
-      border-top: ${markHeightPx}px solid green;
+      border-top: ${markHeightPx}px solid var(--color-graphic);
       padding-top: ${spaceBetweenMarksPx}px;
     `}
 
   ${(props) =>
     props.editType === inlineEditTypes.broll &&
     css`
-      border-top: ${markHeightPx}px solid purple;
+      border-top: ${markHeightPx}px solid var(--color-broll);
       padding-top: ${spaceBetweenMarksPx * 2}px;
     `}
 

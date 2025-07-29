@@ -15,8 +15,40 @@ const GlobalStyles = createGlobalStyle`
     --font-weight-thinest: 400;
     // TODO add more weights
 
-    // TODO change color if needed
-    --color-text: #444;
+    // Colors
+    // Open colors
+    --color-primary-t2: #ffe8cc;
+    --color-primary-t1: #ffc078;
+    --color-primary: #ff922b;
+    --color-primary-s1: #f76707;
+    --color-primary-s2: #d9480f;
+
+    --color-grey-t2: #f1f3f5;
+    --color-grey-t1: #dee2e6;
+    --color-grey: #adb5bd;
+    --color-grey-s1: #495057;
+    --color-grey-s2: #343a40;
+
+    // ChatGPT colors
+    --color-accent-t1: #e0f7fa; /* Cian muy claro para fondos o chips */
+    --color-accent: #38bdf8;   /* Azul cian brillante */
+    --color-accent-s1: #0ea5e9; /* Más saturado para hover */
+
+
+    --color-success-t1: #e3fafc;  /* Muy claro, para fondos de alerta/success */
+    --color-success: #5dd39e;     
+    --color-success-s1: #1b9c57;  
+
+    --color-error: #ff5252;   
+
+    --color-warning: #ffd166; 
+
+    --color-text: var(--color-grey-s1);
+
+    --color-sfx: var(--color-warning);
+    --color-vfx: var(--color-error);
+    --color-graphic: var(--color-success-s1);
+    --color-broll: var(--color-accent-s1);
   }
 
   /* Basix reset */

@@ -1,9 +1,18 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
 import AppLayout from "./ui/AppLayout";
 import ScriptEditor from "./pages/ScriptEditor";
 
 const router = createBrowserRouter([
+  {
+    // TODO remove, just for development
+    path: "/",
+    element: <Navigate to="/app" />,
+  },
   {
     // AppLayout is the main layout for the app
     element: <AppLayout />,

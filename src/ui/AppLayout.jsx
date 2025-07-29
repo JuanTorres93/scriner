@@ -9,6 +9,7 @@ const StyledAppLayout = styled.div`
   gap: 2rem;
 
   padding: 2rem;
+  background-color: var(--color-grey-t2);
 `;
 
 const StyledMain = styled.main`
