@@ -16,10 +16,11 @@ const StyledScriptEditor = styled.div`
 function ScriptEditor() {
   const { scripts, isLoading, error } = useScripts();
 
+  // TODO handle better
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading scripts</div>;
 
-  const initialContent = scripts?.data?.[0]?.content;
+  const initialContent = scripts?.[0]?.content;
 
   return (
     <StyledScriptEditor>
