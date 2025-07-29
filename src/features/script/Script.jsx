@@ -17,37 +17,33 @@ const extensions = [
 
 const content = `
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  nulla facilisi. Sed non risus. Suspendisse lectus tortor,
-  dignissim sit amet, adipiscing nec, ultricies sed, dolor.
-   
-  Cras elementum ultrices diam. Maecenas ligula massa,
-  varius a, semper congue, euismod non, mi. Proin porttitor,
-  orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit
+Paste your script here
 </p>
 `;
 
 const StyledEditorContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: scroll;
 
   & .ProseMirror {
-    font-family: "Courier New", Courier, monospace;
-    max-width: 60rem;
+    /* font-family: "Aleo", serif; */
     border: 2px solid #ccc;
     border-radius: 8px;
     padding: 1rem;
     outline: none;
-    line-height: 3.5;
+    line-height: 4.5;
+
+    font-size: 1.8rem;
   }
 `;
 
-const Script = () => {
+const Script = ({ initialContent }) => {
   const editor = useEditor({
     // register extensions
     extensions,
     // set initial content
-    content,
+    content: initialContent || content,
     // place the cursor in the editor after initialization
     autofocus: true,
     // prevent loading the default CSS

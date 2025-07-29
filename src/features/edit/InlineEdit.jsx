@@ -46,6 +46,7 @@ const StyledMark = styled.mark`
 
   ${(props) =>
     props.editType === inlineEditTypes.music &&
+    /* TODO (maybe not here) Different colors for different emotions*/
     css`
       background-color: lightgray;
     `}
