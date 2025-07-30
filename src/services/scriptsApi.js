@@ -28,7 +28,8 @@ export async function createScript(script) {
   const { data, error } = await supabase
     .from("scripts")
     .insert(script)
-    .single();
+    .single()
+    .select("*");
 
   if (error) {
     throw new Error("Could not create script");

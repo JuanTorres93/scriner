@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import styled, { css } from "styled-components";
 
 import { useScripts } from "./useScripts";
 import { formatDate } from "../../utils/dateUtils";
@@ -48,20 +49,26 @@ function ScriptsSidebar() {
   );
 }
 
+const activeScriptStyle = css`
+  background-color: var(--color-grey-s1);
+  color: var(--color-grey-t2);
+`;
+
 const StyledScriptItem = styled.div`
   display: flex;
   flex-direction: column;
   font-size: var(--font-size-s1);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   background-color: var(--color-grey-t1);
   border-radius: var(--border-radius);
   padding: 1rem;
 
+  ${(props) => props.isActive && activeScriptStyle}
+
   &:hover {
-    background-color: var(--color-grey-s1);
-    color: var(--color-grey-t2);
+    ${activeScriptStyle}
   }
 
   span {
@@ -73,6 +80,8 @@ const StyledScriptItem = styled.div`
 
 function ScriptItem({ script }) {
   const navigate = useNavigate();
+  const { scriptId } = useParams();
+  const isActive = +scriptId === script.id;
 
   // Reduce content to 10 words
   const content = script.content
@@ -80,7 +89,10 @@ function ScriptItem({ script }) {
     : "Aún no hay contenido";
 
   return (
-    <StyledScriptItem onClick={() => navigate(`/app/editor/${script.id}`)}>
+    <StyledScriptItem
+      isActive={isActive}
+      onClick={() => navigate(`/app/editor/${script.id}`)}
+    >
       <h3>{script.title}</h3>
       <p>{content}</p>
       <span>{formatDate(script.created_at)}</span>
