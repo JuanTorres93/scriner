@@ -13,6 +13,7 @@ const GlobalStyles = createGlobalStyle`
 
     // Font weights
     --font-weight-thinest: 400;
+    --font-weight-medium: 500;
     // TODO add more weights
 
     // Colors

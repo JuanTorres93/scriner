@@ -13,6 +13,11 @@ const StyledScriptEditor = styled.div`
   grid-template-columns: 0.3fr 0.3fr minmax(40rem, 1fr) 0.3fr 0.3fr 0.3fr;
   gap: 2rem;
   overflow: scroll;
+
+  .loader {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+  }
 `;
 
 function ScriptEditor() {
@@ -25,7 +30,14 @@ function ScriptEditor() {
 
   return (
     <StyledScriptEditor>
-      {isLoading && <Loader position="wholeScreen" />}
+      {isLoading && (
+        <Loader
+          className="loader"
+          type="spinner"
+          size="10rem"
+          cssVarColor="--color-primary-t1"
+        />
+      )}
       {!isLoading && (
         <>
           <EditList title="MUSIC" />

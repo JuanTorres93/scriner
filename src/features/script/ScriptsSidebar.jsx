@@ -6,6 +6,7 @@ import { formatDate } from "../../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import { useCreateScript } from "./useCreateScript";
+import Loader from "../../ui/Loader";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -16,6 +17,24 @@ const StyledScriptsSidebar = styled.aside`
   height: 100vh;
   overflow-y: auto;
   gap: 1rem;
+
+  h2 {
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-grey-s1);
+    font-size: var(--font-size-b1);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .loader {
+    margin-top: 4rem;
+  }
+
+  button {
+    margin-bottom: 0.75rem;
+  }
 `;
 
 function ScriptsSidebar() {
@@ -34,13 +53,14 @@ function ScriptsSidebar() {
 
   return (
     <StyledScriptsSidebar>
-      <h2>Your scripts</h2>
+      <h2>Tus guiones</h2>
       <Button disabled={isCreating} type="primary" onClick={handleCreateScript}>
         + Nuevo guión
       </Button>
 
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loader className="loader" type="spinner" />}
       {error && <p>Error loading scripts</p>}
+
       {scriptsByDate &&
         scriptsByDate.map((script) => (
           <ScriptItem key={script.id} script={script} />
@@ -48,6 +68,9 @@ function ScriptsSidebar() {
     </StyledScriptsSidebar>
   );
 }
+
+//////////////////////////
+// ScriptItem component
 
 const activeScriptStyle = css`
   background-color: var(--color-grey-s1);
