@@ -2,13 +2,18 @@ import { useEffect } from "react";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 import styled from "styled-components";
 
 import inlineEditFactory, { inlineEditTypes } from "../edit/InlineEdit";
+import { useUpdateScript } from "./useUpdateScript";
 
 // define your extension array
 const extensions = [
   StarterKit,
+  Placeholder.configure({
+    placeholder: "Escribe tu guión aquí...",
+  }),
   inlineEditFactory(inlineEditTypes.sfx),
   inlineEditFactory(inlineEditTypes.vfx),
   inlineEditFactory(inlineEditTypes.graphic),
@@ -22,12 +27,11 @@ const StyledEditorContainer = styled.div`
   overflow-x: scroll;
 
   & .ProseMirror {
-    /* font-family: "Aleo", serif; */
-    border: 2px solid var(--color-primary-t1);
-    background-color: var(--color-grey-t1);
+    border: 2px solid var(--color-grey);
+    background-color: var(--color-grey-t3);
     color: var(--color-grey-s2);
     border-radius: var(--border-radius);
-    padding: 1rem;
+    padding: 0rem 2rem;
     outline: none;
     line-height: 4.5;
 
@@ -35,15 +39,26 @@ const StyledEditorContainer = styled.div`
     &:hover {
       border-color: var(--color-primary);
     }
+
+    /* placeholder styles */
+    p.is-editor-empty:first-child::before {
+      color: var(--color-grey);
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
   }
 `;
 
-const Script = ({ initialContent }) => {
+const Script = ({ script }) => {
+  const { updateScript, isUpdating } = useUpdateScript();
+
   const editor = useEditor({
     // register extensions
     extensions,
     // set initial content
-    content: initialContent,
+    content: script?.content,
     // place the cursor in the editor after initialization
     autofocus: true,
     // prevent loading the default CSS
@@ -51,32 +66,24 @@ const Script = ({ initialContent }) => {
   });
 
   useEffect(() => {
-    if (editor && initialContent) {
-      editor.commands.setContent(initialContent);
+    if (editor && script) {
+      editor.commands.setContent(script.content);
     }
-  }, [editor, initialContent]);
+  }, [editor, script]);
 
-  const editorState = useEditorState({
-    editor,
-    // the selector function is used to select the state you want to react to
-    selector: ({ editor }) => {
-      if (!editor) return null;
+  function handleUpdateContent() {
+    const newContent = editor.getHTML();
 
-      return {
-        isEditable: editor.isEditable,
-        currentSelection: editor.state.selection,
-        currentContent: editor.getJSON(),
-        // you can add more state properties here e.g.:
-        // isBold: editor.isActive('bold'),
-        // isItalic: editor.isActive('italic'),
-      };
-    },
-  });
+    if (!script || !newContent || isUpdating) return;
+    if (newContent === script.content) return;
+
+    updateScript({ id: script.id, data: { content: newContent } });
+  }
 
   return (
     <>
       <StyledEditorContainer>
-        <EditorContent editor={editor} />
+        <EditorContent onBlur={handleUpdateContent} editor={editor} />
 
         <BubbleMenu editor={editor}>
           <button

@@ -1,9 +1,8 @@
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 import EditList from "../features/edit/EditList";
 import Script from "../features/script/Script";
-
-import { useParams } from "react-router-dom";
 import { useScript } from "../features/script/useScript";
 import Loader from "../ui/Loader";
 import Input from "../ui/Input";
@@ -23,6 +22,9 @@ const StyledScriptEditor = styled.div`
     font-size: var(--font-size-regular);
     font-weight: var(--font-weight-medium);
     color: var(--color-grey-s2);
+  }
+
+  h2 {
     text-transform: uppercase;
   }
 
@@ -39,8 +41,6 @@ function ScriptEditor() {
 
   // TODO handle better
   if (error) return <div>Error loading scripts</div>;
-
-  const initialContent = script?.content || "Tu nuevo guion aquí...";
 
   function handleUpdateScriptTitle(newTitle) {
     if (isUpdating || !newTitle) return;
@@ -71,6 +71,7 @@ function ScriptEditor() {
           <h2>Música</h2>
           <h2>SFX</h2>
           <Input
+            key={script?.id}
             type="plain"
             defaultValue={script?.title}
             placeholder="Nombre del guion"
@@ -81,7 +82,7 @@ function ScriptEditor() {
           <h2>B-Roll</h2>
           <EditList title="MUSIC" />
           <EditList title="SFX" />
-          <Script initialContent={initialContent} />
+          <Script script={script} />
           <EditList title="VFX" />
           <EditList title="GRAPHICS" />
           <EditList title="B-ROLL" />

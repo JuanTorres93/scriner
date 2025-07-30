@@ -7,12 +7,14 @@ export function useUpdateScript() {
 
   const { mutate: updateScript, isPending: isUpdating } = useMutation({
     mutationFn: ({ id, data }) => updateScriptApi(id, data),
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      // variables are the original parameters passed to the mutation
       queryClient.invalidateQueries({
         queryKey: ["scripts"],
       });
+
       queryClient.invalidateQueries({
-        queryKey: ["script", data.id],
+        queryKey: ["script", variables.id],
       });
 
       toast.success("Guion actualizado correctamente");

@@ -9,6 +9,7 @@ import Button from "../../ui/Button";
 import { useCreateScript } from "./useCreateScript";
 import Loader from "../../ui/Loader";
 import { useDeleteScript } from "./useDeleteScript";
+import { htmlToText } from "../../utils/htmlUtils";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -140,10 +141,8 @@ function ScriptItem({ script }) {
   const { scriptId } = useParams();
   const isActive = +scriptId === script.id;
 
-  // Reduce content to 10 words
-  const content = script.content
-    ? script.content.split(" ").slice(0, 10).join(" ") + "..."
-    : "Aún no hay contenido";
+  const content =
+    htmlToText(script.content).split(" ").slice(0, 10).join(" ") + "...";
 
   function handleDeleteScript(e) {
     e.stopPropagation();
