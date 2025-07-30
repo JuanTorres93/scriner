@@ -15,9 +15,14 @@ const types = {
       background-color: var(--color-primary-s1);
     }
   `,
+  disabled: css`
+    background-color: var(--color-grey-t1);
+    color: var(--color-grey-s1);
+    cursor: not-allowed;
+  `,
 };
 
-const Button = styled.button`
+const StyledButton = styled.button`
   border-radius: var(--border-radius);
   border: none;
   box-shadow: var(--shadow-sm);
@@ -25,5 +30,19 @@ const Button = styled.button`
   ${(props) => types[props.type || "primary"]}
   ${(props) => variant[props.variant || "padding"]}
 `;
+
+function Button({ ...props }) {
+  const isDisabled = props.disabled;
+
+  return (
+    <StyledButton
+      {...props}
+      type={isDisabled ? "disabled" : props.type}
+      onClick={isDisabled ? null : props.onClick}
+    >
+      {props.children}
+    </StyledButton>
+  );
+}
 
 export default Button;

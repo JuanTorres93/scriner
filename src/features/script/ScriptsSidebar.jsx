@@ -4,6 +4,7 @@ import { useScripts } from "./useScripts";
 import { formatDate } from "../../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
+import { useCreateScript } from "./useCreateScript";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -18,16 +19,31 @@ const StyledScriptsSidebar = styled.aside`
 
 function ScriptsSidebar() {
   const { scripts, error, isLoading } = useScripts();
+  const { createScript, isCreating } = useCreateScript();
+
+  const scriptsByDate = scripts
+    ? [...scripts]?.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      )
+    : [];
+
+  function handleCreateScript() {
+    createScript({ title: "Nuevo guión", content: "" });
+  }
 
   return (
     <StyledScriptsSidebar>
       <h2>Your scripts</h2>
-      <Button type="primary">+ New Script</Button>
+      <Button disabled={isCreating} type="primary" onClick={handleCreateScript}>
+        + Nuevo guión
+      </Button>
 
       {isLoading && <p>Loading...</p>}
       {error && <p>Error loading scripts</p>}
-      {scripts &&
-        scripts.map((script) => <ScriptItem key={script.id} script={script} />)}
+      {scriptsByDate &&
+        scriptsByDate.map((script) => (
+          <ScriptItem key={script.id} script={script} />
+        ))}
     </StyledScriptsSidebar>
   );
 }
@@ -61,7 +77,7 @@ function ScriptItem({ script }) {
   // Reduce content to 10 words
   const content = script.content
     ? script.content.split(" ").slice(0, 10).join(" ") + "..."
-    : "No content available";
+    : "Aún no hay contenido";
 
   return (
     <StyledScriptItem onClick={() => navigate(`/app/editor/${script.id}`)}>

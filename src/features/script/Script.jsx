@@ -16,12 +16,6 @@ const extensions = [
   inlineEditFactory(inlineEditTypes.music),
 ];
 
-const content = `
-<p>
-Paste your script here
-</p>
-`;
-
 const StyledEditorContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,7 +43,7 @@ const Script = ({ initialContent }) => {
     // register extensions
     extensions,
     // set initial content
-    content: initialContent || content,
+    content: initialContent,
     // place the cursor in the editor after initialization
     autofocus: true,
     // prevent loading the default CSS

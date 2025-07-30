@@ -3,7 +3,11 @@ import supabase from "../supabase";
 export async function getScripts() {
   const { data, error } = await supabase.from("scripts").select("*");
 
-  return { data, error };
+  if (error) {
+    throw new Error("Could not load scripts");
+  }
+
+  return data;
 }
 
 export async function getScriptById(id) {
@@ -13,5 +17,22 @@ export async function getScriptById(id) {
     .eq("id", id)
     .single();
 
-  return { data, error };
+  if (error) {
+    throw new Error("Could not load script");
+  }
+
+  return data;
+}
+
+export async function createScript(script) {
+  const { data, error } = await supabase
+    .from("scripts")
+    .insert(script)
+    .single();
+
+  if (error) {
+    throw new Error("Could not create script");
+  }
+
+  return data;
 }

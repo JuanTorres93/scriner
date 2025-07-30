@@ -22,13 +22,13 @@ function ScriptEditor() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading scripts</div>;
 
-  const initialContent = script?.content;
+  const initialContent = script?.content || "Tu nuevo guion aquí...";
 
   return (
     <StyledScriptEditor>
       <EditList title="MUSIC" />
       <EditList title="SFX" />
-      {initialContent && <Script initialContent={initialContent} />}
+      <Script initialContent={initialContent} />
       <EditList title="VFX" />
       <EditList title="GRAPHICS" />
       <EditList title="B-ROLL" />
