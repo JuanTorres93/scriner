@@ -101,6 +101,8 @@ const DeleteButton = styled(Button)`
 const activeScriptStyle = css`
   background-color: var(--color-grey-s1);
   color: var(--color-grey-t2);
+  box-shadow: 0 0 1rem
+    color-mix(in srgb, var(--color-primary-t1) 30%, transparent);
 
   button {
     color: var(--color-grey-t3);
@@ -154,7 +156,7 @@ function ScriptItem({ script }) {
       isActive={isActive}
       onClick={() => navigate(`/app/editor/${script.id}`)}
     >
-      <DeleteButton onClick={handleDeleteScript}>
+      <DeleteButton disabled={isDeleting} onClick={handleDeleteScript}>
         <HiMiniXMark />
       </DeleteButton>
       <h3>{script.title}</h3>

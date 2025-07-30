@@ -6,6 +6,8 @@ import Script from "../features/script/Script";
 import { useParams } from "react-router-dom";
 import { useScript } from "../features/script/useScript";
 import Loader from "../ui/Loader";
+import Input from "../ui/Input";
+import { useUpdateScript } from "../features/script/useUpdateScript";
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -16,7 +18,8 @@ const StyledScriptEditor = styled.div`
   overflow: scroll;
   padding: 2rem;
 
-  h2 {
+  h2,
+  input {
     font-size: var(--font-size-regular);
     font-weight: var(--font-weight-medium);
     color: var(--color-grey-s2);
@@ -31,15 +34,31 @@ const StyledScriptEditor = styled.div`
 
 function ScriptEditor() {
   const { scriptId } = useParams();
-  const { script, isLoading, error } = useScript(scriptId);
+  const { script, isLoading: isLoadingScript, error } = useScript(scriptId);
+  const { updateScript, isUpdating } = useUpdateScript();
 
+  // TODO handle better
   if (error) return <div>Error loading scripts</div>;
 
   const initialContent = script?.content || "Tu nuevo guion aquí...";
 
+  function handleUpdateScriptTitle(newTitle) {
+    if (isUpdating || !newTitle) return;
+
+    if (newTitle === script?.title) return;
+
+    updateScript({ id: script?.id, data: { title: newTitle } });
+  }
+
+  function handleTitleBlur(e) {
+    handleUpdateScriptTitle(e.target.value);
+    // Move cursor to the start of the input
+    e.target.setSelectionRange(0, 0);
+  }
+
   return (
     <StyledScriptEditor>
-      {isLoading && (
+      {isLoadingScript && (
         <Loader
           className="loader"
           type="spinner"
@@ -47,11 +66,16 @@ function ScriptEditor() {
           cssVarColor="--color-primary-t1"
         />
       )}
-      {!isLoading && (
+      {!isLoadingScript && (
         <>
           <h2>Música</h2>
           <h2>SFX</h2>
-          <h2>Guión</h2>
+          <Input
+            type="plain"
+            defaultValue={script?.title}
+            placeholder="Nombre del guion"
+            onBlur={handleTitleBlur}
+          />
           <h2>VFX</h2>
           <h2>Gráficos</h2>
           <h2>B-Roll</h2>

@@ -47,3 +47,18 @@ export async function deleteScript(id) {
 
   return true;
 }
+
+export async function updateScript(id, script) {
+  const { data, error } = await supabase
+    .from("scripts")
+    .update(script)
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new Error("No se pudo actualizar el guion");
+  }
+
+  return data;
+}
