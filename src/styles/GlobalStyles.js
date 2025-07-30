@@ -49,6 +49,9 @@ const GlobalStyles = createGlobalStyle`
     --color-vfx: var(--color-error);
     --color-graphic: var(--color-success-s1);
     --color-broll: var(--color-accent-s1);
+
+    // Border radius
+    --border-radius: 1rem;
   }
 
   /* Basix reset */

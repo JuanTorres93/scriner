@@ -32,7 +32,7 @@ const StyledEditorContainer = styled.div`
     border: 2px solid var(--color-primary-t1);
     background-color: var(--color-grey-t1);
     color: var(--color-grey-s2);
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     padding: 1rem;
     outline: none;
     line-height: 4.5;

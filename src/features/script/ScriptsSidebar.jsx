@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useScripts } from "./useScripts";
 import { formatDate } from "../../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
+import Button from "../../ui/Button";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -21,6 +22,7 @@ function ScriptsSidebar() {
   return (
     <StyledScriptsSidebar>
       <h2>Your scripts</h2>
+      <Button type="primary">+ New Script</Button>
 
       {isLoading && <p>Loading...</p>}
       {error && <p>Error loading scripts</p>}
@@ -38,7 +40,7 @@ const StyledScriptItem = styled.div`
   transition: all 0.2s ease;
 
   background-color: var(--color-grey-t1);
-  border-radius: 1rem;
+  border-radius: var(--border-radius);
   padding: 1rem;
 
   &:hover {
