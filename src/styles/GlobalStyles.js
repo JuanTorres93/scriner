@@ -53,6 +53,7 @@ const GlobalStyles = createGlobalStyle`
     --color-broll: var(--color-accent-s1);
 
     // Border radius
+    --border-radius-s1: 0.5rem;
     --border-radius: 1rem;
   }
 
