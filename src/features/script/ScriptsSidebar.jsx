@@ -12,7 +12,7 @@ const StyledScriptsSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  background-color: var(--color-grey-t2);
+  background-color: var(--color-grey-t3);
   border-right: 1px solid var(--color-grey-t1);
   height: 100vh;
   overflow-y: auto;

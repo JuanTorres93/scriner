@@ -11,8 +11,17 @@ const StyledScriptEditor = styled.div`
   display: grid;
   height: 100vh;
   grid-template-columns: 0.3fr 0.3fr minmax(40rem, 1fr) 0.3fr 0.3fr 0.3fr;
+  grid-template-rows: min-content 1fr;
   gap: 2rem;
   overflow: scroll;
+  padding: 2rem;
+
+  h2 {
+    font-size: var(--font-size-regular);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-grey-s2);
+    text-transform: uppercase;
+  }
 
   .loader {
     grid-column: 1 / -1;
@@ -40,6 +49,12 @@ function ScriptEditor() {
       )}
       {!isLoading && (
         <>
+          <h2>Música</h2>
+          <h2>SFX</h2>
+          <h2>Guión</h2>
+          <h2>VFX</h2>
+          <h2>Gráficos</h2>
+          <h2>B-Roll</h2>
           <EditList title="MUSIC" />
           <EditList title="SFX" />
           <Script initialContent={initialContent} />

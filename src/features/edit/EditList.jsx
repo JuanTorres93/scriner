@@ -6,10 +6,9 @@ const fakeEdits = [
   { id: "3", type: "music", content: "Sad violin" },
 ];
 
-function EditList({ title, edits = fakeEdits }) {
+function EditList({ edits = fakeEdits }) {
   return (
     <div>
-      <h2>{title || "Edit List"}</h2>
       <ul>
         {edits.map((edit, index) => (
           <Edit key={index} edit={edit} />
