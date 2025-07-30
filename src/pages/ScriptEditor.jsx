@@ -5,6 +5,7 @@ import Script from "../features/script/Script";
 
 import { useParams } from "react-router-dom";
 import { useScript } from "../features/script/useScript";
+import Loader from "../ui/Loader";
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -18,20 +19,23 @@ function ScriptEditor() {
   const { scriptId } = useParams();
   const { script, isLoading, error } = useScript(scriptId);
 
-  // TODO handle better
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading scripts</div>;
 
   const initialContent = script?.content || "Tu nuevo guion aquí...";
 
   return (
     <StyledScriptEditor>
-      <EditList title="MUSIC" />
-      <EditList title="SFX" />
-      <Script initialContent={initialContent} />
-      <EditList title="VFX" />
-      <EditList title="GRAPHICS" />
-      <EditList title="B-ROLL" />
+      {isLoading && <Loader position="wholeScreen" />}
+      {!isLoading && (
+        <>
+          <EditList title="MUSIC" />
+          <EditList title="SFX" />
+          <Script initialContent={initialContent} />
+          <EditList title="VFX" />
+          <EditList title="GRAPHICS" />
+          <EditList title="B-ROLL" />
+        </>
+      )}
     </StyledScriptEditor>
   );
 }
