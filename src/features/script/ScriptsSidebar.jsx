@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { useScripts } from "./useScripts";
 import { formatDate } from "../../utils/dateUtils";
+import { useNavigate } from "react-router-dom";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -53,13 +54,15 @@ const StyledScriptItem = styled.div`
 `;
 
 function ScriptItem({ script }) {
+  const navigate = useNavigate();
+
   // Reduce content to 10 words
   const content = script.content
     ? script.content.split(" ").slice(0, 10).join(" ") + "..."
     : "No content available";
 
   return (
-    <StyledScriptItem>
+    <StyledScriptItem onClick={() => navigate(`/app/editor/${script.id}`)}>
       <h3>{script.title}</h3>
       <p>{content}</p>
       <span>{formatDate(script.created_at)}</span>

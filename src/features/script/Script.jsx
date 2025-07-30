@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -54,6 +55,12 @@ const Script = ({ initialContent }) => {
     // prevent loading the default CSS
     injectCSS: false,
   });
+
+  useEffect(() => {
+    if (editor && initialContent) {
+      editor.commands.setContent(initialContent);
+    }
+  }, [editor, initialContent]);
 
   const editorState = useEditorState({
     editor,

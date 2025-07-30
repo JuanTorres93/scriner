@@ -16,10 +16,22 @@ const router = createBrowserRouter([
   {
     // AppLayout is the main layout for the app
     element: <AppLayout />,
+    path: "/app",
     children: [
       {
-        path: "/app",
-        element: <ScriptEditor />,
+        path: "editor",
+        children: [
+          {
+            index: true,
+            replace: true,
+            element: <Navigate to="/app" />,
+          },
+          {
+            // This is the main page of the app
+            path: ":scriptId",
+            element: <ScriptEditor />,
+          },
+        ],
       },
     ],
   },

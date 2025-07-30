@@ -3,7 +3,8 @@ import styled from "styled-components";
 import EditList from "../features/edit/EditList";
 import Script from "../features/script/Script";
 
-import { useScripts } from "../features/script/useScripts";
+import { useParams } from "react-router-dom";
+import { useScript } from "../features/script/useScript";
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -14,13 +15,14 @@ const StyledScriptEditor = styled.div`
 `;
 
 function ScriptEditor() {
-  const { scripts, isLoading, error } = useScripts();
+  const { scriptId } = useParams();
+  const { script, isLoading, error } = useScript(scriptId);
 
   // TODO handle better
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading scripts</div>;
 
-  const initialContent = scripts?.[0]?.content;
+  const initialContent = script?.content;
 
   return (
     <StyledScriptEditor>
