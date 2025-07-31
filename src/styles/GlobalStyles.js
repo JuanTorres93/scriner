@@ -118,7 +118,34 @@ const GlobalStyles = createGlobalStyle`
     max-width: 100%;
   }
 
-  // Include more global styles here
+  .inline-edit {
+    background-color: transparent;
+    font-weight: var(--font-weight-thinest);
+  }
+
+  // 5px is the height of the inline edit marks
+  // and 10px is the space between them
+  .inline-edit-sfx {
+    border-bottom: 5px solid var(--color-sfx);
+  }
+
+  .inline-edit-vfx {
+    border-top: 5px solid var(--color-vfx);
+  }
+
+  .inline-edit-graphic {
+    border-top: 5px solid var(--color-graphic);
+    padding-top: 10px;
+  }
+
+  .inline-edit-broll {
+    border-top: 5px solid var(--color-broll);
+    padding-top: 20px;
+  }
+
+  .inline-edit-music {
+    background-color: lightgray;
+  }
 `;
 
 export default GlobalStyles;

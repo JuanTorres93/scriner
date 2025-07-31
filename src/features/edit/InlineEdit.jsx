@@ -1,111 +1,45 @@
-// InlineEdit.js
 import { Mark } from "@tiptap/core";
-import { ReactMarkViewRenderer, MarkViewContent } from "@tiptap/react";
-
-import styled, { css } from "styled-components";
 
 export const inlineEditTypes = {
-  sfx: "SFX",
-  vfx: "VFX",
-  graphic: "GRAPHIC",
-  broll: "BROLL",
-  music: "MUSIC",
-};
-
-const markHeightPx = 5;
-const spaceBetweenMarksPx = 10;
-
-const StyledMark = styled.mark`
-  background-color: transparent;
-  font-weight: var(--font-weight-thinest);
-
-  ${(props) =>
-    props.editType === inlineEditTypes.sfx &&
-    css`
-      border-bottom: ${markHeightPx}px solid var(--color-sfx);
-    `}
-
-  ${(props) =>
-    props.editType === inlineEditTypes.vfx &&
-    css`
-      border-top: ${markHeightPx}px solid var(--color-vfx);
-    `}
-
-  ${(props) =>
-    props.editType === inlineEditTypes.graphic &&
-    css`
-      border-top: ${markHeightPx}px solid var(--color-graphic);
-      padding-top: ${spaceBetweenMarksPx}px;
-    `}
-
-  ${(props) =>
-    props.editType === inlineEditTypes.broll &&
-    css`
-      border-top: ${markHeightPx}px solid var(--color-broll);
-      padding-top: ${spaceBetweenMarksPx * 2}px;
-    `}
-
-  ${(props) =>
-    props.editType === inlineEditTypes.music &&
-    /* TODO (maybe not here) Different colors for different emotions*/
-    css`
-      background-color: lightgray;
-    `}
-`;
-
-const InlineMark = (props) => {
-  const { editType } = props.extension.options;
-
-  function handleClick(event) {
-    event.preventDefault();
-
-    // TODO Handle the click event for the inline mark
-    console.log(`Clicked on inline edit mark of type: ${editType}`);
-  }
-
-  return (
-    <StyledMark editType={editType} onClick={handleClick}>
-      <MarkViewContent {...props} />
-    </StyledMark>
-  );
+  sfx: "sfx",
+  vfx: "vfx",
+  graphic: "graphic",
+  broll: "broll",
+  music: "music",
 };
 
 const inlineEditFactory = (editType) => {
   return Mark.create(() => {
-    function onCreate() {}
-
-    function onUpdate() {
-      // TODO Open modal to add the inline edit
-    }
-
     return {
       name: `inlineEdit${editType}`,
-      onCreate,
-      onUpdate,
 
-      addOptions() {
+      addAttributes() {
         return {
-          HTMLAttributes: {},
-          editType,
+          // HTML attributes to be added to the mark
+          // I use this to select the mark in the HTML
+          [`data-edit-type-${editType}`]: {
+            // Assign a default value to the attribute
+            default: editType,
+            // This is used to parse the HTML and convert it to internal Tiptap format
+            parseHTML: (element) =>
+              element.getAttribute(`data-edit-type-${editType}`),
+            // This is used to render the HTML from internal Tiptap format. It returns an object with the attributes to be added to the mark
+            // Styling is done in GlobalStyles.js
+            renderHTML: (attributes) => ({
+              [`data-edit-type-${editType}`]:
+                attributes[`data-edit-type-${editType}`],
+              class: `inline-edit inline-edit-${editType}`,
+            }),
+          },
         };
       },
 
-      addMarkView() {
-        // Custom react component for the mark
-        return ReactMarkViewRenderer(InlineMark);
-      },
-
       parseHTML() {
-        // How to recognize this mark in the HTML
-        return [{ tag: `mark[data-inline-edit-${editType}]` }];
+        return [{ tag: `mark[data-edit-type-${editType}]` }];
       },
 
       renderHTML({ HTMLAttributes }) {
-        return [
-          "mark",
-          { ...HTMLAttributes, [`data-inline-edit-${editType}`]: "" },
-          0,
-        ];
+        return ["mark", HTMLAttributes, 0];
       },
     };
   });

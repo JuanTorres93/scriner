@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -57,19 +57,18 @@ const Script = ({ script }) => {
   const editor = useEditor({
     // register extensions
     extensions,
-    // set initial content
-    content: script?.content,
     // place the cursor in the editor after initialization
     autofocus: true,
     // prevent loading the default CSS
     injectCSS: false,
+    immediatelyRender: true,
   });
 
   useEffect(() => {
-    if (editor && script) {
+    if (editor && script.id) {
       editor.commands.setContent(script.content);
     }
-  }, [editor, script]);
+  }, [editor, script, script.id]);
 
   function handleUpdateContent() {
     const newContent = editor.getHTML();
@@ -80,15 +79,39 @@ const Script = ({ script }) => {
     updateScript({ id: script.id, data: { content: newContent } });
   }
 
+  function handleAddMark(editType) {
+    if (!editor) return;
+
+    editor.chain().focus().setMark(`inlineEdit${editType}`).run();
+
+    updateScript({
+      id: script.id,
+      data: { content: editor.getHTML() },
+    });
+  }
+
+  // TODO NEXT. Las marks se quedan guardadas en el HTML, mostrarlas
+
   return (
     <>
       <StyledEditorContainer>
-        <EditorContent onBlur={handleUpdateContent} editor={editor} />
-
+        <EditorContent
+          key={script.id}
+          onBlur={handleUpdateContent}
+          editor={editor}
+        />
         <BubbleMenu editor={editor}>
           <button
             onClick={() => {
-              editor.chain().focus().toggleMark("inlineEditSFX").run();
+              handleAddMark(inlineEditTypes.music);
+            }}
+          >
+            Add Music
+          </button>
+
+          <button
+            onClick={() => {
+              handleAddMark(inlineEditTypes.sfx);
             }}
           >
             Add SFX
@@ -96,7 +119,7 @@ const Script = ({ script }) => {
 
           <button
             onClick={() => {
-              editor.chain().focus().toggleMark("inlineEditVFX").run();
+              handleAddMark(inlineEditTypes.vfx);
             }}
           >
             Add VFX
@@ -104,7 +127,7 @@ const Script = ({ script }) => {
 
           <button
             onClick={() => {
-              editor.chain().focus().toggleMark("inlineEditGRAPHIC").run();
+              handleAddMark(inlineEditTypes.graphic);
             }}
           >
             Add Graphic
@@ -112,18 +135,10 @@ const Script = ({ script }) => {
 
           <button
             onClick={() => {
-              editor.chain().focus().toggleMark("inlineEditBROLL").run();
+              handleAddMark(inlineEditTypes.broll);
             }}
           >
             Add B-Roll
-          </button>
-
-          <button
-            onClick={() => {
-              editor.chain().focus().toggleMark("inlineEditMUSIC").run();
-            }}
-          >
-            Add Music
           </button>
         </BubbleMenu>
       </StyledEditorContainer>
