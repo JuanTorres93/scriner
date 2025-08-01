@@ -122,7 +122,7 @@ const StyledScriptItem = styled.div`
   border-radius: var(--border-radius);
   padding: 1rem;
 
-  ${(props) => props.isActive && activeScriptStyle}
+  ${(props) => props.$isActive && activeScriptStyle}
 
   &:hover {
     ${activeScriptStyle}
@@ -141,8 +141,12 @@ function ScriptItem({ script }) {
   const { scriptId } = useParams();
   const isActive = +scriptId === script.id;
 
-  const content =
-    htmlToText(script.content).split(" ").slice(0, 10).join(" ") + "...";
+  const rawContent = JSON.parse(script?.content || "{}");
+
+  // TODO Extract more text from nodes
+  const text = rawContent[0]?.children?.[0]?.text || "";
+
+  const content = htmlToText(text).split(" ").slice(0, 10).join(" ") + "...";
 
   function handleDeleteScript(e) {
     e.stopPropagation();
@@ -152,7 +156,7 @@ function ScriptItem({ script }) {
 
   return (
     <StyledScriptItem
-      isActive={isActive}
+      $isActive={isActive}
       onClick={() => navigate(`/app/editor/${script.id}`)}
     >
       <DeleteButton disabled={isDeleting} onClick={handleDeleteScript}>

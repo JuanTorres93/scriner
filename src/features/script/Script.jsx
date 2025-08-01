@@ -1,149 +1,129 @@
-import { useEffect } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import { BubbleMenu } from "@tiptap/react/menus";
-import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
-import styled from "styled-components";
+// Import React dependencies.
+import React, { useCallback, useState } from "react";
 
-import inlineEditFactory, { inlineEditTypes } from "../edit/InlineEdit";
+// Import the Slate editor factory.
+import { createEditor, Editor, Element, Transforms } from "slate";
+// Import the Slate components and React plugin.
+import { Slate, Editable, withReact } from "slate-react";
+
+import InlineEdit from "../edit/InlineEdit";
 import { useUpdateScript } from "./useUpdateScript";
 
-// define your extension array
-const extensions = [
-  StarterKit,
-  Placeholder.configure({
-    placeholder: "Escribe tu guión aquí...",
-  }),
-  inlineEditFactory(inlineEditTypes.sfx),
-  inlineEditFactory(inlineEditTypes.vfx),
-  inlineEditFactory(inlineEditTypes.graphic),
-  inlineEditFactory(inlineEditTypes.broll),
-  inlineEditFactory(inlineEditTypes.music),
-];
-
-const StyledEditorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow-x: scroll;
-
-  & .ProseMirror {
-    border: 2px solid var(--color-grey);
-    background-color: var(--color-grey-t3);
-    color: var(--color-grey-s2);
-    border-radius: var(--border-radius);
-    padding: 0rem 2rem;
-    outline: none;
-    line-height: 4.5;
-
-    &:focus,
-    &:hover {
-      border-color: var(--color-primary);
-    }
-
-    /* placeholder styles */
-    p.is-editor-empty:first-child::before {
-      color: var(--color-grey);
-      content: attr(data-placeholder);
-      float: left;
-      height: 0;
-      pointer-events: none;
-    }
-  }
-`;
-
 const Script = ({ script }) => {
-  const { updateScript, isUpdating } = useUpdateScript();
+  const [editor] = useState(() => withReact(createEditor()));
+  const { isUpdating, updateScript } = useUpdateScript();
 
-  const editor = useEditor({
-    // register extensions
-    extensions,
-    // place the cursor in the editor after initialization
-    autofocus: true,
-    // prevent loading the default CSS
-    injectCSS: false,
-    immediatelyRender: true,
-  });
+  const initialValue =
+    JSON.parse(script?.content || "[]").length > 0
+      ? JSON.parse(script?.content)
+      : [
+          {
+            type: "paragraph",
+            children: [{ text: "Pega tu guion aquí" }],
+          },
+        ];
 
-  useEffect(() => {
-    if (editor && script.id) {
-      editor.commands.setContent(script.content);
+  // Define a rendering function based on the element passed to `props`. We use
+  // `useCallback` here to memoize the function for subsequent renders.
+  // DOC: this function tells Slate how to render different types of elements.
+  const renderElement = useCallback((props) => {
+    switch (props.element.type) {
+      case "code":
+        return <CodeElement {...props} />;
+      default:
+        return <DefaultElement {...props} />;
     }
-  }, [editor, script, script.id]);
+  }, []);
+
+  // Define a leaf rendering function that is memoized with `useCallback`.
+  // DOC: this function tells Slate how to render inline text formatting.
+  const renderLeaf = useCallback((props) => {
+    return <InlineEdit {...props} />;
+  }, []);
 
   function handleUpdateContent() {
-    const newContent = editor.getHTML();
+    const newContent = JSON.stringify(editor.children);
 
-    if (!script || !newContent || isUpdating) return;
-    if (newContent === script.content) return;
-
-    updateScript({ id: script.id, data: { content: newContent } });
-  }
-
-  function handleAddMark(editType) {
-    if (!editor) return;
-
-    editor.chain().focus().setMark(`inlineEdit${editType}`).run();
+    if (!script?.id || !newContent || isUpdating) return;
+    if (newContent === script?.content) return;
 
     updateScript({
-      id: script.id,
-      data: { content: editor.getHTML() },
+      id: script?.id,
+      data: { content: newContent },
     });
   }
 
-  // TODO NEXT. Las marks se quedan guardadas en el HTML, mostrarlas
-
   return (
-    <>
-      <StyledEditorContainer>
-        <EditorContent
-          key={script.id}
-          onBlur={handleUpdateContent}
-          editor={editor}
-        />
-        <BubbleMenu editor={editor}>
-          <button
-            onClick={() => {
-              handleAddMark(inlineEditTypes.music);
-            }}
-          >
-            Add Music
-          </button>
+    // Add the editable component inside the context.
+    <Slate editor={editor} initialValue={initialValue}>
+      {/* This component acts like contenteditable */}
+      <Editable
+        renderElement={renderElement}
+        renderLeaf={renderLeaf}
+        onBlur={handleUpdateContent}
+        onKeyDown={(event) => {
+          if (!event.ctrlKey) {
+            return;
+          }
 
-          <button
-            onClick={() => {
-              handleAddMark(inlineEditTypes.sfx);
-            }}
-          >
-            Add SFX
-          </button>
+          if (event.key === "s") {
+            event.preventDefault();
+            Editor.addMark(editor, "sfx", true);
+          }
 
-          <button
-            onClick={() => {
-              handleAddMark(inlineEditTypes.vfx);
-            }}
-          >
-            Add VFX
-          </button>
+          if (event.key === "f") {
+            event.preventDefault();
+            Editor.addMark(editor, "vfx", true);
+          }
 
-          <button
-            onClick={() => {
-              handleAddMark(inlineEditTypes.graphic);
-            }}
-          >
-            Add Graphic
-          </button>
+          if (event.key === "m") {
+            event.preventDefault();
+            Editor.addMark(editor, "music", true);
+          }
 
-          <button
-            onClick={() => {
-              handleAddMark(inlineEditTypes.broll);
-            }}
-          >
-            Add B-Roll
-          </button>
-        </BubbleMenu>
-      </StyledEditorContainer>
-    </>
+          if (event.key === "g") {
+            event.preventDefault();
+            Editor.addMark(editor, "graphic", true);
+          }
+
+          if (event.key === "b") {
+            event.preventDefault();
+            Editor.addMark(editor, "broll", true);
+          }
+        }}
+      />
+    </Slate>
   );
 };
+
+// Define a React component renderer for our code blocks.
+function CodeElement(props) {
+  return (
+    // Slate passes attributes that should be rendered on the top-most element of your blocks, so that you don't have to build them up yourself. You MUST mix the attributes into your component.
+    <pre {...props.attributes}>
+      {/* You MUST render the children as the lowest leaf in your component */}
+      <code>{props.children}</code>
+    </pre>
+  );
+}
+
+function DefaultElement(props) {
+  return <p {...props.attributes}>{props.children}</p>;
+}
+
+// Define a React component to render leaves with bold text.
+function Leaf(props) {
+  let style = {};
+  if (props.leaf.bold) style.fontWeight = "bold";
+  if (props.leaf.italic) style.fontStyle = "italic";
+  if (props.leaf.underline) style.textDecoration = "underline";
+  // DOC Leaves are the way to apply inline text formatting in Slate.
+  return (
+    // span because all leaves MUST be an inline element.
+    <span {...props.attributes} style={style}>
+      {props.children}
+    </span>
+  );
+}
 
 export default Script;

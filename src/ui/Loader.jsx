@@ -23,7 +23,7 @@ const loaderPositions = {
     backdrop-filter: blur(5px);
     background-color: color-mix(
       in srgb,
-      var(${(props) => props.cssVarColor || "--color-grey-s1"}) 30%,
+      var(${(props) => props.$cssVarColor || "--color-grey-s1"}) 30%,
       transparent
     );
   `,
@@ -74,13 +74,13 @@ const loaderStyles = {
       border-radius: 50%;
       background: radial-gradient(
             farthest-side,
-            var(${(props) => props.cssVarColor || "--color-primary"}) 94%,
+            var(${(props) => props.$cssVarColor || "--color-primary"}) 94%,
             #0000
           )
           top/8px 8px no-repeat,
         conic-gradient(
           #0000 30%,
-          var(${(props) => props.cssVarColor || "--color-primary"})
+          var(${(props) => props.$cssVarColor || "--color-primary"})
         );
       -webkit-mask: radial-gradient(
         farthest-side,
@@ -102,16 +102,20 @@ const StyledLoader = styled.div`
   ${(props) => loaderStyles[props.type] || loaderStyles.bars}
 `;
 
-function Loader({ ...props }) {
+function Loader({ cssVarColor, ...props }) {
   // Can accept props as:
   // - position: "inPlace" | "wholeScreen"
   // - type: "bars" | "spinner"
   // - size: "50px" | "10rem" (default is "50px")
   // - cssVarColor: "--color-primary" (default is "--color-primary")
-  if (props.position === "wholeScreen")
-    return createPortal(<StyledLoader {...props} />, document.body);
 
-  return <StyledLoader {...props}></StyledLoader>;
+  if (props.position === "wholeScreen")
+    return createPortal(
+      <StyledLoader {...props} $cssVarColor={cssVarColor} />,
+      document.body
+    );
+
+  return <StyledLoader {...props} $cssVarColor={cssVarColor}></StyledLoader>;
 }
 
 export default Loader;

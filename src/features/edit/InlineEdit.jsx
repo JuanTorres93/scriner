@@ -1,4 +1,4 @@
-import { Mark } from "@tiptap/core";
+import styled, { css } from "styled-components";
 
 export const inlineEditTypes = {
   sfx: "sfx",
@@ -8,41 +8,98 @@ export const inlineEditTypes = {
   music: "music",
 };
 
-const inlineEditFactory = (editType) => {
-  return Mark.create(() => {
-    return {
-      name: `inlineEdit${editType}`,
+const markHeightPx = 6;
+const spaceBetweenMarksPx = 12;
 
-      addAttributes() {
-        return {
-          // HTML attributes to be added to the mark
-          // I use this to select the mark in the HTML
-          [`data-edit-type-${editType}`]: {
-            // Assign a default value to the attribute
-            default: editType,
-            // This is used to parse the HTML and convert it to internal Tiptap format
-            parseHTML: (element) =>
-              element.getAttribute(`data-edit-type-${editType}`),
-            // This is used to render the HTML from internal Tiptap format. It returns an object with the attributes to be added to the mark
-            // Styling is done in GlobalStyles.js
-            renderHTML: (attributes) => ({
-              [`data-edit-type-${editType}`]:
-                attributes[`data-edit-type-${editType}`],
-              class: `inline-edit inline-edit-${editType}`,
-            }),
-          },
-        };
-      },
+const StyledSpan = styled.span`
+  background-color: transparent;
+  font-weight: var(--font-weight-thinest);
+  position: relative;
 
-      parseHTML() {
-        return [{ tag: `mark[data-edit-type-${editType}]` }];
-      },
+  .inline-edit {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: ${markHeightPx}px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s ease;
 
-      renderHTML({ HTMLAttributes }) {
-        return ["mark", HTMLAttributes, 0];
-      },
-    };
-  });
-};
+    &:hover {
+      opacity: 1;
+      transform: scaleY(1.2);
+    }
+  }
 
-export default inlineEditFactory;
+  ${(props) =>
+    props.leaf.sfx &&
+    css`
+      .inline-edit.sfx {
+        display: inline-block;
+        bottom: -${markHeightPx}px;
+        background-color: var(--color-sfx);
+      }
+    `}
+
+  ${(props) =>
+    props.leaf.vfx &&
+    css`
+      .inline-edit.vfx {
+        display: inline-block;
+        top: ${markHeightPx - spaceBetweenMarksPx}px;
+        background-color: var(--color-vfx);
+      }
+    `}
+
+  ${(props) =>
+    props.leaf.graphic &&
+    css`
+      .inline-edit.graphic {
+        display: inline-block;
+        top: ${markHeightPx - 2 * spaceBetweenMarksPx}px;
+        background-color: var(--color-graphic);
+      }
+    `}
+
+  ${(props) =>
+    props.leaf.broll &&
+    css`
+      .inline-edit.broll {
+        display: inline-block;
+        top: ${markHeightPx - 3 * spaceBetweenMarksPx}px;
+        background-color: var(--color-broll);
+      }
+    `}
+
+  ${(props) =>
+    props.leaf.music &&
+    /* TODO (maybe not here) Different colors for different emotions*/
+    css`
+      .inline-edit.music {
+        display: inline-block;
+        position: absolute;
+        bottom: ${markHeightPx - 2 * spaceBetweenMarksPx}px;
+        left: 0;
+        right: 0;
+        height: ${markHeightPx}px;
+        background-color: lightcoral;
+      }
+    `}
+`;
+
+function InlineEdit(props) {
+  return (
+    // span because all leaves MUST be an inline element.
+    <StyledSpan {...props.attributes} leaf={props.leaf}>
+      <mark className="inline-edit vfx"></mark>
+      <mark className="inline-edit sfx"></mark>
+      <mark className="inline-edit music"></mark>
+      <mark className="inline-edit graphic"></mark>
+      <mark className="inline-edit broll"></mark>
+      <span>{props.children}</span>
+    </StyledSpan>
+  );
+}
+
+export default InlineEdit;

@@ -82,7 +82,7 @@ function ScriptEditor() {
           <h2>B-Roll</h2>
           <EditList title="MUSIC" />
           <EditList title="SFX" />
-          <Script script={script} />
+          <Script key={`${script.id}-script`} script={script} />
           <EditList title="VFX" />
           <EditList title="GRAPHICS" />
           <EditList title="B-ROLL" />
