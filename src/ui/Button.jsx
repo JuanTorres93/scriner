@@ -8,15 +8,36 @@ const variant = {
     // Add a svg before element with a diagonal line indicating it's going to remove it
     position: relative;
 
-    &:before {
+    // Line
+    &::before {
       content: "";
       position: absolute;
+      z-index: 2;
       top: 0;
       left: 0;
       width: 80%;
       height: 80%;
       border-top: 2px solid var(--color-grey-s2);
-      transform: translate(50%, 45%) rotate(-45deg);
+      transform: translate(-20%, 45%) rotate(45deg);
+    }
+
+    // Background line to add the effect of "disrrupting" the icon
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 80%;
+      height: 80%;
+      border-top: 6px solid var(--color-grey-t2);
+      transform: translate(-13%, 45%) rotate(45deg);
+    }
+
+    &:hover {
+      &::after {
+        border-color: var(--color-grey);
+      }
     }
   `,
 };
