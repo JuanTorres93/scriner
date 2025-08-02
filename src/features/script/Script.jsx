@@ -2,15 +2,31 @@
 import React, { useCallback, useState } from "react";
 
 // Import the Slate editor factory.
-import { createEditor, Editor } from "slate";
+import { createEditor } from "slate";
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from "slate-react";
+import styled from "styled-components";
 
 import { EDIT_TYPES } from "../edit/editTypes";
 import { ScriptActions } from "./ScriptActions";
 import { useUpdateScript } from "./useUpdateScript";
 import InlineEdit from "../edit/InlineEdit";
 import HoveringToolbar from "./HoverToolbar";
+
+const StyledEditable = styled(Editable)`
+  border: 2px solid var(--color-grey);
+  background-color: var(--color-grey-t3);
+  color: var(--color-grey-s2);
+  border-radius: var(--border-radius);
+  padding: 0rem 2rem;
+  outline: none;
+  line-height: 5;
+
+  &:focus,
+  &:hover {
+    border-color: var(--color-primary);
+  }
+`;
 
 const Script = ({ script }) => {
   const [editor] = useState(() => withReact(createEditor()));
@@ -72,7 +88,7 @@ const Script = ({ script }) => {
     <Slate editor={editor} initialValue={initialValue}>
       <HoveringToolbar />
       {/* This component acts like contenteditable */}
-      <Editable
+      <StyledEditable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onBlur={handleUpdateContent}
