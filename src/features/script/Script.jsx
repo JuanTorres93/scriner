@@ -7,8 +7,9 @@ import { createEditor, Editor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
 import { EDIT_TYPES } from "../edit/editTypes";
-import InlineEdit from "../edit/InlineEdit";
 import { useUpdateScript } from "./useUpdateScript";
+import InlineEdit from "../edit/InlineEdit";
+import HoveringToolbar from "./HoverToolbar";
 
 const Script = ({ script }) => {
   const [editor] = useState(() => withReact(createEditor()));
@@ -68,6 +69,7 @@ const Script = ({ script }) => {
   return (
     // Add the editable component inside the context.
     <Slate editor={editor} initialValue={initialValue}>
+      <HoveringToolbar />
       {/* This component acts like contenteditable */}
       <Editable
         renderElement={renderElement}
