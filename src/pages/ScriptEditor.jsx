@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 
 import EditList from "../features/edit/EditList";
 import Script from "../features/script/Script";
-import { useScript } from "../features/script/useScript";
 import Loader from "../ui/Loader";
 import Input from "../ui/Input";
+
+import { useScript } from "../features/script/useScript";
+import { useEdits } from "../features/edit/hooks/useEdits";
 import { useUpdateScript } from "../features/script/useUpdateScript";
 
 const StyledScriptEditor = styled.div`
@@ -22,6 +24,7 @@ const StyledScriptEditor = styled.div`
     font-size: var(--font-size-regular);
     font-weight: var(--font-weight-medium);
     color: var(--color-grey-s2);
+    align-self: flex-start;
   }
 
   h2 {
@@ -29,18 +32,26 @@ const StyledScriptEditor = styled.div`
   }
 
   .loader {
-    grid-column: 1 / -1;
-    grid-row: 1 / -1;
+    margin-top: 10rem;
+    align-self: start;
   }
 `;
 
 function ScriptEditor() {
   const { scriptId } = useParams();
-  const { script, isLoading: isLoadingScript, error } = useScript(scriptId);
+  const {
+    script,
+    isLoading: isLoadingScript,
+    error: scriptError,
+  } = useScript(scriptId);
   const { updateScript, isUpdating } = useUpdateScript();
+  const { edits, isLoading: isLoadingEdits, error: editsError } = useEdits();
 
-  // TODO handle better
-  if (error) return <div>Error loading scripts</div>;
+  const sfxEdits = edits?.filter((edit) => edit.type === "sfx");
+  const vfxEdits = edits?.filter((edit) => edit.type === "vfx");
+  const graphicEdits = edits?.filter((edit) => edit.type === "graphic");
+  const brollEdits = edits?.filter((edit) => edit.type === "broll");
+  const musicEdits = edits?.filter((edit) => edit.type === "music");
 
   function handleUpdateScriptTitle(newTitle) {
     if (isUpdating || !newTitle) return;
@@ -58,36 +69,91 @@ function ScriptEditor() {
 
   return (
     <StyledScriptEditor>
-      {isLoadingScript && (
-        <Loader
-          className="loader"
-          type="spinner"
-          size="10rem"
-          cssVarColor="--color-primary-t1"
+      <>
+        <h2>Música</h2>
+        <h2>SFX</h2>
+        <Input
+          key={script?.id}
+          type="plain"
+          defaultValue={script?.title}
+          placeholder="Nombre del guion"
+          onBlur={handleTitleBlur}
         />
-      )}
-      {!isLoadingScript && (
-        <>
-          <h2>Música</h2>
-          <h2>SFX</h2>
-          <Input
-            key={script?.id}
-            type="plain"
-            defaultValue={script?.title}
-            placeholder="Nombre del guion"
-            onBlur={handleTitleBlur}
+        <h2>VFX</h2>
+        <h2>Gráficos</h2>
+        <h2>B-Roll</h2>
+
+        {/* Music edits */}
+        {isLoadingEdits ? (
+          <Loader
+            className="loader"
+            type="spinner"
+            size="5rem"
+            cssVarColor="--color-primary-t1"
           />
-          <h2>VFX</h2>
-          <h2>Gráficos</h2>
-          <h2>B-Roll</h2>
-          <EditList title="MUSIC" />
-          <EditList title="SFX" />
+        ) : (
+          <EditList edits={musicEdits} />
+        )}
+
+        {/* SFX edits */}
+        {isLoadingEdits ? (
+          <Loader
+            className="loader"
+            type="spinner"
+            size="5rem"
+            cssVarColor="--color-primary-t1"
+          />
+        ) : (
+          <EditList edits={sfxEdits} />
+        )}
+
+        {/* Script */}
+        {isLoadingScript ? (
+          <Loader
+            className="loader"
+            type="spinner"
+            size="10rem"
+            cssVarColor="--color-primary-t1"
+          />
+        ) : (
           <Script key={`${script.id}-script`} script={script} />
-          <EditList title="VFX" />
-          <EditList title="GRAPHICS" />
-          <EditList title="B-ROLL" />
-        </>
-      )}
+        )}
+        {/* VFX edits */}
+        {isLoadingEdits ? (
+          <Loader
+            className="loader"
+            type="spinner"
+            size="5rem"
+            cssVarColor="--color-primary-t1"
+          />
+        ) : (
+          <EditList edits={vfxEdits} />
+        )}
+
+        {/* Graphic edits */}
+        {isLoadingEdits ? (
+          <Loader
+            className="loader"
+            type="spinner"
+            size="5rem"
+            cssVarColor="--color-primary-t1"
+          />
+        ) : (
+          <EditList edits={graphicEdits} />
+        )}
+
+        {/* B-Roll edits */}
+        {isLoadingEdits ? (
+          <Loader
+            className="loader"
+            type="spinner"
+            size="5rem"
+            cssVarColor="--color-primary-t1"
+          />
+        ) : (
+          <EditList edits={brollEdits} />
+        )}
+      </>
     </StyledScriptEditor>
   );
 }
