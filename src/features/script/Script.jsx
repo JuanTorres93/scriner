@@ -25,20 +25,18 @@ const Script = ({ script }) => {
         ];
 
   // Define a rendering function based on the element passed to `props`. We use
-  // `useCallback` here to memoize the function for subsequent renders.
-  // DOC: this function tells Slate how to render different types of elements.
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
-      case "code":
-        return <CodeElement {...props} />;
       default:
         return <DefaultElement {...props} />;
     }
   }, []);
 
-  // Define a leaf rendering function that is memoized with `useCallback`.
   // DOC: this function tells Slate how to render inline text formatting.
   const renderLeaf = useCallback((props) => {
+    // DOC props contains a leaf element with the attributes specified in the function Editor.addMark. To access them we need to know the type of the mark, since the info is in the format of `props.leaf.type`.
+    // To be able to know the type of the mark, we need to check if the leaf has any of the edit types defined in EDIT_TYPES. I have not found another way of doing it
+
     // Find which edit types are present in the leaf.
     const leafAttributeNames = Object.keys(props.leaf);
     const foundTypes = leafAttributeNames.filter((type) =>
@@ -50,8 +48,8 @@ const Script = ({ script }) => {
       editId: props?.leaf?.[type].editId,
     }));
 
-    // If there are edit types, render the InlineEdit component with the editId.
-
+    // Pass them to be accessed by InlineEdit.
+    // NOTE: they cannot be accessed directly in the InlineEdit component, so we pass them as a prop.
     return <InlineEdit {...props} editIds={editIds} />;
   }, []);
 
@@ -120,34 +118,8 @@ const Script = ({ script }) => {
   );
 };
 
-// Define a React component renderer for our code blocks.
-function CodeElement(props) {
-  return (
-    // Slate passes attributes that should be rendered on the top-most element of your blocks, so that you don't have to build them up yourself. You MUST mix the attributes into your component.
-    <pre {...props.attributes}>
-      {/* You MUST render the children as the lowest leaf in your component */}
-      <code>{props.children}</code>
-    </pre>
-  );
-}
-
 function DefaultElement(props) {
   return <p {...props.attributes}>{props.children}</p>;
-}
-
-// Define a React component to render leaves with bold text.
-function Leaf(props) {
-  let style = {};
-  if (props.leaf.bold) style.fontWeight = "bold";
-  if (props.leaf.italic) style.fontStyle = "italic";
-  if (props.leaf.underline) style.textDecoration = "underline";
-  // DOC Leaves are the way to apply inline text formatting in Slate.
-  return (
-    // span because all leaves MUST be an inline element.
-    <span {...props.attributes} style={style}>
-      {props.children}
-    </span>
-  );
 }
 
 export default Script;
