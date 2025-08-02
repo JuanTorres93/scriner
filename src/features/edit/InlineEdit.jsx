@@ -1,12 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const inlineEditTypes = {
-  sfx: "sfx",
-  vfx: "vfx",
-  graphic: "graphic",
-  broll: "broll",
-  music: "music",
-};
+import { EDIT_TYPES } from "./editTypes";
 
 const markHeightPx = 6;
 const spaceBetweenMarksPx = 12;
@@ -89,14 +83,24 @@ const StyledSpan = styled.span`
 `;
 
 function InlineEdit(props) {
+  function handleClick(e) {
+    e.preventDefault();
+
+    if (!props.editIds || props.editIds.length === 0) return;
+
+    // TODO DELETE THESE DEBUG LOGS
+    console.log("JSON.stringify(props.editIds)");
+    console.log(JSON.stringify(props.editIds));
+  }
+
   return (
     // span because all leaves MUST be an inline element.
-    <StyledSpan {...props.attributes} leaf={props.leaf}>
-      <mark className="inline-edit vfx"></mark>
-      <mark className="inline-edit sfx"></mark>
-      <mark className="inline-edit music"></mark>
-      <mark className="inline-edit graphic"></mark>
-      <mark className="inline-edit broll"></mark>
+    <StyledSpan onClick={handleClick} {...props.attributes} leaf={props.leaf}>
+      <mark className={`inline-edit ${EDIT_TYPES.VFX}`}></mark>
+      <mark className={`inline-edit ${EDIT_TYPES.SFX}`}></mark>
+      <mark className={`inline-edit ${EDIT_TYPES.MUSIC}`}></mark>
+      <mark className={`inline-edit ${EDIT_TYPES.GRAPHIC}`}></mark>
+      <mark className={`inline-edit ${EDIT_TYPES.BROLL}`}></mark>
       <span>{props.children}</span>
     </StyledSpan>
   );

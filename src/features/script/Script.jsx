@@ -2,10 +2,11 @@
 import React, { useCallback, useState } from "react";
 
 // Import the Slate editor factory.
-import { createEditor, Editor, Element, Transforms } from "slate";
+import { createEditor, Editor } from "slate";
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from "slate-react";
 
+import { EDIT_TYPES } from "../edit/editTypes";
 import InlineEdit from "../edit/InlineEdit";
 import { useUpdateScript } from "./useUpdateScript";
 
@@ -38,7 +39,20 @@ const Script = ({ script }) => {
   // Define a leaf rendering function that is memoized with `useCallback`.
   // DOC: this function tells Slate how to render inline text formatting.
   const renderLeaf = useCallback((props) => {
-    return <InlineEdit {...props} />;
+    // Find which edit types are present in the leaf.
+    const leafAttributeNames = Object.keys(props.leaf);
+    const foundTypes = leafAttributeNames.filter((type) =>
+      Object.values(EDIT_TYPES).includes(type)
+    );
+
+    const editIds = foundTypes.map((type) => ({
+      type,
+      editId: props?.leaf?.[type].editId,
+    }));
+
+    // If there are edit types, render the InlineEdit component with the editId.
+
+    return <InlineEdit {...props} editIds={editIds} />;
   }, []);
 
   function handleUpdateContent() {
@@ -68,27 +82,37 @@ const Script = ({ script }) => {
 
           if (event.key === "s") {
             event.preventDefault();
-            Editor.addMark(editor, "sfx", true);
+            Editor.addMark(editor, EDIT_TYPES.SFX, {
+              editId: "editSFXId",
+            });
           }
 
           if (event.key === "f") {
             event.preventDefault();
-            Editor.addMark(editor, "vfx", true);
+            Editor.addMark(editor, EDIT_TYPES.VFX, {
+              editId: "editVFXId",
+            });
           }
 
           if (event.key === "m") {
             event.preventDefault();
-            Editor.addMark(editor, "music", true);
+            Editor.addMark(editor, EDIT_TYPES.MUSIC, {
+              editId: "editMusicId",
+            });
           }
 
           if (event.key === "g") {
             event.preventDefault();
-            Editor.addMark(editor, "graphic", true);
+            Editor.addMark(editor, EDIT_TYPES.GRAPHIC, {
+              editId: "editGraphicId",
+            });
           }
 
           if (event.key === "b") {
             event.preventDefault();
-            Editor.addMark(editor, "broll", true);
+            Editor.addMark(editor, EDIT_TYPES.BROLL, {
+              editId: "editBrollId",
+            });
           }
         }}
       />
