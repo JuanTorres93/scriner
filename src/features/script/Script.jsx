@@ -7,6 +7,7 @@ import { createEditor, Editor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
 import { EDIT_TYPES } from "../edit/editTypes";
+import { ScriptActions } from "./ScriptActions";
 import { useUpdateScript } from "./useUpdateScript";
 import InlineEdit from "../edit/InlineEdit";
 import HoveringToolbar from "./HoverToolbar";
@@ -82,37 +83,27 @@ const Script = ({ script }) => {
 
           if (event.key === "s") {
             event.preventDefault();
-            Editor.addMark(editor, EDIT_TYPES.SFX, {
-              editId: "editSFXId",
-            });
+            ScriptActions.addMark(editor, EDIT_TYPES.SFX, "editSFXId");
           }
 
           if (event.key === "f") {
             event.preventDefault();
-            Editor.addMark(editor, EDIT_TYPES.VFX, {
-              editId: "editVFXId",
-            });
+            ScriptActions.addMark(editor, EDIT_TYPES.VFX, "editVFXId");
           }
 
           if (event.key === "m") {
             event.preventDefault();
-            Editor.addMark(editor, EDIT_TYPES.MUSIC, {
-              editId: "editMusicId",
-            });
+            ScriptActions.addMark(editor, EDIT_TYPES.MUSIC, "editMusicId");
           }
 
           if (event.key === "g") {
             event.preventDefault();
-            Editor.addMark(editor, EDIT_TYPES.GRAPHIC, {
-              editId: "editGraphicId",
-            });
+            ScriptActions.addMark(editor, EDIT_TYPES.GRAPHIC, "editGraphicId");
           }
 
           if (event.key === "b") {
             event.preventDefault();
-            Editor.addMark(editor, EDIT_TYPES.BROLL, {
-              editId: "editBrollId",
-            });
+            ScriptActions.addMark(editor, EDIT_TYPES.BROLL, "editBrollId");
           }
         }}
       />
