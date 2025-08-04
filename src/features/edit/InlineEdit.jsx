@@ -83,27 +83,51 @@ const StyledSpan = styled.span`
 `;
 
 function InlineEdit(props) {
+  const editIds = props.editIds || [];
+
   function handleClick(e) {
     e.preventDefault();
 
-    if (!props.editIds || props.editIds.length === 0) return;
+    if (!editIds || editIds.length === 0) return;
 
     // TODO DELETE THESE DEBUG LOGS
-    console.log("JSON.stringify(props.editIds)");
-    console.log(JSON.stringify(props.editIds));
+    console.log("JSON.stringify(editIds)");
+    console.log(JSON.stringify(editIds));
   }
 
   return (
     // span because all leaves MUST be an inline element.
     <StyledSpan onClick={handleClick} {...props.attributes} leaf={props.leaf}>
-      <mark className={`inline-edit ${EDIT_TYPES.VFX}`}></mark>
-      <mark className={`inline-edit ${EDIT_TYPES.SFX}`}></mark>
-      <mark className={`inline-edit ${EDIT_TYPES.MUSIC}`}></mark>
-      <mark className={`inline-edit ${EDIT_TYPES.GRAPHIC}`}></mark>
-      <mark className={`inline-edit ${EDIT_TYPES.BROLL}`}></mark>
+      <mark
+        data-edit-id={extractEditIdFromType(EDIT_TYPES.VFX, editIds)}
+        className={`inline-edit ${EDIT_TYPES.VFX}`}
+      ></mark>
+      <mark
+        data-edit-id={extractEditIdFromType(EDIT_TYPES.SFX, editIds)}
+        className={`inline-edit ${EDIT_TYPES.SFX}`}
+      ></mark>
+      <mark
+        data-edit-id={extractEditIdFromType(EDIT_TYPES.MUSIC, editIds)}
+        className={`inline-edit ${EDIT_TYPES.MUSIC}`}
+      ></mark>
+      <mark
+        data-edit-id={extractEditIdFromType(EDIT_TYPES.GRAPHIC, editIds)}
+        className={`inline-edit ${EDIT_TYPES.GRAPHIC}`}
+      ></mark>
+      <mark
+        data-edit-id={extractEditIdFromType(EDIT_TYPES.BROLL, editIds)}
+        className={`inline-edit ${EDIT_TYPES.BROLL}`}
+      ></mark>
       <span>{props.children}</span>
     </StyledSpan>
   );
+}
+
+function extractEditIdFromType(type, editIds) {
+  if (!editIds || editIds.length === 0) return null;
+
+  const edit = editIds.find((edit) => edit.type === type);
+  return edit ? edit.editId : null;
 }
 
 export default InlineEdit;

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { Editor, Range } from "slate";
 import { useFocused, useSlate } from "slate-react";
@@ -15,11 +16,15 @@ import {
 import { ScriptActions } from "./ScriptActions";
 import { EDIT_TYPES } from "../edit/editTypes";
 import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
+import { useCreateEdit } from "../edit/hooks/useCreateEdit";
 
 const HoveringToolbar = () => {
   const ref = useRef(null);
   const editor = useSlate();
   const inFocus = useFocused();
+  const { scriptId } = useParams();
+  const { createEdit, isCreating } = useCreateEdit();
 
   useEffect(() => {
     const el = ref.current;
@@ -50,78 +55,101 @@ const HoveringToolbar = () => {
     const hasMark = ScriptActions.isMarkActive(editor, type);
     if (hasMark) {
       ScriptActions.removeMark(editor, type);
+      // TODO si no quedan marcas con el edit Id, borrarlo de la base de datos
     } else {
+      if (!scriptId) {
+        return;
+      }
       // If the mark is not active, add it with a unique edit ID.
-      ScriptActions.addMark(editor, type, `editID${type}`);
+      const newEdit = {
+        type,
+        content: "Nueva anotación",
+        isDone: false,
+        scriptId,
+      };
+
+      // Create the edit in the database.
+      createEdit(newEdit, {
+        onSuccess: (data) => {
+          ScriptActions.addMark(editor, type, data.id);
+        },
+      });
     }
   }
 
   return (
     <Portal>
-      <Menu
-        ref={ref}
-        onMouseDown={(e) => {
-          // prevent toolbar from taking focus away from editor
-          e.preventDefault();
-        }}
-      >
-        {/* TODO NEXT los botones deben abrir un modal con el menú para añadir el Edit */}
-        <Button
-          onClick={() => handleToggleEdit(EDIT_TYPES.MUSIC)}
-          type="hoverbar"
-          variant={
-            ScriptActions.isMarkActive(editor, EDIT_TYPES.MUSIC)
-              ? "activeHoverElement"
-              : null
-          }
+      <Modal>
+        <Menu
+          ref={ref}
+          onMouseDown={(e) => {
+            // prevent toolbar from taking focus away from editor
+            e.preventDefault();
+          }}
         >
-          <HiMiniMusicalNote />
-        </Button>
-        <Button
-          onClick={() => handleToggleEdit(EDIT_TYPES.SFX)}
-          type="hoverbar"
-          variant={
-            ScriptActions.isMarkActive(editor, EDIT_TYPES.SFX)
-              ? "activeHoverElement"
-              : null
-          }
-        >
-          <HiBolt />
-        </Button>
-        <Button
-          onClick={() => handleToggleEdit(EDIT_TYPES.VFX)}
-          type="hoverbar"
-          variant={
-            ScriptActions.isMarkActive(editor, EDIT_TYPES.VFX)
-              ? "activeHoverElement"
-              : null
-          }
-        >
-          <HiMiniPhoto />
-        </Button>
-        <Button
-          onClick={() => handleToggleEdit(EDIT_TYPES.GRAPHIC)}
-          type="hoverbar"
-          variant={
-            ScriptActions.isMarkActive(editor, EDIT_TYPES.GRAPHIC)
-              ? "activeHoverElement"
-              : null
-          }
-        >
-          <HiCamera />
-        </Button>
-        <Button
-          onClick={() => handleToggleEdit(EDIT_TYPES.BROLL)}
-          type="hoverbar"
-          variant={
-            ScriptActions.isMarkActive(editor, EDIT_TYPES.BROLL)
-              ? "activeHoverElement"
-              : null
-          }
-        >
-          <HiFilm />
-        </Button>
-      </Menu>
+          {/* TODO NEXT los botones deben abrir un modal con el menú para añadir el Edit */}
+          <Button
+            onClick={() => handleToggleEdit(EDIT_TYPES.MUSIC)}
+            type="hoverbar"
+            variant={
+              ScriptActions.isMarkActive(editor, EDIT_TYPES.MUSIC)
+                ? "activeHoverElement"
+                : null
+            }
+            disabled={isCreating}
+          >
+            <HiMiniMusicalNote />
+          </Button>
+          <Button
+            onClick={() => handleToggleEdit(EDIT_TYPES.SFX)}
+            type="hoverbar"
+            variant={
+              ScriptActions.isMarkActive(editor, EDIT_TYPES.SFX)
+                ? "activeHoverElement"
+                : null
+            }
+            disabled={isCreating}
+          >
+            <HiBolt />
+          </Button>
+          <Button
+            onClick={() => handleToggleEdit(EDIT_TYPES.VFX)}
+            type="hoverbar"
+            variant={
+              ScriptActions.isMarkActive(editor, EDIT_TYPES.VFX)
+                ? "activeHoverElement"
+                : null
+            }
+            disabled={isCreating}
+          >
+            <HiMiniPhoto />
+          </Button>
+          <Button
+            onClick={() => handleToggleEdit(EDIT_TYPES.GRAPHIC)}
+            type="hoverbar"
+            variant={
+              ScriptActions.isMarkActive(editor, EDIT_TYPES.GRAPHIC)
+                ? "activeHoverElement"
+                : null
+            }
+            disabled={isCreating}
+          >
+            <HiCamera />
+          </Button>
+          <Button
+            onClick={() => handleToggleEdit(EDIT_TYPES.BROLL)}
+            type="hoverbar"
+            variant={
+              ScriptActions.isMarkActive(editor, EDIT_TYPES.BROLL)
+                ? "activeHoverElement"
+                : null
+            }
+            disabled={isCreating}
+          >
+            <HiFilm />
+          </Button>
+        </Menu>
+      </Modal>
     </Portal>
   );
 };

@@ -64,6 +64,11 @@ const types = {
       background-color: var(--color-grey);
     }
 
+    &:disabled {
+      background-color: var(--color-grey);
+      color: var(--color-grey-s2);
+    }
+
     svg {
       margin: auto;
     }
@@ -86,11 +91,12 @@ const StyledButton = styled.button`
 
 function Button({ ...props }) {
   const isDisabled = props.disabled;
+  const isHoverbar = props.type === "hoverbar";
 
   return (
     <StyledButton
       {...props}
-      type={isDisabled ? "disabled" : props.type}
+      type={isDisabled && !isHoverbar ? "disabled" : props.type}
       onClick={isDisabled ? null : props.onClick}
     >
       {props.children}

@@ -49,6 +49,7 @@ export async function deleteScript(id) {
 }
 
 export async function updateScript(id, script) {
+  // TODO handle delete when it has edits. Right now it won't work
   const { data, error } = await supabase
     .from("scripts")
     .update(script)

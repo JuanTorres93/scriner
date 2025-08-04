@@ -23,3 +23,17 @@ export async function getEditById(id) {
 
   return data;
 }
+
+export async function createEdit(edit) {
+  const { data, error } = await supabase
+    .from("edits")
+    .insert(edit)
+    .single()
+    .select("*");
+
+  if (error) {
+    throw new Error("No se pudo crear la anotación");
+  }
+
+  return data;
+}
