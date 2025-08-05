@@ -1,6 +1,9 @@
 // TODO Añadir posición del edit en la base de datos?
 import styled, { css } from "styled-components";
+
+import { useUpdateEdit } from "./hooks/useUpdateEdit";
 import { useCurrentEdits } from "./CurrentEditsContext";
+import Textarea from "../../ui/Textarea";
 
 const StyledEdit = styled.div`
   padding: 1rem;
@@ -53,10 +56,29 @@ const StyledEdit = styled.div`
 
 function Edit({ edit }) {
   const { isCurrentEdit } = useCurrentEdits();
+  const { updateEdit, isUpdating } = useUpdateEdit();
+
+  function handleUpdateEdit(event) {
+    // TODO IMPORTANT sanitize input
+    const newContent = event.target.value;
+
+    if (!edit?.id || !newContent || isUpdating) return;
+    if (newContent === edit?.content) return;
+
+    updateEdit({
+      id: edit?.id,
+      data: { content: newContent },
+    });
+  }
 
   return (
     <StyledEdit edit={edit} isCurrent={isCurrentEdit(edit)}>
-      {edit.content}
+      <Textarea
+        onBlur={handleUpdateEdit}
+        defaultValue={edit.content}
+        type="edit"
+        variant="none"
+      />
     </StyledEdit>
   );
 }

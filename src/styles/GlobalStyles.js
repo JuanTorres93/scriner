@@ -146,6 +146,7 @@ const GlobalStyles = createGlobalStyle`
   .inline-edit-music {
     background-color: lightgray;
   }
+
 `;
 
 export default GlobalStyles;

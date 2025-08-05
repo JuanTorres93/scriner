@@ -37,3 +37,18 @@ export async function createEdit(edit) {
 
   return data;
 }
+
+export async function updateEdit(id, edit) {
+  const { data, error } = await supabase
+    .from("edits")
+    .update(edit)
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new Error("No se pudo actualizar la anotación");
+  }
+
+  return data;
+}
