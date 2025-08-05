@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 import { EDIT_TYPES } from "./editTypes";
+import { useCurrentEdits } from "./CurrentEditsContext";
 
 const markHeightPx = 6;
 const spaceBetweenMarksPx = 12;
@@ -84,15 +85,23 @@ const StyledSpan = styled.span`
 
 function InlineEdit(props) {
   const editIds = props.editIds || [];
+  const { setCurrentEditsIds } = useCurrentEdits();
 
   function handleClick(e) {
     e.preventDefault();
 
-    if (!editIds || editIds.length === 0) return;
+    if (!editIds || editIds.length === 0 || !setCurrentEditsIds) return;
 
-    // TODO DELETE THESE DEBUG LOGS
-    console.log("JSON.stringify(editIds)");
-    console.log(JSON.stringify(editIds));
+    const newCurrentEditsIds = {};
+    editIds.forEach((edit) => {
+      newCurrentEditsIds[edit.type] = edit.editId;
+    });
+
+    // Set the current edits in the parent component.
+    setCurrentEditsIds((prevCurrentEdits) => ({
+      ...prevCurrentEdits,
+      ...newCurrentEditsIds,
+    }));
   }
 
   return (

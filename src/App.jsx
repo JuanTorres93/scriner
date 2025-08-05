@@ -5,11 +5,12 @@ import {
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "react-hot-toast";
 
 import GlobalStyles from "./styles/GlobalStyles.js";
 import AppLayout from "./ui/AppLayout";
 import ScriptEditor from "./pages/ScriptEditor";
-import { Toaster } from "react-hot-toast";
+import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,31 +54,33 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
-        <RouterProvider router={router} />
-        <Toaster
-          position="bottom-center"
-          gutter={12}
-          containerStyle={{ margin: "8px" }}
-          toastOptions={{
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 5000,
-            },
-            style: {
-              fontSize: "1.6rem",
-              maxWidth: "500px",
-              padding: "16px 24px",
-              backgroundColor: "var(--color-grey-t2)",
-              color: "var(--color-grey-s2)",
-            },
-          }}
-        />{" "}
-      </QueryClientProvider>
+      <CurrentEditsProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <GlobalStyles />
+          <RouterProvider router={router} />
+          <Toaster
+            position="bottom-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: "1.6rem",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "var(--color-grey-t2)",
+                color: "var(--color-grey-s2)",
+              },
+            }}
+          />{" "}
+        </QueryClientProvider>
+      </CurrentEditsProvider>
     </>
   );
 }
