@@ -1,4 +1,4 @@
-import { Transforms } from "slate";
+import { Editor, Range, Text, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 
 export function resetEditorContent(editor, content) {
@@ -33,4 +33,29 @@ export function resetEditorContent(editor, content) {
       },
     ];
   }
+}
+
+// Get all marks in the current selection
+export function getMarksInSelection(editor) {
+  const { selection } = editor;
+  if (!selection || Range.isCollapsed(selection)) return [];
+
+  // Extract all text nodes in the selection
+  const texts = Array.from(
+    Editor.nodes(editor, {
+      at: selection,
+      match: (n) => Text.isText(n),
+    })
+  );
+
+  // Collect all found marks
+  const marks = texts.map(([node]) => {
+    // node: { text: "foo", bold: true, italic: true, ... }
+    // Exclude the "text" property (not a mark)
+    const { text, ...rest } = node;
+    return rest;
+  });
+
+  // filter empty marks
+  return marks.filter((mark) => Object.keys(mark).length > 0);
 }

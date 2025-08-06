@@ -70,6 +70,7 @@ function Edit({ edit }) {
   const { updateScript, isUpdating: isUpdatingScript } = useUpdateScript();
   // const editor = useSlate();
 
+  const isCurrent = isCurrentEdit(edit);
   const isLoading = isUpdating || isDeleting || isUpdatingScript;
 
   function handleUpdateEdit(event) {
@@ -105,16 +106,20 @@ function Edit({ edit }) {
   }
 
   return (
-    <StyledEdit edit={edit} isCurrent={isCurrentEdit(edit)}>
+    <StyledEdit edit={edit} isCurrent={isCurrent}>
       <Button type="delete" disabled={isLoading} onClick={handleDeleteEdit}>
         <HiMiniXMark />
       </Button>
-      <Textarea
-        onBlur={handleUpdateEdit}
-        defaultValue={edit.content}
-        type="edit"
-        variant="none"
-      />
+
+      {isCurrent && (
+        <Textarea
+          onBlur={handleUpdateEdit}
+          defaultValue={edit.content}
+          type="edit"
+          variant="none"
+        />
+      )}
+      {!isCurrent && <p>{edit.content}</p>}
     </StyledEdit>
   );
 }

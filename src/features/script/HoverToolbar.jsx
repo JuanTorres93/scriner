@@ -18,6 +18,8 @@ import { EDIT_TYPES } from "../edit/editTypes";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import { useCreateEdit } from "../edit/hooks/useCreateEdit";
+import { getMarksInSelection } from "../../utils/slateUtils";
+import { useDeleteEdit } from "../edit/hooks/useDeleteEdit";
 
 const HoveringToolbar = () => {
   const ref = useRef(null);
@@ -25,6 +27,7 @@ const HoveringToolbar = () => {
   const inFocus = useFocused();
   const { scriptId } = useParams();
   const { createEdit, isCreating } = useCreateEdit();
+  const { deleteEdit, isDeleting: isDeletingEdit } = useDeleteEdit();
 
   useEffect(() => {
     const el = ref.current;
@@ -54,8 +57,27 @@ const HoveringToolbar = () => {
   function handleToggleEdit(type) {
     const hasMark = ScriptActions.isMarkActive(editor, type);
     if (hasMark) {
-      ScriptActions.removeMark(editor, type);
-      // TODO si no quedan marcas con el edit Id, borrarlo de la base de datos
+      // 1. Search in editor selector for mark type
+      const marks = getMarksInSelection(editor);
+
+      // 2. Search for the mark type in the array of marks
+      const mark = marks.find((mark) => mark[type] !== undefined);
+
+      // ScriptActions.removeMark(editor, type);
+      // TODO NEXT Refactor para quitar marcas primero. Si no quedan marcas con el edit Id, entonces borrarlo de la base de datos
+
+      // 3. If the mark is found, remove it from the editor
+      if (mark && !isDeletingEdit) {
+        deleteEdit(mark[type].editId, {
+          onSuccess: () => {
+            ScriptActions.removeEditMarkByEditId(
+              editor,
+              type,
+              mark[type].editId
+            );
+          },
+        });
+      }
     } else {
       if (!scriptId) {
         return;
