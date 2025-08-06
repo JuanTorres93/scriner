@@ -1,14 +1,11 @@
 // Import React dependencies.
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 
-// Import the Slate editor factory.
-import { createEditor } from "slate";
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact } from "slate-react";
+import { Editable, useSlate } from "slate-react";
 import styled from "styled-components";
 
 import { EDIT_TYPES } from "../edit/editTypes";
-import { ScriptActions } from "./ScriptActions";
 import { useUpdateScript } from "./useUpdateScript";
 import InlineEdit from "../edit/InlineEdit";
 import HoveringToolbar from "./HoverToolbar";
@@ -29,18 +26,8 @@ const StyledEditable = styled(Editable)`
 `;
 
 const Script = ({ script }) => {
-  const [editor] = useState(() => withReact(createEditor()));
+  const editor = useSlate();
   const { isUpdating, updateScript } = useUpdateScript();
-
-  const initialValue =
-    JSON.parse(script?.content || "[]").length > 0
-      ? JSON.parse(script?.content)
-      : [
-          {
-            type: "paragraph",
-            children: [{ text: "Pega tu guion aquí" }],
-          },
-        ];
 
   // Define a rendering function based on the element passed to `props`. We use
   const renderElement = useCallback((props) => {
@@ -84,8 +71,7 @@ const Script = ({ script }) => {
   }
 
   return (
-    // Add the editable component inside the context.
-    <Slate editor={editor} initialValue={initialValue}>
+    <>
       <HoveringToolbar />
       {/* This component acts like contenteditable */}
       <StyledEditable
@@ -93,7 +79,7 @@ const Script = ({ script }) => {
         renderLeaf={renderLeaf}
         onBlur={handleUpdateContent}
       />
-    </Slate>
+    </>
   );
 };
 

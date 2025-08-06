@@ -8,6 +8,8 @@ import Textarea from "../../ui/Textarea";
 import Button from "../../ui/Button";
 import { HiMiniXMark } from "react-icons/hi2";
 import { useSlate } from "slate-react";
+import { ScriptActions } from "../script/ScriptActions";
+import { useUpdateScript } from "../script/useUpdateScript";
 
 const StyledEdit = styled.div`
   position: relative;
@@ -61,12 +63,14 @@ const StyledEdit = styled.div`
 `;
 
 function Edit({ edit }) {
+  const editor = useSlate();
   const { isCurrentEdit } = useCurrentEdits();
   const { updateEdit, isUpdating } = useUpdateEdit();
   const { deleteEdit, isDeleting } = useDeleteEdit();
+  const { updateScript, isUpdating: isUpdatingScript } = useUpdateScript();
   // const editor = useSlate();
 
-  const isLoading = isUpdating || isDeleting;
+  const isLoading = isUpdating || isDeleting || isUpdatingScript;
 
   function handleUpdateEdit(event) {
     // TODO IMPORTANT sanitize input
@@ -84,7 +88,20 @@ function Edit({ edit }) {
   function handleDeleteEdit() {
     if (!edit?.id || isLoading) return;
 
-    deleteEdit(edit.id);
+    deleteEdit(edit.id, {
+      onSuccess: (data) => {
+        ScriptActions.removeEditMarkByEditId(editor, data.type, data.id);
+
+        // Save the changes to db
+        const newContent = JSON.stringify(editor.children);
+        if (!editor?.children || newContent === editor?.children) return;
+
+        updateScript({
+          id: data?.scriptId,
+          data: { content: newContent },
+        });
+      },
+    });
   }
 
   return (
