@@ -75,30 +75,6 @@ function ScriptsSidebar() {
 //////////////////////////
 // ScriptItem component
 
-const DeleteButton = styled(Button)`
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  padding: 0.3rem;
-  border-radius: var(--border-radius-s1);
-
-  color: var(--color-grey-s1);
-
-  &:hover {
-    background-color: var(--color-error);
-  }
-
-  svg {
-    width: 2rem;
-    height: 2rem;
-  }
-`;
-
 const activeScriptStyle = css`
   background-color: var(--color-grey-s1);
   color: var(--color-grey-t2);
@@ -159,9 +135,9 @@ function ScriptItem({ script }) {
       $isActive={isActive}
       onClick={() => navigate(`/app/editor/${script.id}`)}
     >
-      <DeleteButton disabled={isDeleting} onClick={handleDeleteScript}>
+      <Button type="delete" disabled={isDeleting} onClick={handleDeleteScript}>
         <HiMiniXMark />
-      </DeleteButton>
+      </Button>
       <h3>{script.title}</h3>
       <p>{content}</p>
       <span>{formatDate(script.created_at)}</span>

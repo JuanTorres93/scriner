@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 const variant = {
+  none: css``,
   padding: css`
     padding: 0.5rem 1rem;
   `,
@@ -78,6 +79,29 @@ const types = {
     color: var(--color-grey-s1);
     cursor: not-allowed;
   `,
+  delete: css`
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 0.3rem !important;
+    border-radius: var(--border-radius-s1);
+
+    color: var(--color-grey-s1);
+
+    &:hover {
+      background-color: var(--color-error);
+    }
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  `,
 };
 
 const StyledButton = styled.button`
@@ -92,11 +116,14 @@ const StyledButton = styled.button`
 function Button({ ...props }) {
   const isDisabled = props.disabled;
   const isHoverbar = props.type === "hoverbar";
+  const isDelete = props.type === "delete";
+
+  const isSpecialButton = isHoverbar || isDelete;
 
   return (
     <StyledButton
       {...props}
-      type={isDisabled && !isHoverbar ? "disabled" : props.type}
+      type={isDisabled && !isSpecialButton ? "disabled" : props.type}
       onClick={isDisabled ? null : props.onClick}
     >
       {props.children}

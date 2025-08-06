@@ -52,3 +52,18 @@ export async function updateEdit(id, edit) {
 
   return data;
 }
+
+export async function deleteEdit(id) {
+  const { data, error } = await supabase
+    .from("edits")
+    .delete()
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new Error("No se pudo eliminar la anotación");
+  }
+
+  return data;
+}

@@ -92,36 +92,6 @@ const Script = ({ script }) => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onBlur={handleUpdateContent}
-        onKeyDown={(event) => {
-          if (!event.ctrlKey) {
-            return;
-          }
-
-          if (event.key === "s") {
-            event.preventDefault();
-            ScriptActions.addMark(editor, EDIT_TYPES.SFX, "editSFXId");
-          }
-
-          if (event.key === "f") {
-            event.preventDefault();
-            ScriptActions.addMark(editor, EDIT_TYPES.VFX, "editVFXId");
-          }
-
-          if (event.key === "m") {
-            event.preventDefault();
-            ScriptActions.addMark(editor, EDIT_TYPES.MUSIC, "editMusicId");
-          }
-
-          if (event.key === "g") {
-            event.preventDefault();
-            ScriptActions.addMark(editor, EDIT_TYPES.GRAPHIC, "editGraphicId");
-          }
-
-          if (event.key === "b") {
-            event.preventDefault();
-            ScriptActions.addMark(editor, EDIT_TYPES.BROLL, "editBrollId");
-          }
-        }}
       />
     </Slate>
   );

@@ -55,6 +55,10 @@ const GlobalStyles = createGlobalStyle`
     // Border radius
     --border-radius-s1: 0.5rem;
     --border-radius: 1rem;
+
+
+    // breakpoints are defined in breakpoint.js because they cannot be used as CSS variables
+
   }
 
   /* Basix reset */

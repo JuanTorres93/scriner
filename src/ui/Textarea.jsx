@@ -11,6 +11,7 @@ const types = {
     background-color: transparent;
     color: inherit;
     width: 100%;
+    height: 100%;
     resize: none;
 
     &:focus {

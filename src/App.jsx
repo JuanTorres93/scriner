@@ -54,10 +54,10 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <>
+      <GlobalStyles />
       <CurrentEditsProvider>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <GlobalStyles />
           <RouterProvider router={router} />
           <Toaster
             position="bottom-center"

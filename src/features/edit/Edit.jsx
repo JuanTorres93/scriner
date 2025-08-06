@@ -2,15 +2,21 @@
 import styled, { css } from "styled-components";
 
 import { useUpdateEdit } from "./hooks/useUpdateEdit";
+import { useDeleteEdit } from "./hooks/useDeleteEdit";
 import { useCurrentEdits } from "./CurrentEditsContext";
 import Textarea from "../../ui/Textarea";
+import Button from "../../ui/Button";
+import { HiMiniXMark } from "react-icons/hi2";
+import { useSlate } from "slate-react";
 
 const StyledEdit = styled.div`
+  position: relative;
   padding: 1rem;
   border: none;
   border-radius: var(--border-radius-s1);
   cursor: pointer;
   margin: 0 1rem;
+  max-height: 20rem;
 
   /* Color according type */
   ${(props) =>
@@ -57,12 +63,16 @@ const StyledEdit = styled.div`
 function Edit({ edit }) {
   const { isCurrentEdit } = useCurrentEdits();
   const { updateEdit, isUpdating } = useUpdateEdit();
+  const { deleteEdit, isDeleting } = useDeleteEdit();
+  // const editor = useSlate();
+
+  const isLoading = isUpdating || isDeleting;
 
   function handleUpdateEdit(event) {
     // TODO IMPORTANT sanitize input
     const newContent = event.target.value;
 
-    if (!edit?.id || !newContent || isUpdating) return;
+    if (!edit?.id || !newContent || isLoading) return;
     if (newContent === edit?.content) return;
 
     updateEdit({
@@ -71,8 +81,17 @@ function Edit({ edit }) {
     });
   }
 
+  function handleDeleteEdit() {
+    if (!edit?.id || isLoading) return;
+
+    deleteEdit(edit.id);
+  }
+
   return (
     <StyledEdit edit={edit} isCurrent={isCurrentEdit(edit)}>
+      <Button type="delete" disabled={isLoading} onClick={handleDeleteEdit}>
+        <HiMiniXMark />
+      </Button>
       <Textarea
         onBlur={handleUpdateEdit}
         defaultValue={edit.content}
