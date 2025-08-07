@@ -13,6 +13,7 @@ import { useScript } from "../features/script/useScript";
 import { useEdits } from "../features/edit/hooks/useEdits";
 import { useUpdateScript } from "../features/script/useUpdateScript";
 import { resetEditorContent } from "../utils/slateUtils";
+import { breakpoints } from "../styles/breakpoints";
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -38,6 +39,62 @@ const StyledScriptEditor = styled.div`
   .loader {
     margin-top: 10rem;
     align-self: start;
+  }
+
+  @media screen and (max-width: ${breakpoints.smallColumns}) {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-rows: min-content 1fr min-content 1fr min-content 1fr;
+
+    .title-music,
+    .content-music {
+      grid-column: 2 / 3;
+    }
+    .content-music {
+      grid-row: 2 / 3;
+    }
+
+    .title-sfx,
+    .content-sfx {
+      grid-column: 3 / 4;
+    }
+    .content-sfx {
+      grid-row: 2 / 3;
+    }
+
+    .title-script,
+    .content-script {
+      grid-column: 1 / 2;
+    }
+    .title-script {
+      grid-row: 1 / 2;
+    }
+    .content-script {
+      grid-row: 2 / -1;
+    }
+
+    .title-vfx {
+      grid-column: 3 / 4;
+      grid-row: 3 / 4;
+    }
+    .content-vfx {
+    }
+
+    .title-graphic {
+      grid-column: 2 / 3;
+      grid-row: 3 / 4;
+    }
+    .content-graphic {
+    }
+
+    .title-broll,
+    .content-broll {
+      grid-column: 2 / 3;
+    }
+    .title-broll {
+      grid-row: 5 / 6;
+    }
+    .content-broll {
+    }
   }
 `;
 
@@ -97,88 +154,89 @@ function ScriptEditor() {
         initialValue={initialValue}
       >
         <>
-          <h2>Música</h2>
-          <h2>SFX</h2>
+          <h2 className="title-music">Música</h2>
+          <h2 className="title-sfx">SFX</h2>
           <Input
+            className="title-script"
             key={script?.id}
             type="plain"
             defaultValue={script?.title}
             placeholder="Nombre del guion"
             onBlur={handleTitleBlur}
           />
-          <h2>VFX</h2>
-          <h2>Gráficos</h2>
-          <h2>B-Roll</h2>
+          <h2 className="title-vfx">VFX</h2>
+          <h2 className="title-graphic">Gráficos</h2>
+          <h2 className="title-broll">B-Roll</h2>
 
           {/* Music edits */}
           {isLoadingEdits ? (
             <Loader
-              className="loader"
+              className="loader content-music"
               type="spinner"
               size="5rem"
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <EditList edits={musicEdits} />
+            <EditList className="content-music" edits={musicEdits} />
           )}
 
           {/* SFX edits */}
           {isLoadingEdits ? (
             <Loader
-              className="loader"
+              className="loader content-sfx"
               type="spinner"
               size="5rem"
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <EditList edits={sfxEdits} />
+            <EditList className="content-sfx" edits={sfxEdits} />
           )}
 
           {/* Script */}
           {isLoadingScript ? (
             <Loader
-              className="loader"
+              className="loader content-script"
               type="spinner"
               size="10rem"
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <Script script={script} />
+            <Script className="content-script" script={script} />
           )}
           {/* VFX edits */}
           {isLoadingEdits ? (
             <Loader
-              className="loader"
+              className="loader content-vfx"
               type="spinner"
               size="5rem"
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <EditList edits={vfxEdits} />
+            <EditList className="content-vfx" edits={vfxEdits} />
           )}
 
           {/* Graphic edits */}
           {isLoadingEdits ? (
             <Loader
-              className="loader"
+              className="loader content-graphic"
               type="spinner"
               size="5rem"
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <EditList edits={graphicEdits} />
+            <EditList className="content-graphic" edits={graphicEdits} />
           )}
 
           {/* B-Roll edits */}
           {isLoadingEdits ? (
             <Loader
-              className="loader"
+              className="loader content-broll"
               type="spinner"
               size="5rem"
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <EditList edits={brollEdits} />
+            <EditList className="content-broll" edits={brollEdits} />
           )}
         </>
       </Slate>

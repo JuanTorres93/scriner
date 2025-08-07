@@ -25,7 +25,8 @@ const StyledEditable = styled(Editable)`
   }
 `;
 
-const Script = ({ script }) => {
+const Script = ({ script, className }) => {
+  // className is for layout purposes
   const editor = useSlate();
   const { isUpdating, updateScript } = useUpdateScript();
 
@@ -75,6 +76,7 @@ const Script = ({ script }) => {
       <HoveringToolbar />
       {/* This component acts like contenteditable */}
       <StyledEditable
+        className={className}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onBlur={handleUpdateContent}

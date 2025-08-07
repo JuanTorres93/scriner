@@ -64,7 +64,7 @@ const HoveringToolbar = () => {
       const mark = marks.find((mark) => mark[type] !== undefined);
 
       // ScriptActions.removeMark(editor, type);
-      // TODO NEXT Refactor para quitar marcas primero. Si no quedan marcas con el edit Id, entonces borrarlo de la base de datos
+      // TODO?  Refactor para quitar marcas primero. Si no quedan marcas con el edit Id, entonces borrarlo de la base de datos
 
       // 3. If the mark is found, remove it from the editor
       if (mark && !isDeletingEdit) {

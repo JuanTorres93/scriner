@@ -12,7 +12,8 @@ const StyledEditList = styled.ul`
   overflow-x: visible !important;
 `;
 
-function EditList({ edits }) {
+function EditList({ edits, className }) {
+  // className is used for layout purposes
   const { currentEditsIds } = useCurrentEdits();
 
   let currentEditId = null;
@@ -27,7 +28,7 @@ function EditList({ edits }) {
   const restEdits = edits.filter((edit) => edit.id !== currentEditId);
 
   return (
-    <StyledEditList>
+    <StyledEditList className={className}>
       {currentEdit && (
         <Edit key={`edit-${currentEdit.id}`} edit={currentEdit} />
       )}

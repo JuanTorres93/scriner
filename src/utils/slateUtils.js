@@ -35,15 +35,13 @@ export function resetEditorContent(editor, content) {
   }
 }
 
-// Get all marks in the current selection
-export function getMarksInSelection(editor) {
-  const { selection } = editor;
-  if (!selection || Range.isCollapsed(selection)) return [];
+function _getMarks(editor, at = []) {
+  // DOC: at = [] means the entire document
 
   // Extract all text nodes in the selection
   const texts = Array.from(
     Editor.nodes(editor, {
-      at: selection,
+      at,
       match: (n) => Text.isText(n),
     })
   );
@@ -58,4 +56,24 @@ export function getMarksInSelection(editor) {
 
   // filter empty marks
   return marks.filter((mark) => Object.keys(mark).length > 0);
+}
+
+// Get all marks in the current selection
+export function getMarksInSelection(editor, type = null) {
+  const { selection } = editor;
+  if (!selection || Range.isCollapsed(selection)) return [];
+
+  const marks = _getMarks(editor, selection);
+
+  if (type) return marks.find((mark) => mark[type] !== undefined);
+
+  return marks;
+}
+
+export function getMarksInDocument(editor, type = null) {
+  const marks = _getMarks(editor);
+
+  if (type) return marks.find((mark) => mark[type] !== undefined);
+
+  return marks;
 }

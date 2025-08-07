@@ -1,3 +1,3 @@
 export const breakpoints = {
-  smallColumns: "100rem",
+  smallColumns: "2000px",
 };
