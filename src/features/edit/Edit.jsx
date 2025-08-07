@@ -19,52 +19,60 @@ const StyledEdit = styled.div`
   cursor: pointer;
   margin: 0 1rem;
   max-height: 20rem;
+  background-color: var(--color-grey-t2);
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    ${(props) =>
+      !props.isCurrent &&
+      css`
+        background-color: var(--color-grey-t1);
+      `}
+  }
 
   /* Color according type */
   ${(props) =>
     props.edit.type === "music" &&
+    props.isCurrent &&
     css`
-      background-color: var(--color-music);
+      // TODO: Give a proper color to music
+      //background-color: var(--color-music);
+      background-color: var(--color-primary);
     `}
 
   ${(props) =>
     props.edit.type === "sfx" &&
+    props.isCurrent &&
     css`
       background-color: var(--color-sfx);
     `}
 
   ${(props) =>
     props.edit.type === "vfx" &&
+    props.isCurrent &&
     css`
       background-color: var(--color-vfx);
     `}
 
   ${(props) =>
     props.edit.type === "graphic" &&
+    props.isCurrent &&
     css`
       background-color: var(--color-graphic);
     `}
 
   ${(props) =>
     props.edit.type === "broll" &&
-    css`
-      background-color: var(--color-broll);
-    `}
-
-  &:hover {
-    filter: saturate(0.9) brightness(1.1);
-  }
-
-  ${(props) =>
     props.isCurrent &&
     css`
-      background-color: var(--color-primary);
+      background-color: var(--color-broll);
     `}
 `;
 
 function Edit({ edit }) {
   const editor = useSlate();
-  const { isCurrentEdit } = useCurrentEdits();
+  const { isCurrentEdit, setCurrentEditsIds } = useCurrentEdits();
   const { updateEdit, isUpdating } = useUpdateEdit();
   const { deleteEdit, isDeleting } = useDeleteEdit();
   const { updateScript, isUpdating: isUpdatingScript } = useUpdateScript();
@@ -105,6 +113,10 @@ function Edit({ edit }) {
     });
   }
 
+  function handleSetCurrentEdit() {
+    setCurrentEditsIds((prev) => ({ ...prev, [edit.type]: edit.id }));
+  }
+
   return (
     <StyledEdit edit={edit} isCurrent={isCurrent}>
       <Button type="delete" disabled={isLoading} onClick={handleDeleteEdit}>
@@ -119,7 +131,7 @@ function Edit({ edit }) {
           variant="none"
         />
       )}
-      {!isCurrent && <p>{edit.content}</p>}
+      {!isCurrent && <p onClick={handleSetCurrentEdit}>{edit.content}</p>}
     </StyledEdit>
   );
 }

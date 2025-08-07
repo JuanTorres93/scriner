@@ -45,6 +45,10 @@ const StyledScriptEditor = styled.div`
     grid-template-columns: 1.5fr 1fr 1fr;
     grid-template-rows: min-content 1fr min-content 1fr min-content 1fr;
 
+    h2 {
+      text-align: center;
+    }
+
     .title-music,
     .content-music {
       grid-column: 2 / 3;
