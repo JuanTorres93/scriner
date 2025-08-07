@@ -18,6 +18,7 @@ const StyledEditable = styled(Editable)`
   padding: 0rem 2rem;
   outline: none;
   line-height: 5;
+  overflow-y: scroll; // NOTE: Not sure if this should go in here
 
   &:focus,
   &:hover {

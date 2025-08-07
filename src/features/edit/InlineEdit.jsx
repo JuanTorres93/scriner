@@ -5,6 +5,10 @@ import { useCurrentEdits } from "./CurrentEditsContext";
 
 const markHeightPx = 6;
 const spaceBetweenMarksPx = 12;
+const hoverStyle = css`
+  opacity: 1;
+  transform: scaleY(1.6) !important;
+`;
 
 const StyledSpan = styled.span`
   background-color: transparent;
@@ -18,12 +22,17 @@ const StyledSpan = styled.span`
     right: 0;
     height: ${markHeightPx}px;
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.5;
     transition: all 0.2s ease;
 
+    ${(props) => props.$isCurrent && hoverStyle}
+
     &:hover {
-      opacity: 1;
-      transform: scaleY(1.2);
+      ${hoverStyle}
+    }
+
+    &.current {
+      ${hoverStyle}
     }
   }
 
@@ -78,14 +87,16 @@ const StyledSpan = styled.span`
         left: 0;
         right: 0;
         height: ${markHeightPx}px;
-        background-color: lightcoral;
+        background-color: var(
+          --color-primary
+        ); // TODO give music a proper color
       }
     `}
 `;
 
 function InlineEdit(props) {
   const editIds = props.editIds || [];
-  const { setCurrentEditsIds } = useCurrentEdits();
+  const { setCurrentEditsIds, isCurrentEdit } = useCurrentEdits();
 
   function handleClick(e) {
     e.preventDefault();
@@ -109,23 +120,69 @@ function InlineEdit(props) {
     <StyledSpan onClick={handleClick} {...props.attributes} leaf={props.leaf}>
       <mark
         data-edit-id={extractEditIdFromType(EDIT_TYPES.VFX, editIds)}
-        className={`inline-edit ${EDIT_TYPES.VFX}`}
+        // Assign class to detect current edit. It allows us to apply styles. when selecting an edit in the lists
+        className={`inline-edit ${EDIT_TYPES.VFX}
+        ${
+          isCurrentEdit({
+            type: EDIT_TYPES.VFX,
+            id: extractEditIdFromType(EDIT_TYPES.VFX, editIds),
+          })
+            ? "current"
+            : ""
+        }
+        `}
       ></mark>
       <mark
         data-edit-id={extractEditIdFromType(EDIT_TYPES.SFX, editIds)}
-        className={`inline-edit ${EDIT_TYPES.SFX}`}
+        className={`inline-edit ${EDIT_TYPES.SFX}
+        ${
+          isCurrentEdit({
+            type: EDIT_TYPES.SFX,
+            id: extractEditIdFromType(EDIT_TYPES.SFX, editIds),
+          })
+            ? "current"
+            : ""
+        }
+        `}
       ></mark>
       <mark
         data-edit-id={extractEditIdFromType(EDIT_TYPES.MUSIC, editIds)}
-        className={`inline-edit ${EDIT_TYPES.MUSIC}`}
+        className={`inline-edit ${EDIT_TYPES.MUSIC}
+        ${
+          isCurrentEdit({
+            type: EDIT_TYPES.MUSIC,
+            id: extractEditIdFromType(EDIT_TYPES.MUSIC, editIds),
+          })
+            ? "current"
+            : ""
+        }
+        `}
       ></mark>
       <mark
         data-edit-id={extractEditIdFromType(EDIT_TYPES.GRAPHIC, editIds)}
-        className={`inline-edit ${EDIT_TYPES.GRAPHIC}`}
+        className={`inline-edit ${EDIT_TYPES.GRAPHIC} 
+        ${
+          isCurrentEdit({
+            type: EDIT_TYPES.GRAPHIC,
+            id: extractEditIdFromType(EDIT_TYPES.GRAPHIC, editIds),
+          })
+            ? "current"
+            : ""
+        }
+        `}
       ></mark>
       <mark
         data-edit-id={extractEditIdFromType(EDIT_TYPES.BROLL, editIds)}
-        className={`inline-edit ${EDIT_TYPES.BROLL}`}
+        className={`inline-edit ${EDIT_TYPES.BROLL} 
+        ${
+          isCurrentEdit({
+            type: EDIT_TYPES.BROLL,
+            id: extractEditIdFromType(EDIT_TYPES.BROLL, editIds),
+          })
+            ? "current"
+            : ""
+        }
+        `}
       ></mark>
       <span>{props.children}</span>
     </StyledSpan>

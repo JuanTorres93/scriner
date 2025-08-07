@@ -21,7 +21,7 @@ const StyledScriptEditor = styled.div`
   grid-template-columns: 0.3fr 0.3fr minmax(40rem, 1fr) 0.3fr 0.3fr 0.3fr;
   grid-template-rows: min-content 1fr;
   gap: 2rem;
-  overflow: scroll;
+  overflow: hidden;
   padding: 2rem;
 
   h2,
