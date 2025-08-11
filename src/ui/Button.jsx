@@ -52,6 +52,14 @@ const types = {
       background-color: var(--color-primary-s1);
     }
   `,
+  secondary: css`
+    background-color: var(--color-grey-t2);
+    color: var(--color-grey-s1);
+
+    &:hover {
+      background-color: var(--color-grey-t1);
+    }
+  `,
   hoverbar: css`
     background-color: var(--color-grey-t2);
     padding: 0;

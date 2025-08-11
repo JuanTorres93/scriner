@@ -75,6 +75,8 @@ const GlobalStyles = createGlobalStyle`
     --color-broll-s1: #00bfa5;
 
 
+    --backdrop-color: rgba(255, 255, 255, 0.1);
+
     // Border radius
     --border-radius-s1: 0.5rem;
     --border-radius: 1rem;

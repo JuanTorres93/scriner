@@ -6,10 +6,12 @@ import { useScripts } from "./useScripts";
 import { formatDate } from "../../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
 import { useCreateScript } from "./useCreateScript";
 import Loader from "../../ui/Loader";
 import { useDeleteScript } from "./useDeleteScript";
 import { htmlToText } from "../../utils/htmlUtils";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -135,9 +137,22 @@ function ScriptItem({ script }) {
       $isActive={isActive}
       onClick={() => navigate(`/app/editor/${script.id}`)}
     >
-      <Button type="delete" disabled={isDeleting} onClick={handleDeleteScript}>
-        <HiMiniXMark />
-      </Button>
+      <Modal>
+        <Modal.Open opens="deleteScript">
+          <Button type="delete" disabled={isDeleting}>
+            <HiMiniXMark />
+          </Button>
+        </Modal.Open>
+
+        <Modal.Window name="deleteScript">
+          <ConfirmDelete
+            resourceType="guion"
+            resourceName={script.title}
+            disabled={isDeleting}
+            onConfirm={handleDeleteScript}
+          />
+        </Modal.Window>
+      </Modal>
       <h3>{script.title}</h3>
       <p>{content}</p>
       <span>{formatDate(script.created_at)}</span>
