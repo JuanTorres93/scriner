@@ -1,4 +1,4 @@
-// TODO Añadir posición del edit en la base de datos?
+// TODO Añadir posición del edit en la base de datos para ordenarlos por orden de aparición?
 import styled, { css } from "styled-components";
 
 import { useUpdateEdit } from "./hooks/useUpdateEdit";
@@ -6,19 +6,22 @@ import { useDeleteEdit } from "./hooks/useDeleteEdit";
 import { useCurrentEdits } from "./CurrentEditsContext";
 import Textarea from "../../ui/Textarea";
 import Button from "../../ui/Button";
-import { HiMiniXMark } from "react-icons/hi2";
+import { HiCheckCircle, HiMiniXMark, HiTrash } from "react-icons/hi2";
 import { useSlate } from "slate-react";
 import { ScriptActions } from "../script/ScriptActions";
 import { useUpdateScript } from "../script/useUpdateScript";
+import { useEffect, useRef } from "react";
 
 const StyledEdit = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1rem;
   border: none;
-  border-radius: var(--border-radius-s1);
+  border-radius: var(--border-radius);
   cursor: pointer;
   margin: 0 1rem;
-  max-height: 20rem;
+  /* max-height: 20rem; */
   background-color: var(--color-grey-t2);
 
   transition: all 0.2s ease;
@@ -31,14 +34,23 @@ const StyledEdit = styled.div`
       `}
   }
 
+  .actions-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+  }
+
   /* Color according type */
   ${(props) =>
     props.edit.type === "music" &&
     props.isCurrent &&
     css`
-      // TODO: Give a proper color to music
-      //background-color: var(--color-music);
-      background-color: var(--color-primary);
+      background-color: var(--color-music);
+
+      textarea {
+        background-color: var(--color-music-t1);
+      }
     `}
 
   ${(props) =>
@@ -46,6 +58,10 @@ const StyledEdit = styled.div`
     props.isCurrent &&
     css`
       background-color: var(--color-sfx);
+
+      textarea {
+        background-color: var(--color-sfx-t1);
+      }
     `}
 
   ${(props) =>
@@ -53,6 +69,9 @@ const StyledEdit = styled.div`
     props.isCurrent &&
     css`
       background-color: var(--color-vfx);
+      textarea {
+        background-color: var(--color-vfx-t1);
+      }
     `}
 
   ${(props) =>
@@ -60,6 +79,10 @@ const StyledEdit = styled.div`
     props.isCurrent &&
     css`
       background-color: var(--color-graphic);
+
+      textarea {
+        background-color: var(--color-graphic-t1);
+      }
     `}
 
   ${(props) =>
@@ -67,19 +90,33 @@ const StyledEdit = styled.div`
     props.isCurrent &&
     css`
       background-color: var(--color-broll);
+
+      textarea {
+        background-color: var(--color-broll-t1);
+      }
     `}
 `;
 
 function Edit({ edit }) {
+  const textareaRef = useRef();
   const editor = useSlate();
   const { isCurrentEdit, setCurrentEditsIds } = useCurrentEdits();
   const { updateEdit, isUpdating } = useUpdateEdit();
   const { deleteEdit, isDeleting } = useDeleteEdit();
   const { updateScript, isUpdating: isUpdatingScript } = useUpdateScript();
+
   // const editor = useSlate();
 
   const isCurrent = isCurrentEdit(edit);
   const isLoading = isUpdating || isDeleting || isUpdatingScript;
+
+  useEffect(() => {
+    // Select textarea content on mount to be able to start writing immediately
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.select(); // Select all content to be overwritten
+    }
+  }, []);
 
   function handleUpdateEdit(event) {
     // TODO IMPORTANT sanitize input
@@ -94,7 +131,10 @@ function Edit({ edit }) {
     });
   }
 
-  function handleDeleteEdit() {
+  function handleDeleteEdit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (!edit?.id || isLoading) return;
 
     deleteEdit(edit.id, {
@@ -113,25 +153,39 @@ function Edit({ edit }) {
     });
   }
 
-  function handleSetCurrentEdit() {
+  function handleSetCurrentEdit(e) {
+    if (isCurrent) return;
     setCurrentEditsIds((prev) => ({ ...prev, [edit.type]: edit.id }));
   }
 
   return (
-    <StyledEdit edit={edit} isCurrent={isCurrent}>
-      <Button type="delete" disabled={isLoading} onClick={handleDeleteEdit}>
-        <HiMiniXMark />
-      </Button>
+    <StyledEdit
+      edit={edit}
+      isCurrent={isCurrent}
+      onClick={handleSetCurrentEdit}
+    >
+      <div className="content-box">
+        {isCurrent && (
+          <Textarea
+            ref={textareaRef}
+            onBlur={handleUpdateEdit}
+            defaultValue={edit.content}
+            type="edit"
+            variant="none"
+          />
+        )}
+        {!isCurrent && <p>{edit.content}</p>}
+      </div>
 
-      {isCurrent && (
-        <Textarea
-          onBlur={handleUpdateEdit}
-          defaultValue={edit.content}
-          type="edit"
-          variant="none"
-        />
-      )}
-      {!isCurrent && <p onClick={handleSetCurrentEdit}>{edit.content}</p>}
+      <div className="actions-box">
+        <Button type="confirm" disabled={isLoading} onClick={() => {}}>
+          <HiCheckCircle />
+        </Button>
+
+        <Button type="danger" disabled={isLoading} onClick={handleDeleteEdit}>
+          <HiTrash />
+        </Button>
+      </div>
     </StyledEdit>
   );
 }

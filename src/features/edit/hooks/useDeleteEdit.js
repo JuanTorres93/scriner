@@ -10,11 +10,8 @@ export function useDeleteEdit() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ["edits"],
-        // NOTE: maybe there is a bug in ["edit", deletedEditId] is not invalidated
       });
       toast.success("Anotación eliminada correctamente");
-
-      // TODO NEXT remove mark from editor and update current script to remove the deleted edit from the DB
     },
     onError: (error) => {
       toast.error(error.message);

@@ -102,9 +102,29 @@ const types = {
       height: 2rem;
     }
   `,
+  danger: css`
+    background-color: var(--color-error);
+    color: var(--color-grey-t2);
+
+    &:hover {
+      background-color: var(--color-error-s1);
+    }
+  `,
+  confirm: css`
+    background-color: var(--color-success);
+    color: var(--color-grey-t2);
+
+    &:hover {
+      background-color: var(--color-success-s1);
+    }
+  `,
 };
 
 const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-radius: var(--border-radius);
   border: none;
   box-shadow: var(--shadow-sm);

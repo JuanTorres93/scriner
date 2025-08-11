@@ -153,7 +153,7 @@ function ScriptEditor() {
   return (
     <StyledScriptEditor>
       <Slate
-        // key={`slate-${script?.id}`}
+        key={`slate-${script?.id}`}
         editor={editor}
         initialValue={initialValue}
       >
@@ -162,7 +162,7 @@ function ScriptEditor() {
           <h2 className="title-sfx">SFX</h2>
           <Input
             className="title-script"
-            key={script?.id}
+            key={`script-title-${script?.id}`}
             type="plain"
             defaultValue={script?.title}
             placeholder="Nombre del guion"

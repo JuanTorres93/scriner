@@ -23,7 +23,7 @@ export function resetEditorContent(editor, content) {
 
     Transforms.deselect(editor); // Clear any selection
     editor.children = validNodes; // Apply new content
-    ReactEditor.focus(editor); // refocus
+    // ReactEditor.focus(editor); // refocus
   } catch (e) {
     Transforms.deselect(editor);
     editor.children = [

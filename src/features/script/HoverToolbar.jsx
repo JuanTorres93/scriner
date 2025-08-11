@@ -109,7 +109,6 @@ const HoveringToolbar = () => {
             e.preventDefault();
           }}
         >
-          {/* TODO NEXT los botones deben abrir un modal con el menú para añadir el Edit */}
           <Button
             onClick={() => handleToggleEdit(EDIT_TYPES.MUSIC)}
             type="hoverbar"

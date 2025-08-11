@@ -13,10 +13,6 @@ export function useUpdateScript() {
         queryKey: ["scripts"],
       });
 
-      queryClient.invalidateQueries({
-        queryKey: ["script", variables.id],
-      });
-
       toast.success("Guion actualizado correctamente");
     },
     onError: (error) => {

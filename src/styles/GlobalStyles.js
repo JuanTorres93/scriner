@@ -42,15 +42,38 @@ const GlobalStyles = createGlobalStyle`
     --color-success-s1: #1b9c57;  
 
     --color-error: #ff5252;   
+    --color-error-s1: #d93c3c;
+
 
     --color-warning: #ffd166; 
 
     --color-text: var(--color-grey-s1);
 
-    --color-sfx: var(--color-warning);
-    --color-vfx: var(--color-error);
-    --color-graphic: var(--color-success-s1);
-    --color-broll: var(--color-accent-s1);
+    /* MÚSICA – lavanda suave */
+    --color-music: #d8c9ff;
+    --color-music-t1: #f4f0ff;
+    --color-music-s1: #9b5de5;
+
+    /* SFX – amarillo pastel */
+    --color-sfx: #ffe3a3;
+    --color-sfx-t1: #fff8e1;
+    --color-sfx-s1: #e6b800;
+
+    /* GRÁFICOS – rosa pastel */
+    --color-graphic: #ffb3d9;
+    --color-graphic-t1: #ffe6f3;
+    --color-graphic-s1: #e85ca2;
+
+    /* VFX – azul suave */
+    --color-vfx: #a3c9ff;
+    --color-vfx-t1: #e0f0ff;
+    --color-vfx-s1: #4f83ff;
+
+    /* B-ROLL – verde menta suave */
+    --color-broll: #a3f5df;
+    --color-broll-t1: #e0fff7;
+    --color-broll-s1: #00bfa5;
+
 
     // Border radius
     --border-radius-s1: 0.5rem;

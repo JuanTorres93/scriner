@@ -13,7 +13,6 @@ export function useDeleteScript() {
       // Invalidate the scripts query to refetch the updated list
       queryClient.invalidateQueries({
         queryKey: ["scripts"],
-        // NOTE: maybe there is a bug in ["script", deletedScriptId] is not invalidated
       });
       toast.success("Guion eliminado correctamente");
       navigate(`/app/editor`);

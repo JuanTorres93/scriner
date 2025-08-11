@@ -8,7 +8,7 @@ export function useScript(scriptId) {
     isPending: isLoading,
     error,
   } = useQuery({
-    queryKey: ["script", Number(scriptId)],
+    queryKey: ["scripts", Number(scriptId)],
     queryFn: () => getScriptById(scriptId),
   });
 
