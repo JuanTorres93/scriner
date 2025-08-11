@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 
 import { EDIT_TYPES } from "./editTypes";
 import { useCurrentEdits } from "./CurrentEditsContext";
+import { useEdits } from "./hooks/useEdits";
 
 const markHeightPx = 6;
 const spaceBetweenMarksPx = 12;
@@ -33,6 +34,10 @@ const StyledSpan = styled.span`
 
     &.current {
       ${hoverStyle}
+    }
+
+    &.done {
+      background-color: var(--color-grey) !important;
     }
   }
 
@@ -78,7 +83,6 @@ const StyledSpan = styled.span`
 
   ${(props) =>
     props.leaf.music &&
-    /* TODO (maybe not here) Different colors for different emotions*/
     css`
       .inline-edit.music {
         display: inline-block;
@@ -87,9 +91,7 @@ const StyledSpan = styled.span`
         left: 0;
         right: 0;
         height: ${markHeightPx}px;
-        background-color: var(
-          --color-primary
-        ); // TODO give music a proper color
+        background-color: var(--color-music);
       }
     `}
 `;
@@ -97,6 +99,7 @@ const StyledSpan = styled.span`
 function InlineEdit(props) {
   const editIds = props.editIds || [];
   const { setCurrentEditsIds, isCurrentEdit } = useCurrentEdits();
+  const { edits } = useEdits();
 
   function handleClick(e) {
     e.preventDefault();
@@ -115,75 +118,38 @@ function InlineEdit(props) {
     }));
   }
 
+  // Función helper para generar el className de cada edit
+  function getEditClassName(editType) {
+    const editId = extractEditIdFromType(editType, editIds);
+    const isCurrent = isCurrentEdit({ type: editType, id: editId });
+    const isDone = edits?.some((edit) => edit.id === editId && edit.isDone);
+
+    return `inline-edit ${editType} ${isCurrent ? "current" : ""} ${
+      isDone ? "done" : ""
+    }`.trim();
+  }
+
+  // Función helper para renderizar cada mark
+  function renderEditMark(editType) {
+    const editId = extractEditIdFromType(editType, editIds);
+
+    return (
+      <mark
+        key={editType}
+        data-edit-id={editId}
+        className={getEditClassName(editType)}
+      ></mark>
+    );
+  }
+
   return (
     // span because all leaves MUST be an inline element.
     <StyledSpan onClick={handleClick} {...props.attributes} leaf={props.leaf}>
-      <mark
-        data-edit-id={extractEditIdFromType(EDIT_TYPES.VFX, editIds)}
-        // Assign class to detect current edit. It allows us to apply styles. when selecting an edit in the lists
-        className={`inline-edit ${EDIT_TYPES.VFX}
-        ${
-          isCurrentEdit({
-            type: EDIT_TYPES.VFX,
-            id: extractEditIdFromType(EDIT_TYPES.VFX, editIds),
-          })
-            ? "current"
-            : ""
-        }
-        `}
-      ></mark>
-      <mark
-        data-edit-id={extractEditIdFromType(EDIT_TYPES.SFX, editIds)}
-        className={`inline-edit ${EDIT_TYPES.SFX}
-        ${
-          isCurrentEdit({
-            type: EDIT_TYPES.SFX,
-            id: extractEditIdFromType(EDIT_TYPES.SFX, editIds),
-          })
-            ? "current"
-            : ""
-        }
-        `}
-      ></mark>
-      <mark
-        data-edit-id={extractEditIdFromType(EDIT_TYPES.MUSIC, editIds)}
-        className={`inline-edit ${EDIT_TYPES.MUSIC}
-        ${
-          isCurrentEdit({
-            type: EDIT_TYPES.MUSIC,
-            id: extractEditIdFromType(EDIT_TYPES.MUSIC, editIds),
-          })
-            ? "current"
-            : ""
-        }
-        `}
-      ></mark>
-      <mark
-        data-edit-id={extractEditIdFromType(EDIT_TYPES.GRAPHIC, editIds)}
-        className={`inline-edit ${EDIT_TYPES.GRAPHIC} 
-        ${
-          isCurrentEdit({
-            type: EDIT_TYPES.GRAPHIC,
-            id: extractEditIdFromType(EDIT_TYPES.GRAPHIC, editIds),
-          })
-            ? "current"
-            : ""
-        }
-        `}
-      ></mark>
-      <mark
-        data-edit-id={extractEditIdFromType(EDIT_TYPES.BROLL, editIds)}
-        className={`inline-edit ${EDIT_TYPES.BROLL} 
-        ${
-          isCurrentEdit({
-            type: EDIT_TYPES.BROLL,
-            id: extractEditIdFromType(EDIT_TYPES.BROLL, editIds),
-          })
-            ? "current"
-            : ""
-        }
-        `}
-      ></mark>
+      {renderEditMark(EDIT_TYPES.VFX)}
+      {renderEditMark(EDIT_TYPES.SFX)}
+      {renderEditMark(EDIT_TYPES.MUSIC)}
+      {renderEditMark(EDIT_TYPES.GRAPHIC)}
+      {renderEditMark(EDIT_TYPES.BROLL)}
       <span>{props.children}</span>
     </StyledSpan>
   );
