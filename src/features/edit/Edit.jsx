@@ -6,7 +6,7 @@ import { useDeleteEdit } from "./hooks/useDeleteEdit";
 import { useCurrentEdits } from "./CurrentEditsContext";
 import Textarea from "../../ui/Textarea";
 import Button from "../../ui/Button";
-import { HiCheckCircle, HiMiniXMark, HiTrash } from "react-icons/hi2";
+import { HiCheckCircle, HiMiniXCircle, HiTrash } from "react-icons/hi2";
 import { useSlate } from "slate-react";
 import { ScriptActions } from "../script/ScriptActions";
 import { useUpdateScript } from "../script/useUpdateScript";
@@ -22,7 +22,7 @@ const StyledEdit = styled.div`
   cursor: pointer;
   margin: 0 1rem;
   /* max-height: 20rem; */
-  background-color: var(--color-grey-t2);
+  background-color: var(--color-grey-t1);
 
   transition: all 0.2s ease;
 
@@ -95,6 +95,18 @@ const StyledEdit = styled.div`
         background-color: var(--color-broll-t1);
       }
     `}
+
+    /* Color for completed state */
+  ${(props) =>
+    props.edit.isDone &&
+    css`
+      background-color: var(--color-grey-t2) !important;
+      border: 1px solid var(--color-grey-t1) !important;
+
+      textarea {
+        background-color: var(--color-grey-t2) !important;
+      }
+    `}
 `;
 
 function Edit({ edit }) {
@@ -128,6 +140,15 @@ function Edit({ edit }) {
     updateEdit({
       id: edit?.id,
       data: { content: newContent },
+    });
+  }
+
+  function handleToggleIsDone() {
+    if (isLoading) return;
+
+    updateEdit({
+      id: edit.id,
+      data: { isDone: !edit.isDone },
     });
   }
 
@@ -178,8 +199,12 @@ function Edit({ edit }) {
       </div>
 
       <div className="actions-box">
-        <Button type="confirm" disabled={isLoading} onClick={() => {}}>
-          <HiCheckCircle />
+        <Button
+          type={edit?.isDone ? "secondary" : "confirm"}
+          disabled={isLoading}
+          onClick={handleToggleIsDone}
+        >
+          {edit?.isDone ? <HiMiniXCircle /> : <HiCheckCircle />}
         </Button>
 
         <Button type="danger" disabled={isLoading} onClick={handleDeleteEdit}>

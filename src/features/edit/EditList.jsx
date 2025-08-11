@@ -26,7 +26,9 @@ function EditList({ edits, className }) {
   });
 
   const currentEdit = edits.find((edit) => edit.id === currentEditId);
-  const restEdits = edits.filter((edit) => edit.id !== currentEditId);
+  const allEditsButCurrent = edits.filter((edit) => edit.id !== currentEditId);
+  const doneEdits = allEditsButCurrent.filter((edit) => edit.isDone);
+  const restEdits = allEditsButCurrent.filter((edit) => !edit.isDone);
 
   // Scroll al principio y focus al primer Edit cuando cambie currentEditsIds
   useEffect(() => {
@@ -41,6 +43,9 @@ function EditList({ edits, className }) {
         <Edit key={`edit-${currentEdit.id}`} edit={currentEdit} />
       )}
       {restEdits.map((edit, index) => (
+        <Edit key={index} edit={edit} />
+      ))}
+      {doneEdits.map((edit, index) => (
         <Edit key={index} edit={edit} />
       ))}
     </StyledEditList>
