@@ -1,165 +1,184 @@
+import React from "react";
 import styled, { css } from "styled-components";
-
 import { EDIT_TYPES } from "./editTypes";
 import { useCurrentEdits } from "./CurrentEditsContext";
 import { useEdits } from "./hooks/useEdits";
 
 const markHeightPx = 6;
 const spaceBetweenMarksPx = 12;
+
 const hoverStyle = css`
   opacity: 1;
-  transform: scaleY(1.6) !important;
+  transform: scaleY(1.6);
 `;
 
 const StyledSpan = styled.span`
+  position: relative;
   background-color: transparent;
   font-weight: var(--font-weight-thinest);
-  position: relative;
 
-  .inline-edit {
-    display: none;
+  .line-mark {
     position: absolute;
-    left: 0;
-    right: 0;
     height: ${markHeightPx}px;
-    cursor: pointer;
     opacity: 0.5;
-    transition: all 0.2s ease;
-
-    ${(props) => props.$isCurrent && hoverStyle}
-
-    &:hover {
-      ${hoverStyle}
-    }
-
-    &.current {
-      ${hoverStyle}
-    }
-
-    &.done {
-      background-color: var(--color-grey) !important;
-    }
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    pointer-events: auto; /* recibe hover/click */
+    z-index: 2; /* por encima del texto */
+    cursor: pointer;
   }
 
-  ${(props) =>
-    props.leaf.sfx &&
-    css`
-      .inline-edit.sfx {
-        display: inline-block;
-        bottom: -${markHeightPx}px;
-        background-color: var(--color-sfx);
-      }
-    `}
+  .line-mark:hover {
+    ${hoverStyle}
+  }
+  .line-mark.current {
+    ${hoverStyle}
+  }
+  .line-mark.done {
+    background-color: var(--color-grey) !important;
+    opacity: 0.35;
+  }
 
-  ${(props) =>
-    props.leaf.vfx &&
-    css`
-      .inline-edit.vfx {
-        display: inline-block;
-        top: ${markHeightPx - spaceBetweenMarksPx}px;
-        background-color: var(--color-vfx);
-      }
-    `}
-
-  ${(props) =>
-    props.leaf.graphic &&
-    css`
-      .inline-edit.graphic {
-        display: inline-block;
-        top: ${markHeightPx - 2 * spaceBetweenMarksPx}px;
-        background-color: var(--color-graphic);
-      }
-    `}
-
-  ${(props) =>
-    props.leaf.broll &&
-    css`
-      .inline-edit.broll {
-        display: inline-block;
-        top: ${markHeightPx - 3 * spaceBetweenMarksPx}px;
-        background-color: var(--color-broll);
-      }
-    `}
-
-  ${(props) =>
-    props.leaf.music &&
-    css`
-      .inline-edit.music {
-        display: inline-block;
-        position: absolute;
-        bottom: ${markHeightPx - 2 * spaceBetweenMarksPx}px;
-        left: 0;
-        right: 0;
-        height: ${markHeightPx}px;
-        background-color: var(--color-music);
-      }
-    `}
+  .leaf-text {
+    position: relative;
+    z-index: 1; /* texto debajo de las bandas */
+    pointer-events: auto;
+  }
 `;
 
+/* Carriles por tipo: lado (over/under), índice vertical y variable CSS del color */
+const LANES = {
+  [EDIT_TYPES.SFX]: { idx: 0, side: "under", var: "--color-sfx" },
+  [EDIT_TYPES.VFX]: { idx: 0, side: "over", var: "--color-vfx" },
+  [EDIT_TYPES.GRAPHIC]: { idx: 1, side: "over", var: "--color-graphic" },
+  [EDIT_TYPES.BROLL]: { idx: 2, side: "over", var: "--color-broll" },
+  [EDIT_TYPES.MUSIC]: { idx: 1, side: "under", var: "--color-music" },
+};
+
 function InlineEdit(props) {
+  const containerRef = React.useRef(null);
+  const textRef = React.useRef(null);
+  const [rects, setRects] = React.useState([]);
+
   const editIds = props.editIds || [];
   const { setCurrentEditsIds, isCurrentEdit } = useCurrentEdits();
   const { edits } = useEdits();
 
-  function handleClick(e) {
-    e.preventDefault();
+  // Medición de líneas reales (un rect por línea envuelta)
+  React.useLayoutEffect(() => {
+    if (!textRef.current || !containerRef.current) return;
 
-    if (!editIds || editIds.length === 0 || !setCurrentEditsIds) return;
+    const measure = () => {
+      const range = document.createRange();
+      range.selectNodeContents(textRef.current);
+      setRects(Array.from(range.getClientRects()));
+    };
 
-    const newCurrentEditsIds = {};
-    editIds.forEach((edit) => {
-      newCurrentEditsIds[edit.type] = edit.editId;
+    measure();
+
+    // Re-medimos si cambia el tamaño del contenedor/ventana o fonts
+    const ro = new ResizeObserver(measure);
+    ro.observe(containerRef.current);
+    window.addEventListener("resize", measure);
+
+    // Si tu contenido cambia por clase/estilo, esto lo captura
+    const mo = new MutationObserver(measure);
+    mo.observe(textRef.current, {
+      characterData: true,
+      subtree: true,
+      childList: true,
     });
 
-    // Set the current edits in the parent component.
-    setCurrentEditsIds((prevCurrentEdits) => ({
-      ...prevCurrentEdits,
-      ...newCurrentEditsIds,
-    }));
+    return () => {
+      ro.disconnect();
+      mo.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [props.children]);
+
+  function handleClick(e) {
+    e.preventDefault();
+    if (!editIds.length || !setCurrentEditsIds) return;
+
+    const next = {};
+    editIds.forEach((edit) => {
+      next[edit.type] = edit.editId;
+    });
+    setCurrentEditsIds((prev) => ({ ...prev, ...next }));
   }
 
-  // Función helper para generar el className de cada edit
-  function getEditClassName(editType) {
-    const editId = extractEditIdFromType(editType, editIds);
-    const isCurrent = isCurrentEdit({ type: editType, id: editId });
-    const isDone = edits?.some((edit) => edit.id === editId && edit.isDone);
+  function extractEditIdFromType(type) {
+    const ed = editIds.find((e) => e.type === type);
+    return ed ? ed.editId : null;
+  }
 
-    return `inline-edit ${editType} ${isCurrent ? "current" : ""} ${
-      isDone ? "done" : ""
+  function classFor(type) {
+    const id = extractEditIdFromType(type);
+    const cur = isCurrentEdit({ type, id });
+    const done = edits?.some((e) => e.id === id && e.isDone);
+    return `line-mark ${type} ${cur ? "current" : ""} ${
+      done ? "done" : ""
     }`.trim();
   }
 
-  // Función helper para renderizar cada mark
-  function renderEditMark(editType) {
-    const editId = extractEditIdFromType(editType, editIds);
+  const containerBox = containerRef.current?.getBoundingClientRect();
 
-    return (
-      <mark
-        key={editType}
-        data-edit-id={editId}
-        className={getEditClassName(editType)}
-      ></mark>
-    );
+  function renderBandsFor(type) {
+    if (!props.leaf?.[type] || !containerBox) return null;
+
+    const lane = LANES[type];
+    const color = `var(${lane.var})`;
+    const id = extractEditIdFromType(type);
+
+    return rects.map((r, i) => {
+      // coordenadas relativas al contenedor
+      const left = r.left - containerBox.left;
+      const width = r.width;
+
+      // posición vertical: por encima ("over") o por debajo ("under") de la línea
+      const baseTop =
+        lane.side === "under"
+          ? r.bottom - containerBox.top
+          : r.top - containerBox.top;
+
+      const top =
+        lane.side === "under"
+          ? baseTop + lane.idx * (markHeightPx + spaceBetweenMarksPx)
+          : baseTop - (lane.idx + 1) * (markHeightPx + spaceBetweenMarksPx);
+
+      return (
+        <span
+          key={`${type}-${i}`}
+          data-edit-id={id}
+          className={classFor(type)}
+          onClick={handleClick}
+          style={{
+            left,
+            top,
+            width,
+            height: markHeightPx,
+            background: color,
+          }}
+        />
+      );
+    });
   }
 
   return (
-    // span because all leaves MUST be an inline element.
-    <StyledSpan onClick={handleClick} {...props.attributes} leaf={props.leaf}>
-      {renderEditMark(EDIT_TYPES.VFX)}
-      {renderEditMark(EDIT_TYPES.SFX)}
-      {renderEditMark(EDIT_TYPES.MUSIC)}
-      {renderEditMark(EDIT_TYPES.GRAPHIC)}
-      {renderEditMark(EDIT_TYPES.BROLL)}
-      <span>{props.children}</span>
+    // span porque todo leaf en Slate debe ser inline
+    <StyledSpan ref={containerRef} onClick={handleClick} {...props.attributes}>
+      {/* Bandas por línea y por tipo activo */}
+      {renderBandsFor(EDIT_TYPES.VFX)}
+      {renderBandsFor(EDIT_TYPES.SFX)}
+      {renderBandsFor(EDIT_TYPES.MUSIC)}
+      {renderBandsFor(EDIT_TYPES.GRAPHIC)}
+      {renderBandsFor(EDIT_TYPES.BROLL)}
+
+      {/* Texto del leaf */}
+      <span ref={textRef} className="leaf-text">
+        {props.children}
+      </span>
     </StyledSpan>
   );
-}
-
-function extractEditIdFromType(type, editIds) {
-  if (!editIds || editIds.length === 0) return null;
-
-  const edit = editIds.find((edit) => edit.type === type);
-  return edit ? edit.editId : null;
 }
 
 export default InlineEdit;
