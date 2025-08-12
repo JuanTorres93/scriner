@@ -175,7 +175,14 @@ function Edit({ edit }) {
   }
 
   function handleSetCurrentEdit(e) {
-    if (isCurrent) return;
+    if (isCurrent) {
+      // remove from current
+      return setCurrentEditsIds((prev) => {
+        const newIds = { ...prev };
+        delete newIds[edit.type];
+        return newIds;
+      });
+    }
     setCurrentEditsIds((prev) => ({ ...prev, [edit.type]: edit.id }));
   }
 
@@ -188,6 +195,7 @@ function Edit({ edit }) {
       <div className="content-box">
         {isCurrent && (
           <Textarea
+            onClick={(e) => e.stopPropagation()}
             ref={textareaRef}
             onBlur={handleUpdateEdit}
             defaultValue={edit.content}

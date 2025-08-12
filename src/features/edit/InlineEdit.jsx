@@ -4,102 +4,91 @@ import { EDIT_TYPES } from "./editTypes";
 import { useCurrentEdits } from "./CurrentEditsContext";
 import { useEdits } from "./hooks/useEdits";
 
-const markHeightPx = 6;
-const spaceBetweenMarksPx = 12;
-const hoverStyle = css`
-  opacity: 1;
-  transform: scaleY(1.6) !important;
-`;
+const BORDER_WIDTH = "0.7rem";
+const INCREASED_BORDER_WIDTH = "1.2rem";
+
+export const getBorderByType = (leaf, type) => {
+  if (!leaf?.[type]) return "";
+
+  if (leaf[type].isDone) return css`--border-${type}: var(--color-grey);`;
+
+  if (leaf[type].isCurrent) {
+    const isBottomBorder = type === EDIT_TYPES.SFX || type === EDIT_TYPES.MUSIC;
+
+    return css`
+      ${isBottomBorder
+        ? `border-bottom: ${INCREASED_BORDER_WIDTH} solid transparent;`
+        : `border-top: ${INCREASED_BORDER_WIDTH} solid transparent;`}
+      --border-${type}: var(--color-${type}-s1);
+    `;
+  }
+
+  // Default border
+  return css`
+        --border-${type}: var(--color-${type});
+      `;
+};
 
 const StyledSpan = styled.span`
   background-color: transparent;
+  border-bottom: ${BORDER_WIDTH} solid transparent;
+  border-top: ${BORDER_WIDTH} solid transparent;
   font-weight: var(--font-weight-thinest);
   position: relative;
 
-  .inline-edit {
-    display: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: ${markHeightPx}px;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: all 0.2s ease;
+  transition: all 0.3s;
 
-    ${(props) => props.$isCurrent && hoverStyle}
-
-    &:hover {
-      ${hoverStyle}
-    }
-
-    &.current {
-      ${hoverStyle}
-    }
-
-    &.done {
-      background-color: var(--color-grey) !important;
-    }
+  &:hover {
+    border-bottom: ${INCREASED_BORDER_WIDTH} solid transparent;
+    border-top: ${INCREASED_BORDER_WIDTH} solid transparent;
   }
 
-  ${(props) =>
-    props.leaf.sfx &&
-    css`
-      .inline-edit.sfx {
-        display: inline-block;
-        bottom: -${markHeightPx}px;
-        background-color: var(--color-sfx);
-      }
-    `}
+  --border-music: transparent;
+  --border-sfx: transparent;
+  --border-vfx: transparent;
+  --border-graphic: transparent;
+  --border-broll: transparent;
 
-  ${(props) =>
-    props.leaf.vfx &&
-    css`
-      .inline-edit.vfx {
-        display: inline-block;
-        top: ${markHeightPx - spaceBetweenMarksPx}px;
-        background-color: var(--color-vfx);
-      }
-    `}
+  ${(props) => getBorderByType(props.leaf, EDIT_TYPES.SFX)}
+  ${(props) => getBorderByType(props.leaf, EDIT_TYPES.VFX)}
+  ${(props) => getBorderByType(props.leaf, EDIT_TYPES.GRAPHIC)}
+  ${(props) => getBorderByType(props.leaf, EDIT_TYPES.BROLL)}
+  ${(props) => getBorderByType(props.leaf, EDIT_TYPES.MUSIC)}
 
-  ${(props) =>
-    props.leaf.graphic &&
-    css`
-      .inline-edit.graphic {
-        display: inline-block;
-        top: ${markHeightPx - 2 * spaceBetweenMarksPx}px;
-        background-color: var(--color-graphic);
-      }
-    `}
+  border-top-color: color-mix(
+    in srgb,
+    color-mix(in srgb, 
+      var(--border-graphic) 50%, 
+      var(--border-vfx) 50%) 50%,
+    var(--border-broll) 50%
+  ) !important;
 
-  ${(props) =>
-    props.leaf.broll &&
-    css`
-      .inline-edit.broll {
-        display: inline-block;
-        top: ${markHeightPx - 3 * spaceBetweenMarksPx}px;
-        background-color: var(--color-broll);
-      }
-    `}
-
-  ${(props) =>
-    props.leaf.music &&
-    css`
-      .inline-edit.music {
-        display: inline-block;
-        position: absolute;
-        bottom: ${markHeightPx - 2 * spaceBetweenMarksPx}px;
-        left: 0;
-        right: 0;
-        height: ${markHeightPx}px;
-        background-color: var(--color-music);
-      }
-    `}
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--border-music) 50%,
+    var(--border-sfx) 50%
+  ) !important;
 `;
 
-function InlineEdit(props) {
+function InlineEdit({ leaf, ...props }) {
   const editIds = props.editIds || [];
   const { setCurrentEditsIds, isCurrentEdit } = useCurrentEdits();
   const { edits } = useEdits();
+
+  const newLeaf = { ...leaf };
+
+  // leaf is an object, loop over its keys
+  for (const key in newLeaf) {
+    if (EDIT_TYPES[key.toUpperCase()]) {
+      newLeaf[key].isCurrent = isCurrentEdit({
+        type: key,
+        id: newLeaf[key].editId,
+      });
+      newLeaf[key].isDone = edits?.some(
+        (edit) => edit.id === newLeaf[key].editId && edit.isDone
+      );
+    }
+  }
 
   function handleClick(e) {
     e.preventDefault();
@@ -111,7 +100,7 @@ function InlineEdit(props) {
       newCurrentEditsIds[edit.type] = edit.editId;
     });
 
-    // Set the current edits in the parent component.
+    // set the current edits in the parent component.
     setCurrentEditsIds((prevCurrentEdits) => ({
       ...prevCurrentEdits,
       ...newCurrentEditsIds,
@@ -129,27 +118,9 @@ function InlineEdit(props) {
     }`.trim();
   }
 
-  // Función helper para renderizar cada mark
-  function renderEditMark(editType) {
-    const editId = extractEditIdFromType(editType, editIds);
-
-    return (
-      <mark
-        key={editType}
-        data-edit-id={editId}
-        className={getEditClassName(editType)}
-      ></mark>
-    );
-  }
-
   return (
     // span because all leaves MUST be an inline element.
-    <StyledSpan onClick={handleClick} {...props.attributes} leaf={props.leaf}>
-      {renderEditMark(EDIT_TYPES.VFX)}
-      {renderEditMark(EDIT_TYPES.SFX)}
-      {renderEditMark(EDIT_TYPES.MUSIC)}
-      {renderEditMark(EDIT_TYPES.GRAPHIC)}
-      {renderEditMark(EDIT_TYPES.BROLL)}
+    <StyledSpan onClick={handleClick} {...props.attributes} leaf={newLeaf}>
       <span>{props.children}</span>
     </StyledSpan>
   );
