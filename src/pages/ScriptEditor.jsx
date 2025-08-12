@@ -77,14 +77,14 @@ const StyledScriptEditor = styled.div`
     }
 
     .title-vfx {
-      grid-column: 3 / 4;
+      grid-column: 2 / 3;
       grid-row: 3 / 4;
     }
     .content-vfx {
     }
 
     .title-graphic {
-      grid-column: 2 / 3;
+      grid-column: 3 / 4;
       grid-row: 3 / 4;
     }
     .content-graphic {
