@@ -11,12 +11,17 @@ import GlobalStyles from "./styles/GlobalStyles.js";
 import AppLayout from "./ui/AppLayout";
 import ScriptEditor from "./pages/ScriptEditor";
 import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
+import Login from "./pages/Login.jsx";
 
 const router = createBrowserRouter([
   {
     // TODO remove, just for development
     path: "/",
     element: <Navigate to="/app" />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     // AppLayout is the main layout for the app
