@@ -1,14 +1,11 @@
-// Import React dependencies.
-import React, { useCallback } from "react";
-
-// Import the Slate components and React plugin.
+import React, { useCallback, useMemo, useRef } from "react";
 import { Editable, useSlate } from "slate-react";
 import styled from "styled-components";
 
-import { EDIT_TYPES } from "../edit/editTypes";
 import { useUpdateScript } from "./useUpdateScript";
 import InlineEdit from "../edit/InlineEdit";
 import HoveringToolbar from "./HoverToolbar";
+import { EDIT_TYPES } from "../edit/editTypes";
 
 const StyledEditable = styled(Editable)`
   border: 2px solid var(--color-grey);
@@ -18,7 +15,7 @@ const StyledEditable = styled(Editable)`
   padding: 0rem 2rem;
   outline: none;
   line-height: 3.5;
-  overflow-y: scroll; // NOTE: Not sure if this should go in here
+  overflow-y: scroll;
 
   &:focus,
   &:hover {
@@ -30,6 +27,7 @@ const Script = ({ script, className }) => {
   // className is for layout purposes
   const editor = useSlate();
   const { isUpdating, updateScript } = useUpdateScript();
+  const editableRef = useRef(null);
 
   // Define a rendering function based on the element passed to `props`. We use
   const renderElement = useCallback((props) => {
@@ -49,7 +47,6 @@ const Script = ({ script, className }) => {
     const foundTypes = leafAttributeNames.filter((type) =>
       Object.values(EDIT_TYPES).includes(type)
     );
-
     const editIds = foundTypes.map((type) => ({
       type,
       editId: props?.leaf?.[type].editId,
@@ -62,21 +59,34 @@ const Script = ({ script, className }) => {
 
   function handleUpdateContent() {
     const newContent = JSON.stringify(editor.children);
-
     if (!script?.id || !newContent || isUpdating) return;
     if (newContent === script?.content) return;
-
-    updateScript({
-      id: script?.id,
-      data: { content: newContent },
-    });
+    updateScript({ id: script?.id, data: { content: newContent } });
   }
+
+  const getSelectionRect = useMemo(() => {
+    return () => {
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return null;
+      const range = sel.getRangeAt(0);
+      if (range.collapsed || range.toString() === "") return null;
+
+      const r = range.cloneRange();
+      r.collapse(false); // anchor to the end
+      const rect = r.getBoundingClientRect();
+      if (!rect || (rect.width === 0 && rect.height === 0)) return null;
+      return rect;
+    };
+  }, []);
 
   return (
     <>
-      <HoveringToolbar />
-      {/* This component acts like contenteditable */}
+      <HoveringToolbar
+        getSelectionRect={getSelectionRect}
+        editableRef={editableRef}
+      />
       <StyledEditable
+        ref={editableRef}
         className={className}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
