@@ -66,16 +66,43 @@ const Script = ({ script, className }) => {
 
   const getSelectionRect = useMemo(() => {
     return () => {
-      const sel = window.getSelection();
+      const sel = window.getSelection?.();
       if (!sel || sel.rangeCount === 0) return null;
-      const range = sel.getRangeAt(0);
-      if (range.collapsed || range.toString() === "") return null;
 
-      const r = range.cloneRange();
-      r.collapse(false); // anchor to the end
-      const rect = r.getBoundingClientRect();
-      if (!rect || (rect.width === 0 && rect.height === 0)) return null;
-      return rect;
+      // 1) Try to anchor to the *focus caret* (follows the mouse direction)
+      try {
+        const r = document.createRange();
+        // Guard: focusNode might be null/detached during fast drags
+        if (sel.focusNode) {
+          r.setStart(sel.focusNode, sel.focusOffset);
+          r.collapse(true);
+          // Prefer a non-zero rect if available
+          let rect = r.getBoundingClientRect();
+          if (rect && (rect.width > 0 || rect.height > 0)) return rect;
+
+          // Some engines return 0x0 for collapsed ranges—fallback to client rects
+          const clientRects = r.getClientRects?.();
+          if (clientRects && clientRects.length) return clientRects[0];
+        }
+      } catch (_) {
+        // swallow and continue to fallback
+      }
+
+      // 2) Fallback: end-of-range (works fine for downward selections)
+      try {
+        const base = sel.getRangeAt(0).cloneRange();
+        base.collapse(false); // end in DOM order
+        let rect = base.getBoundingClientRect();
+        if (rect && (rect.width > 0 || rect.height > 0)) return rect;
+
+        const clientRects = base.getClientRects?.();
+        if (clientRects && clientRects.length)
+          return clientRects[clientRects.length - 1];
+      } catch (_) {
+        // final fallback → no rect
+      }
+
+      return null;
     };
   }, []);
 
