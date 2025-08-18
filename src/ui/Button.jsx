@@ -2,6 +2,9 @@ import styled, { css } from "styled-components";
 
 const variant = {
   none: css``,
+  large: css`
+    padding: 1rem 2rem;
+  `,
   padding: css`
     padding: 0.5rem 1rem;
   `,
