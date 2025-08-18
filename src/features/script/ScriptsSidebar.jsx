@@ -12,6 +12,7 @@ import Loader from "../../ui/Loader";
 import { useDeleteScript } from "./useDeleteScript";
 import { htmlToText } from "../../utils/htmlUtils";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Logout from "../authentication/Logout";
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -58,6 +59,7 @@ function ScriptsSidebar() {
 
   return (
     <StyledScriptsSidebar>
+      <Logout />
       <h2>Tus guiones</h2>
       <Button disabled={isCreating} type="primary" onClick={handleCreateScript}>
         + Nuevo guión
