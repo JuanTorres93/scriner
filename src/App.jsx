@@ -12,6 +12,7 @@ import AppLayout from "./ui/AppLayout";
 import ScriptEditor from "./pages/ScriptEditor";
 import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
 import Login from "./pages/Login.jsx";
+import ProtectedRoute from "./features/authentication/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
   },
   {
     // AppLayout is the main layout for the app
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     path: "/app",
     children: [
       {
