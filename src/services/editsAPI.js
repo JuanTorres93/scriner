@@ -1,7 +1,10 @@
 import supabase from "../supabase";
 
-export async function getEdits() {
-  const { data, error } = await supabase.from("edits").select("*");
+export async function getEdits(scriptId) {
+  const { data, error } = await supabase
+    .from("edits")
+    .select("*")
+    .eq("scriptId", scriptId);
 
   if (error) {
     throw new Error("No se pudieron cargar las anotaciones");

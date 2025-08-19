@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { useParams } from "react-router-dom";
 
 import { EDIT_TYPES } from "./editTypes";
 import { useCurrentEdits } from "./CurrentEditsContext";
@@ -71,9 +72,10 @@ const StyledSpan = styled.span`
 `;
 
 function InlineEdit({ leaf, ...props }) {
+  const { scriptId } = useParams();
   const editIds = props.editIds || [];
   const { setCurrentEditsIds, isCurrentEdit } = useCurrentEdits();
-  const { edits } = useEdits();
+  const { edits } = useEdits(scriptId);
 
   const newLeaf = { ...leaf };
 

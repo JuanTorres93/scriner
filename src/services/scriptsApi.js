@@ -1,7 +1,10 @@
 import supabase from "../supabase";
 
-export async function getScripts() {
-  const { data, error } = await supabase.from("scripts").select("*");
+export async function getScripts(userId) {
+  const { data, error } = await supabase
+    .from("scripts")
+    .select("*")
+    .eq("user_id", userId);
 
   if (error) {
     throw new Error("No se pudieron cargar los guiones");

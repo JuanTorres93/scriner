@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { HiMiniXMark } from "react-icons/hi2";
 
+import { useUser } from "../../features/authentication/hooks/useUser";
 import { useScripts } from "./useScripts";
 import { formatDate } from "../../utils/dateUtils";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +45,8 @@ const StyledScriptsSidebar = styled.aside`
 `;
 
 function ScriptsSidebar() {
-  const { scripts, error, isLoading } = useScripts();
+  const { user } = useUser();
+  const { scripts, error, isLoading } = useScripts(user.id);
   const { createScript, isCreating } = useCreateScript();
 
   const scriptsByDate = scripts
@@ -54,7 +56,7 @@ function ScriptsSidebar() {
     : [];
 
   function handleCreateScript() {
-    createScript({ title: "Nuevo guión", content: "" });
+    createScript({ title: "Nuevo guión", content: "", user_id: user.id });
   }
 
   return (
@@ -66,12 +68,14 @@ function ScriptsSidebar() {
       </Button>
 
       {isLoading && <Loader className="loader" type="spinner" />}
-      {error && <p>Error loading scripts</p>}
+      {error && <p>Error al cargar los guiones</p>}
 
-      {scriptsByDate &&
+      {scriptsByDate?.length > 0 &&
         scriptsByDate.map((script) => (
           <ScriptItem key={script.id} script={script} />
         ))}
+
+      {scriptsByDate?.length === 0 && !isLoading && <p>No tienes guiones</p>}
     </StyledScriptsSidebar>
   );
 }
