@@ -13,6 +13,7 @@ import ScriptEditor from "./pages/ScriptEditor";
 import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
 import Login from "./pages/Login.jsx";
 import ProtectedRoute from "./features/authentication/ProtectedRoute.jsx";
+import Signup from "./pages/Signup.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     // AppLayout is the main layout for the app

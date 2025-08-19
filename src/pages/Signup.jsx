@@ -1,10 +1,10 @@
-import LoginForm from "../features/authentication/LoginForm";
 import LoginSignupLayout from "./LoginSignupLayout";
+import SignupForm from "../features/authentication/SignupForm";
 
 function Login() {
   return (
     <LoginSignupLayout>
-      <LoginForm />
+      <SignupForm />
     </LoginSignupLayout>
   );
 }
