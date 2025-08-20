@@ -49,19 +49,22 @@ const StyledScriptEditor = styled.div`
       text-align: center;
     }
 
-    .title-music,
-    .content-music {
+    .title-emotion,
+    .content-emotion {
       grid-column: 2 / 3;
     }
-    .content-music {
+    .content-emotion {
       grid-row: 2 / 3;
     }
+    .title-emotion {
+      grid-row: 1 / 2;
+    }
 
-    .title-sfx,
-    .content-sfx {
+    .title-music,
+    .content-music {
       grid-column: 3 / 4;
     }
-    .content-sfx {
+    .content-music {
       grid-row: 2 / 3;
     }
 
@@ -76,18 +79,18 @@ const StyledScriptEditor = styled.div`
       grid-row: 2 / -1;
     }
 
-    .title-vfx {
+    .title-sfx {
       grid-column: 2 / 3;
       grid-row: 3 / 4;
     }
-    .content-vfx {
+    .content-sfx {
     }
 
-    .title-emotion {
+    .title-vfx {
       grid-column: 3 / 4;
       grid-row: 3 / 4;
     }
-    .content-emotion {
+    .content-vfx {
     }
 
     .title-broll,
