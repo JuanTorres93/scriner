@@ -75,13 +75,13 @@ const StyledEdit = styled.div`
     `}
 
   ${(props) =>
-    props.edit.type === "graphic" &&
+    props.edit.type === "emotion" &&
     props.isCurrent &&
     css`
-      background-color: var(--color-graphic);
+      background-color: var(--color-emotion);
 
       textarea {
-        background-color: var(--color-graphic-t1);
+        background-color: var(--color-emotion-t1);
       }
     `}
 

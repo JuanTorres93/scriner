@@ -60,9 +60,9 @@ const GlobalStyles = createGlobalStyle`
     --color-sfx-s1: #e6b800;
 
     /* GRÁFICOS – rosa pastel */
-    --color-graphic: #ffb3d9;
-    --color-graphic-t1: #ffe6f3;
-    --color-graphic-s1: #e85ca2;
+    --color-emotion: #ffb3d9;
+    --color-emotion-t1: #ffe6f3;
+    --color-emotion-s1: #e85ca2;
 
     /* VFX – azul suave */
     --color-vfx: #a3c9ff;
@@ -162,8 +162,8 @@ const GlobalStyles = createGlobalStyle`
     border-top: 5px solid var(--color-vfx);
   }
 
-  .inline-edit-graphic {
-    border-top: 5px solid var(--color-graphic);
+  .inline-edit-emotion {
+    border-top: 5px solid var(--color-emotion);
     padding-top: 10px;
   }
 

@@ -13,8 +13,8 @@ import {
 import { useParams } from "react-router-dom";
 
 import {
-  HiBolt,
-  HiCamera,
+  HiMiniBell,
+  HiHeart,
   HiMiniPhoto,
   HiFilm,
   HiMiniMusicalNote,
@@ -235,7 +235,20 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
           }
           disabled={isCreating}
         >
-          <HiBolt />
+          <HiMiniBell />
+        </Button>
+
+        <Button
+          onClick={() => handleToggleEdit(EDIT_TYPES.EMOTION)}
+          type="hoverbar"
+          variant={
+            ScriptActions.isMarkActive(editor, EDIT_TYPES.EMOTION)
+              ? "activeHoverElement"
+              : null
+          }
+          disabled={isCreating}
+        >
+          <HiHeart />
         </Button>
 
         <Button
@@ -249,19 +262,6 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
           disabled={isCreating}
         >
           <HiMiniPhoto />
-        </Button>
-
-        <Button
-          onClick={() => handleToggleEdit(EDIT_TYPES.GRAPHIC)}
-          type="hoverbar"
-          variant={
-            ScriptActions.isMarkActive(editor, EDIT_TYPES.GRAPHIC)
-              ? "activeHoverElement"
-              : null
-          }
-          disabled={isCreating}
-        >
-          <HiCamera />
         </Button>
 
         <Button

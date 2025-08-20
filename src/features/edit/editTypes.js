@@ -2,6 +2,6 @@ export const EDIT_TYPES = {
   SFX: "sfx",
   VFX: "vfx",
   MUSIC: "music",
-  GRAPHIC: "graphic",
+  EMOTION: "emotion",
   BROLL: "broll",
 };

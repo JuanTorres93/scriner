@@ -30,14 +30,36 @@ export const getBorderByType = (leaf, type) => {
       `;
 };
 
+export const getEmotionBackground = (leaf) => {
+  if (!leaf?.[EDIT_TYPES.EMOTION]) return "";
+
+  if (leaf[EDIT_TYPES.EMOTION].isDone)
+    return css`
+      --bg-emotion: var(--color-grey);
+    `;
+
+  if (leaf[EDIT_TYPES.EMOTION].isCurrent) {
+    return css`
+      --bg-emotion: var(--color-emotion-s1);
+    `;
+  }
+
+  // Default background
+  return css`
+    --bg-emotion: var(--color-emotion);
+  `;
+};
+
 const StyledSpan = styled.span`
   background-color: transparent;
   border-bottom: ${BORDER_WIDTH} solid transparent;
   border-top: ${BORDER_WIDTH} solid transparent;
   font-weight: var(--font-weight-thinest);
   position: relative;
+  padding: 0.2rem 0;
+  background-clip: padding-box; // Prevents background from bleeding into the border
 
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 
   &:hover {
     border-bottom: ${INCREASED_BORDER_WIDTH} solid transparent;
@@ -47,20 +69,18 @@ const StyledSpan = styled.span`
   --border-music: transparent;
   --border-sfx: transparent;
   --border-vfx: transparent;
-  --border-graphic: transparent;
+  --bg-emotion: transparent;
   --border-broll: transparent;
 
   ${(props) => getBorderByType(props.leaf, EDIT_TYPES.SFX)}
   ${(props) => getBorderByType(props.leaf, EDIT_TYPES.VFX)}
-  ${(props) => getBorderByType(props.leaf, EDIT_TYPES.GRAPHIC)}
+  ${(props) => getEmotionBackground(props.leaf)}
   ${(props) => getBorderByType(props.leaf, EDIT_TYPES.BROLL)}
   ${(props) => getBorderByType(props.leaf, EDIT_TYPES.MUSIC)}
 
   border-top-color: color-mix(
     in srgb,
-    color-mix(in srgb, 
-      var(--border-graphic) 50%, 
-      var(--border-vfx) 50%) 50%,
+    var(--border-vfx) 50%,
     var(--border-broll) 50%
   ) !important;
 
@@ -68,6 +88,12 @@ const StyledSpan = styled.span`
     in srgb,
     var(--border-music) 50%,
     var(--border-sfx) 50%
+  ) !important;
+
+  background-color: color-mix(
+    in srgb,
+    var(--bg-emotion) 35%,
+    transparent 65%
   ) !important;
 `;
 
@@ -103,10 +129,14 @@ function InlineEdit({ leaf, ...props }) {
     });
 
     // set the current edits in the parent component.
-    setCurrentEditsIds((prevCurrentEdits) => ({
-      ...prevCurrentEdits,
-      ...newCurrentEditsIds,
-    }));
+    //setCurrentEditsIds((prevCurrentEdits) => ({
+    //  ...prevCurrentEdits,
+    //  ...newCurrentEditsIds,
+    //}));
+
+    // Don't preserve previous ones. In this way it is easier for the user to keep focus
+    // on the working part of the script
+    setCurrentEditsIds(newCurrentEditsIds);
   }
 
   // Función helper para generar el className de cada edit

@@ -83,11 +83,11 @@ const StyledScriptEditor = styled.div`
     .content-vfx {
     }
 
-    .title-graphic {
+    .title-emotion {
       grid-column: 3 / 4;
       grid-row: 3 / 4;
     }
-    .content-graphic {
+    .content-emotion {
     }
 
     .title-broll,
@@ -120,7 +120,7 @@ function ScriptEditor() {
 
   const sfxEdits = edits?.filter((edit) => edit.type === "sfx");
   const vfxEdits = edits?.filter((edit) => edit.type === "vfx");
-  const graphicEdits = edits?.filter((edit) => edit.type === "graphic");
+  const emotionEdits = edits?.filter((edit) => edit.type === "emotion");
   const brollEdits = edits?.filter((edit) => edit.type === "broll");
   const musicEdits = edits?.filter((edit) => edit.type === "music");
 
@@ -172,8 +172,8 @@ function ScriptEditor() {
             placeholder="Nombre del guion"
             onBlur={handleTitleBlur}
           />
+          <h2 className="title-emotion">Emoción</h2>
           <h2 className="title-vfx">VFX</h2>
-          <h2 className="title-graphic">Gráficos</h2>
           <h2 className="title-broll">B-Roll</h2>
 
           {/* Music edits */}
@@ -211,6 +211,18 @@ function ScriptEditor() {
           ) : (
             <Script className="content-script" script={script} />
           )}
+          {/* emotion edits */}
+          {isLoadingEdits ? (
+            <Loader
+              className="loader content-emotion"
+              type="spinner"
+              size="5rem"
+              cssVarColor="--color-primary-t1"
+            />
+          ) : (
+            <EditList className="content-emotion" edits={emotionEdits} />
+          )}
+
           {/* VFX edits */}
           {isLoadingEdits ? (
             <Loader
@@ -221,18 +233,6 @@ function ScriptEditor() {
             />
           ) : (
             <EditList className="content-vfx" edits={vfxEdits} />
-          )}
-
-          {/* Graphic edits */}
-          {isLoadingEdits ? (
-            <Loader
-              className="loader content-graphic"
-              type="spinner"
-              size="5rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <EditList className="content-graphic" edits={graphicEdits} />
           )}
 
           {/* B-Roll edits */}
