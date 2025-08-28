@@ -1,10 +1,14 @@
 import LoginForm from "../features/authentication/LoginForm";
+import SplitBox from "../ui/SplitBox";
 import LoginSignupLayout from "./LoginSignupLayout";
 
 function Login() {
   return (
     <LoginSignupLayout>
-      <LoginForm />
+      <SplitBox
+        child1={<LoginForm />}
+        child2={<img src="login-image.png" alt="Login image" />}
+      />
     </LoginSignupLayout>
   );
 }

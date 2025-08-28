@@ -80,9 +80,12 @@ const GlobalStyles = createGlobalStyle`
 
     --backdrop-color: rgba(255, 255, 255, 0.1);
 
+    --box-shadow-split-box: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+
     // Border radius
     --border-radius-s1: 0.5rem;
     --border-radius: 1rem;
+    --border-radius-l1: 1.5rem;
 
 
     // breakpoints are defined in breakpoint.js because they cannot be used as CSS variables
