@@ -14,7 +14,7 @@ const StyledEditable = styled(Editable)`
   border-radius: var(--border-radius);
   padding: 0rem 2rem;
   outline: none;
-  line-height: 3.5;
+  line-height: 2.5;
   overflow-y: scroll;
 
   &:focus,

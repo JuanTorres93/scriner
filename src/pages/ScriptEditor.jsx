@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createEditor } from "slate";
 import { Slate, withReact } from "slate-react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import EditList from "../features/edit/EditList";
 import Script from "../features/script/Script";
@@ -107,6 +107,7 @@ const StyledScriptEditor = styled.div`
 
 function ScriptEditor() {
   const [editor] = useState(() => withReact(createEditor()));
+  const navigate = useNavigate();
 
   const { scriptId } = useParams();
   const {
@@ -126,6 +127,15 @@ function ScriptEditor() {
   const emotionEdits = edits?.filter((edit) => edit.type === "emotion");
   const brollEdits = edits?.filter((edit) => edit.type === "broll");
   const musicEdits = edits?.filter((edit) => edit.type === "music");
+
+  useEffect(() => {
+    if (script?.content) {
+      resetEditorContent(editor, script.content);
+    }
+  }, [script?.content, editor, scriptId]);
+
+  // TODO Change and go to NOT FOUND PAGE
+  if (scriptError?.code === "PGRST116") navigate("/app", { replace: true });
 
   function handleUpdateScriptTitle(newTitle) {
     if (isUpdating || !newTitle) return;
@@ -150,12 +160,6 @@ function ScriptEditor() {
             children: [{ text: "Pega tu guion aquí" }],
           },
         ];
-
-  useEffect(() => {
-    if (script?.content) {
-      resetEditorContent(editor, script.content);
-    }
-  }, [script?.content, editor, scriptId]);
 
   return (
     <StyledScriptEditor>

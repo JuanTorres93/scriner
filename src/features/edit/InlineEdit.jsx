@@ -6,7 +6,7 @@ import { useCurrentEdits } from "./CurrentEditsContext";
 import { useEdits } from "./hooks/useEdits";
 
 const BORDER_WIDTH = "0.7rem";
-const INCREASED_BORDER_WIDTH = "1.2rem";
+const INCREASED_BORDER_WIDTH = "1rem";
 
 export const getBorderByType = (leaf, type) => {
   if (!leaf?.[type]) return "";

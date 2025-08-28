@@ -54,10 +54,13 @@ const GlobalStyles = createGlobalStyle`
     --color-music-t1: #f4f0ff;
     --color-music-s1: #9b5de5;
 
-    /* SFX – amarillo pastel */
-    --color-sfx: #ffe3a3;
-    --color-sfx-t1: #fff8e1;
-    --color-sfx-s1: #e6b800;
+    /* --color-sfx: #ffe3a3; */
+    /* --color-sfx-t1: #fff8e1; */
+    /* --color-sfx-s1: #e6b800; */
+    --color-sfx: #ffcc66;  
+    --color-sfx-t1: #fff4cc; 
+    --color-sfx-s1: #e6a800; 
+
 
     /* GRÁFICOS – rosa pastel */
     --color-emotion: #ffb3d9;

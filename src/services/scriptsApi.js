@@ -7,7 +7,7 @@ export async function getScripts(userId) {
     .eq("user_id", userId);
 
   if (error) {
-    throw new Error("No se pudieron cargar los guiones");
+    throw error;
   }
 
   return data;
@@ -21,7 +21,7 @@ export async function getScriptById(id) {
     .single();
 
   if (error) {
-    throw new Error("No se pudo cargar el guion");
+    throw error;
   }
 
   return data;
