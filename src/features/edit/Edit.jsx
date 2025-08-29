@@ -10,7 +10,7 @@ import { HiCheckCircle, HiMiniXCircle, HiTrash } from "react-icons/hi2";
 import { useSlate } from "slate-react";
 import { ScriptActions } from "../script/ScriptActions";
 import { useUpdateScript } from "../script/useUpdateScript";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 
 const StyledEdit = styled.div`
   display: flex;
@@ -122,11 +122,23 @@ function Edit({ edit }) {
   const isCurrent = isCurrentEdit(edit);
   const isLoading = isUpdating || isDeleting || isUpdatingScript;
 
+  function autosize(el) {
+    if (!el) return;
+    el.style.height = "0px"; // reset for better computation
+    el.style.height = el.scrollHeight + "px";
+  }
+
+  // Adjust on mount and when initial content changes (e.g., when selecting another edit)
+  useLayoutEffect(() => {
+    autosize(textareaRef.current);
+  }, [edit?.content]);
+
   useEffect(() => {
     // Select textarea content on mount to be able to start writing immediately
     if (textareaRef.current) {
       textareaRef.current.focus();
       textareaRef.current.select(); // Select all content to be overwritten
+      autosize(textareaRef.current);
     }
   }, []);
 
@@ -192,19 +204,19 @@ function Edit({ edit }) {
       isCurrent={isCurrent}
       onClick={handleSetCurrentEdit}
     >
-      <div className="content-box">
-        {isCurrent && (
-          <Textarea
-            onClick={(e) => e.stopPropagation()}
-            ref={textareaRef}
-            onBlur={handleUpdateEdit}
-            defaultValue={edit.content}
-            type="edit"
-            variant="none"
-          />
-        )}
-        {!isCurrent && <p>{edit.content}</p>}
-      </div>
+      {isCurrent && (
+        <Textarea
+          onClick={(e) => e.stopPropagation()}
+          ref={textareaRef}
+          onBlur={handleUpdateEdit}
+          onInput={(e) => autosize(e.currentTarget)} // Triggers on every input
+          rows={1} // Start with 1 row, will expand as needed
+          defaultValue={edit.content}
+          type="edit"
+          variant="none"
+        />
+      )}
+      {!isCurrent && <p>{edit.content}</p>}
 
       <div className="actions-box">
         <Button

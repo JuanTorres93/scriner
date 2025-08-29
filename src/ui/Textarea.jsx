@@ -11,8 +11,10 @@ const types = {
     background-color: transparent;
     color: inherit;
     width: 100%;
-    height: 100%;
+    height: auto;
     resize: none;
+    overflow: hidden;
+    min-height: 0;
 
     &:focus {
       background-color: var(--color-grey-t3);

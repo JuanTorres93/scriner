@@ -13,7 +13,7 @@ export function useUpdateScript() {
         queryKey: ["scripts"],
       });
 
-      toast.success("Guion actualizado correctamente");
+      // toast.success("Guion actualizado correctamente");
     },
     onError: (error) => {
       toast.error(error.message);
