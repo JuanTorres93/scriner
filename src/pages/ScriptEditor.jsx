@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createEditor } from "slate";
 import { Slate, withReact } from "slate-react";
+import { withHistory } from "slate-history";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -106,7 +107,7 @@ const StyledScriptEditor = styled.div`
 `;
 
 function ScriptEditor() {
-  const [editor] = useState(() => withReact(createEditor()));
+  const [editor] = useState(() => withReact(withHistory(createEditor())));
   const navigate = useNavigate();
 
   const { scriptId } = useParams();
@@ -130,7 +131,7 @@ function ScriptEditor() {
 
   useEffect(() => {
     if (script?.content) {
-      resetEditorContent(editor, script.content);
+      resetEditorContent(editor, script.content, scriptId);
     }
   }, [script?.content, editor, scriptId]);
 
@@ -208,7 +209,7 @@ function ScriptEditor() {
           )}
 
           {/* Script */}
-          {isLoadingScript ? (
+          {isLoadingScript || isLoadingEdits ? (
             <Loader
               className="loader content-script"
               type="spinner"
@@ -216,7 +217,11 @@ function ScriptEditor() {
               cssVarColor="--color-primary-t1"
             />
           ) : (
-            <Script className="content-script" script={script} />
+            <Script
+              key={`script-${script.id}`}
+              className="content-script"
+              script={script}
+            />
           )}
           {/* emotion edits */}
           {isLoadingEdits ? (

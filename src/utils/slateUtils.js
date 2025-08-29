@@ -1,5 +1,4 @@
 import { Editor, Range, Text, Transforms } from "slate";
-import { ReactEditor } from "slate-react";
 
 export function resetEditorContent(editor, content) {
   try {
@@ -23,6 +22,7 @@ export function resetEditorContent(editor, content) {
 
     Transforms.deselect(editor); // Clear any selection
     editor.children = validNodes; // Apply new content
+    editor.history = { redos: [], undos: [] }; // Clear history
     // ReactEditor.focus(editor); // refocus
   } catch (e) {
     Transforms.deselect(editor);
