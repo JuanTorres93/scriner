@@ -133,6 +133,11 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.5;
   }
 
+  ::selection {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
   input,
   button,
   textarea,
