@@ -221,7 +221,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
     if (!scriptId) return;
     const newEdit = {
       type,
-      content: "New annotation",
+      content: "Nueva anotación",
       isDone: false,
       scriptId,
     };

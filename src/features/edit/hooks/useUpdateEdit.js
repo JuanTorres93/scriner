@@ -17,7 +17,7 @@ export function useUpdateEdit() {
         queryKey: ["edit", variables.id],
       });
 
-      toast.success("Anotación actualizada correctamente");
+      // toast.success("Anotación actualizada correctamente");
     },
     onError: (error) => {
       toast.error(error.message);

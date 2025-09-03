@@ -170,8 +170,13 @@ function ScriptEditor() {
         initialValue={initialValue}
       >
         <>
-          <h2 className="title-music">Música</h2>
-          <h2 className="title-sfx">SFX</h2>
+          <h2 className="title-music">
+            Música{" "}
+            {musicEdits?.length > 0 && <span>({musicEdits?.length})</span>}
+          </h2>
+          <h2 className="title-sfx">
+            SFX {sfxEdits?.length > 0 && <span>({sfxEdits?.length})</span>}
+          </h2>
           <Input
             className="title-script"
             key={`script-title-${script?.id}`}
@@ -180,9 +185,17 @@ function ScriptEditor() {
             placeholder="Nombre del guion"
             onBlur={handleTitleBlur}
           />
-          <h2 className="title-emotion">Emoción</h2>
-          <h2 className="title-vfx">VFX</h2>
-          <h2 className="title-broll">B-Roll</h2>
+          <h2 className="title-emotion">
+            Emoción{" "}
+            {emotionEdits?.length > 0 && <span>({emotionEdits?.length})</span>}
+          </h2>
+          <h2 className="title-vfx">
+            VFX {vfxEdits?.length > 0 && <span>({vfxEdits?.length})</span>}
+          </h2>
+          <h2 className="title-broll">
+            B-Roll{" "}
+            {brollEdits?.length > 0 && <span>({brollEdits?.length})</span>}
+          </h2>
 
           {/* Music edits */}
           {isLoadingEdits ? (
