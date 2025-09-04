@@ -21,7 +21,7 @@ export function useCreateEdit() {
         [data.type]: data.id,
       }));
 
-      toast.success("Edit created successfully!");
+      // toast.success("Edit created successfully!");
     },
     onError: (error) => {
       toast.error(error.message);
