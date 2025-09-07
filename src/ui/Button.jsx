@@ -49,7 +49,7 @@ const variant = {
 const types = {
   primary: css`
     background-color: var(--color-primary);
-    color: var(--color-grey-t2);
+    color: var(--color-grey-t2) !important;
 
     &:hover {
       background-color: var(--color-primary-s1);
