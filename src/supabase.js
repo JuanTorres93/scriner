@@ -1,3 +1,4 @@
+// TODO move this file to services
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = "https://jcemvkcdgjapayhiuywk.supabase.co";

@@ -1,33 +1,47 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
+import ProtectedRoute from "./features/authentication/ProtectedRoute.jsx";
+import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
+import Landing from "./pages/Landing.jsx";
+import Login from "./pages/Login.jsx";
+import ScriptEditor from "./pages/ScriptEditor";
+import Signup from "./pages/Signup.jsx";
 import GlobalStyles from "./styles/GlobalStyles.js";
 import AppLayout from "./ui/AppLayout";
-import ScriptEditor from "./pages/ScriptEditor";
-import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
-import Login from "./pages/Login.jsx";
-import ProtectedRoute from "./features/authentication/ProtectedRoute.jsx";
-import Signup from "./pages/Signup.jsx";
+import MarketingLayout from "./ui/MarketingLayout.jsx";
 
 const router = createBrowserRouter([
   {
     // TODO remove, just for development
     path: "/",
-    element: <Navigate to="/app" />,
+    element: (
+      <MarketingLayout>
+        <Landing />
+      </MarketingLayout>
+    ),
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <MarketingLayout>
+        <Login />
+      </MarketingLayout>
+    ),
   },
   {
     path: "/signup",
-    element: <Signup />,
+    element: (
+      <MarketingLayout>
+        <Signup />
+      </MarketingLayout>
+    ),
   },
   {
     // AppLayout is the main layout for the app
