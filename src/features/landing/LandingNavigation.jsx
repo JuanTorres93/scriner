@@ -93,12 +93,12 @@ function LandingNavigation() {
         <li className="col-3">
           <li>
             <Button type="secondary" as={Link} to={"/login"}>
-              Login
+              Inicia sesión
             </Button>
           </li>
           <li>
             <Button as={Link} to={"/signup"}>
-              Sign Up
+              Regístrate
             </Button>
           </li>
         </li>

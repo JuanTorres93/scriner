@@ -10,6 +10,9 @@ const GlobalStyles = createGlobalStyle`
     --font-size-b1: 2.25rem;    /* 1 step up */
     --font-size-b2: 2.81rem;    /* 2 steps up */
     --font-size-b3: 3.52rem;    /* 3 steps up */
+    --font-size-b4: 4.42rem;    /* 4 steps up */
+    --font-size-b5: 5.53rem;    /* 5 steps up */
+    --font-size-b6: 6.91rem;    /* 6 steps up */
 
     // Font weights
     --font-weight-thinest: 400;
