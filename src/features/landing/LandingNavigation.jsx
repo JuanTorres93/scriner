@@ -17,7 +17,7 @@ const StyledNav = styled.nav`
 
   ul {
     display: grid;
-    grid-template-columns: 0.5fr 3fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     align-items: center;
     justify-items: center;
     list-style: none;
