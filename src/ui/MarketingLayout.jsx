@@ -5,12 +5,13 @@ const StyledMarketingLayout = styled.div`
   max-height: 100dvh;
   overflow: hidden;
 
-  /* background-color: var(--color-grey-t2); */
-  background-color: orangered;
+  background-color: var(--color-grey-t3);
 `;
 
 const StyledMain = styled.main`
   overflow-x: scroll;
+  max-width: 250rem;
+  margin: 0 auto;
 `;
 
 function MarketingLayout({ children }) {

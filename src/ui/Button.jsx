@@ -140,6 +140,8 @@ const StyledButton = styled.button`
   border: none;
   box-shadow: var(--shadow-sm);
 
+  text-decoration: none;
+
   ${(props) => types[props.type || "primary"]}
   ${(props) => variant[props.variant || "padding"]}
 `;

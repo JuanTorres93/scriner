@@ -13,10 +13,11 @@ const navItems = [
 const StyledNav = styled.nav`
   background-color: var(--color-grey-t2);
   padding: 0.5rem 2rem;
+  font-size: var(--font-size-base);
 
   ul {
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-columns: 0.5fr 3fr 1fr;
     align-items: center;
     justify-items: center;
     list-style: none;
@@ -65,6 +66,10 @@ const StyledNav = styled.nav`
       grid-column: 3;
       justify-self: end;
     }
+
+    .nav-logo {
+      margin-top: 0.5rem;
+    }
   }
 `;
 
@@ -73,7 +78,7 @@ function LandingNavigation() {
     <StyledNav>
       <ul>
         <li className="col-1">
-          <li>
+          <li className="nav-logo">
             <Link to={"/"}>
               <Logo />
             </Link>
