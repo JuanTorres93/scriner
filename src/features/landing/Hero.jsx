@@ -6,7 +6,7 @@ const StyledSection = styled.section`
   position: relative;
   width: 100%;
   height: 90vh;
-  background-color: var(--color-accent-t1);
+  background-color: transparent;
   overflow: hidden;
   padding: 8rem;
   padding-top: 30rem;
@@ -17,6 +17,7 @@ const StyledSection = styled.section`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: right;
   }
 `;
 
@@ -53,10 +54,7 @@ const Box = styled.div`
 function Hero() {
   return (
     <StyledSection>
-      <img
-        src="/hero.jpg"
-        alt="Hero image: A pen writing on a futuristic paper"
-      />
+      <img src="/hero.jpg" alt="Hero image" />
 
       <Box>
         <h1>¡Atención, YouTuber!</h1>
