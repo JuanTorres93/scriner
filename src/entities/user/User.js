@@ -5,3 +5,9 @@ export class User {
     this.email = email;
   }
 }
+
+export class UsersRepo {
+  async getById(id) {
+    throw new Error("Not implemented");
+  }
+}
