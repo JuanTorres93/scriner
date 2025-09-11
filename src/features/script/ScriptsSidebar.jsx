@@ -51,7 +51,7 @@ function ScriptsSidebar() {
 
   const scriptsByDate = scripts
     ? [...scripts]?.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       )
     : [];
 
@@ -161,7 +161,7 @@ function ScriptItem({ script }) {
       </Modal>
       <h3>{script.title}</h3>
       <p>{content}</p>
-      <span>{formatDate(script.created_at)}</span>
+      <span>{formatDate(script.createdAt)}</span>
     </StyledScriptItem>
   );
 }

@@ -15,7 +15,7 @@ export function toEntity(row) {
 export function toRow(entityOrPatch) {
   if (!entityOrPatch) return null;
 
-  const { userId, title, content } = entityOrPatch;
+  const { user_id, title, content } = entityOrPatch;
 
-  return { user_id: userId, title, content };
+  return { user_id, title, content };
 }

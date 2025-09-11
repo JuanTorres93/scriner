@@ -1,14 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateScript as updateScriptApi } from "../../services/scriptsApi";
 import toast from "react-hot-toast";
 
+import { useServices } from "../../interface-adapters/react/context/AppServicesProvider";
+
 export function useUpdateScript() {
+  const { scripts } = useServices();
+
   const queryClient = useQueryClient();
 
   const { mutate: updateScript, isPending: isUpdating } = useMutation({
-    mutationFn: ({ id, data }) => updateScriptApi(id, data),
+    mutationFn: ({ id, data }) => scripts.update.exec(id, data),
+    // eslint-disable-next-line no-unused-vars
     onSuccess: (data, variables) => {
-      // variables are the original parameters passed to the mutation
+      // DOC variables are the original parameters passed to the mutation
       queryClient.invalidateQueries({
         queryKey: ["scripts"],
       });
