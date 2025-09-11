@@ -1,15 +1,17 @@
 /* eslint-disable no-unused-vars */
+
+// TODO create an auth service to handle signup, login, logout, and getCurrentUser?
 export class UsersRepo {
-  async getById(id) {
+  async signup({ fullName, email, password }) {
     throw new Error("Not implemented");
   }
-  async create(script) {
+  async login({ email, password }) {
     throw new Error("Not implemented");
   }
-  async update(id, patch) {
+  async getCurrentUser() {
     throw new Error("Not implemented");
   }
-  async delete(id) {
+  async logout() {
     throw new Error("Not implemented");
   }
 }
