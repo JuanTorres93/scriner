@@ -3,7 +3,7 @@ export class GetCurrentUser {
     this.repo = repo;
   }
 
-  async exec() {
+  exec = async () => {
     return this.repo.getCurrentUser();
-  }
+  };
 }

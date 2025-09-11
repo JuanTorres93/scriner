@@ -3,9 +3,9 @@ export class Login {
     this.repo = repo;
   }
 
-  async exec(email, password) {
+  exec = async ({ email, password }) => {
     if (!email) throw new Error("email required");
     if (!password) throw new Error("password required");
     return this.repo.login({ email, password });
-  }
+  };
 }

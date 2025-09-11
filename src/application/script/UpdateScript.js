@@ -3,9 +3,9 @@ export class UpdateScript {
     this.repo = repo;
   }
 
-  async exec(id, patch) {
+  exec = async (id, patch) => {
     if (!id) throw new Error("id required");
     // TODO: validate patch fields?
     return this.repo.update(id, patch);
-  }
+  };
 }

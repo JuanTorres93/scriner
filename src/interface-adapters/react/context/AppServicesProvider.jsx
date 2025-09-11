@@ -1,26 +1,24 @@
+// interface-adapters/react/context/AppServicesProvider.jsx
 import { createContext, useContext, useMemo } from "react";
 
-/////// Repos
+// Infra: repos
 import { SupabaseScriptsRepo } from "../../../infrastructure/supabase/script/SupabaseScriptsRepo.js";
-import { SupabaseUsersRepo } from "../../../infrastructure/supabase/user/SupabaseUsersRepo.js";
 import { SupabaseEditsRepo } from "../../../infrastructure/supabase/edit/SupabaseEditsRepo.js";
+import { SupabaseUsersRepo } from "../../../infrastructure/supabase/user/SupabaseUsersRepo.js";
 
-/////// Use cases
-// Scripts
-import { CreateScript } from "../../../application/script/CreateScript.js";
-import { DeleteScript } from "../../../application/script/DeleteScript.js";
-import { GetScriptById } from "../../../application/script/GetScriptById.js";
+// Application: casos de uso
 import { GetScriptsByUser } from "../../../application/script/GetScriptsByUser.js";
+import { GetScriptById } from "../../../application/script/GetScriptById.js";
+import { CreateScript } from "../../../application/script/CreateScript.js";
 import { UpdateScript } from "../../../application/script/UpdateScript.js";
+import { DeleteScript } from "../../../application/script/DeleteScript.js";
 
-// Edits
-import { CreateEdit } from "../../../application/edit/CreateEdit.js";
-import { DeleteEdit } from "../../../application/edit/DeleteEdit.js";
-import { GetEditById } from "../../../application/edit/GetEditById.js";
 import { GetEditsByScript } from "../../../application/edit/GetEditsByScript.js";
+import { GetEditById } from "../../../application/edit/GetEditById.js";
+import { CreateEdit } from "../../../application/edit/CreateEdit.js";
 import { UpdateEdit } from "../../../application/edit/UpdateEdit.js";
+import { DeleteEdit } from "../../../application/edit/DeleteEdit.js";
 
-// Users
 import { Signup } from "../../../application/user/Signup.js";
 import { Login } from "../../../application/user/Login.js";
 import { GetCurrentUser } from "../../../application/user/GetCurrentUser.js";
@@ -28,33 +26,39 @@ import { Logout } from "../../../application/user/Logout.js";
 
 const ServicesContext = createContext(null);
 
-// TODO use context in the main app to start using the new arquitechture and fix the errors
-export default function AppServicesProvider({ children }) {
+export function AppServicesProvider({ children }) {
   const value = useMemo(() => {
-    const scriptsRepo = new SupabaseScriptsRepo();
-    const usersRepo = new SupabaseUsersRepo();
+    // Repos (puedes pasar 'supabase' si un repo lo necesita en el ctor)
+    const scriptsRepo =
+      new SupabaseScriptsRepo(/* supabase inyectado si procede */);
     const editsRepo = new SupabaseEditsRepo();
+    const usersRepo = new SupabaseUsersRepo();
 
-    return {
-      // Scripts
-      createScript: new CreateScript(scriptsRepo),
-      deleteScript: new DeleteScript(scriptsRepo),
-      getScriptById: new GetScriptById(scriptsRepo),
-      updateScript: new UpdateScript(scriptsRepo),
-      getScriptsByUser: new GetScriptsByUser(scriptsRepo),
-      // Users
+    // Casos de uso
+    const scripts = {
+      getByUser: new GetScriptsByUser(scriptsRepo),
+      getById: new GetScriptById(scriptsRepo),
+      create: new CreateScript(scriptsRepo),
+      update: new UpdateScript(scriptsRepo),
+      delete: new DeleteScript(scriptsRepo),
+    };
+
+    const edits = {
+      getByScript: new GetEditsByScript(editsRepo),
+      getById: new GetEditById(editsRepo),
+      create: new CreateEdit(editsRepo),
+      update: new UpdateEdit(editsRepo),
+      delete: new DeleteEdit(editsRepo),
+    };
+
+    const auth = {
       signup: new Signup(usersRepo),
       login: new Login(usersRepo),
-      getCurrentUser: new GetCurrentUser(usersRepo),
+      getCurrent: new GetCurrentUser(usersRepo),
       logout: new Logout(usersRepo),
-
-      // Edits
-      createEdit: new CreateEdit(editsRepo),
-      deleteEdit: new DeleteEdit(editsRepo),
-      getEditById: new GetEditById(editsRepo),
-      getEditsByScript: new GetEditsByScript(editsRepo),
-      updateEdit: new UpdateEdit(editsRepo),
     };
+
+    return { scripts, edits, auth };
   }, []);
 
   return (

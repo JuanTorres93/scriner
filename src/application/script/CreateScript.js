@@ -3,9 +3,9 @@ export class CreateScript {
     this.repo = repo;
   }
 
-  async exec(script) {
+  exec = async (script) => {
     if (!script) throw new Error("script required");
     // TODO: validate script fields?
     return this.repo.create(script);
-  }
+  };
 }

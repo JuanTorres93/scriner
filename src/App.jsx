@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import { AppServicesProvider } from "./interface-adapters/react/context/AppServicesProvider.jsx";
 import ProtectedRoute from "./features/authentication/ProtectedRoute.jsx";
 import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
 import Landing from "./pages/Landing.jsx";
@@ -86,28 +87,30 @@ function App() {
       <GlobalStyles />
       <CurrentEditsProvider>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <RouterProvider router={router} />
-          <Toaster
-            position="bottom-center"
-            gutter={12}
-            containerStyle={{ margin: "8px" }}
-            toastOptions={{
-              success: {
-                duration: 3000,
-              },
-              error: {
-                duration: 5000,
-              },
-              style: {
-                fontSize: "1.6rem",
-                maxWidth: "500px",
-                padding: "16px 24px",
-                backgroundColor: "var(--color-grey-t2)",
-                color: "var(--color-grey-s2)",
-              },
-            }}
-          />{" "}
+          <AppServicesProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <RouterProvider router={router} />
+            <Toaster
+              position="bottom-center"
+              gutter={12}
+              containerStyle={{ margin: "8px" }}
+              toastOptions={{
+                success: {
+                  duration: 3000,
+                },
+                error: {
+                  duration: 5000,
+                },
+                style: {
+                  fontSize: "1.6rem",
+                  maxWidth: "500px",
+                  padding: "16px 24px",
+                  backgroundColor: "var(--color-grey-t2)",
+                  color: "var(--color-grey-s2)",
+                },
+              }}
+            />{" "}
+          </AppServicesProvider>
         </QueryClientProvider>
       </CurrentEditsProvider>
     </>

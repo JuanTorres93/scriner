@@ -3,8 +3,8 @@ export class GetScriptById {
     this.repo = repo;
   }
 
-  async exec(id) {
+  exec = async (id) => {
     if (!id) throw new Error("id required");
     return this.repo.getById(id);
-  }
+  };
 }
