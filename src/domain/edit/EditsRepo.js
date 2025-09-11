@@ -1,5 +1,5 @@
 export class EditsRepo {
-  async getAll() {
+  async getAllByUser(userId) {
     throw new Error("Not implemented");
   }
 
