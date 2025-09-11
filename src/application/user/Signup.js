@@ -1,4 +1,4 @@
-export class CreateUser {
+export class Signup {
   constructor(repo) {
     this.repo = repo;
   }

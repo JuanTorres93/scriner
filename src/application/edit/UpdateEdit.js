@@ -1,4 +1,4 @@
-export class UpdateUser {
+export class UpdateEdit {
   constructor(repo) {
     this.repo = repo;
   }

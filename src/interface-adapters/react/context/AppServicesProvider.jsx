@@ -21,16 +21,39 @@ import { GetEditsByScript } from "../../../application/edit/GetEditsByScript.js"
 import { UpdateEdit } from "../../../application/edit/UpdateEdit.js";
 
 // Users
+import { Signup } from "../../../application/user/Signup.js";
+import { Login } from "../../../application/user/Login.js";
+import { GetCurrentUser } from "../../../application/user/GetCurrentUser.js";
+import { Logout } from "../../../application/user/Logout.js";
 
 const ServicesContext = createContext(null);
 
-export function AppServicesProvider({ children }) {
+// TODO use context in the main app to start using the new arquitechture and fix the errors
+export default function AppServicesProvider({ children }) {
   const value = useMemo(() => {
     const scriptsRepo = new SupabaseScriptsRepo();
+    const usersRepo = new SupabaseUsersRepo();
+    const editsRepo = new SupabaseEditsRepo();
 
     return {
+      // Scripts
+      createScript: new CreateScript(scriptsRepo),
+      deleteScript: new DeleteScript(scriptsRepo),
+      getScriptById: new GetScriptById(scriptsRepo),
+      updateScript: new UpdateScript(scriptsRepo),
       getScriptsByUser: new GetScriptsByUser(scriptsRepo),
-      // add more use cases here
+      // Users
+      signup: new Signup(usersRepo),
+      login: new Login(usersRepo),
+      getCurrentUser: new GetCurrentUser(usersRepo),
+      logout: new Logout(usersRepo),
+
+      // Edits
+      createEdit: new CreateEdit(editsRepo),
+      deleteEdit: new DeleteEdit(editsRepo),
+      getEditById: new GetEditById(editsRepo),
+      getEditsByScript: new GetEditsByScript(editsRepo),
+      updateEdit: new UpdateEdit(editsRepo),
     };
   }, []);
 
