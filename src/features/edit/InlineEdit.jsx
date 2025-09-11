@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { useParams } from "react-router-dom";
 
-import { EDIT_TYPES } from "./editTypes";
+import { EDIT_TYPES } from "../../domain/edit/editTypes.js";
 import { useCurrentEdits } from "./CurrentEditsContext";
 import { useEdits } from "./hooks/useEdits";
 

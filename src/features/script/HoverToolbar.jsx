@@ -21,7 +21,7 @@ import {
 } from "react-icons/hi2";
 
 import { ScriptActions } from "./ScriptActions";
-import { EDIT_TYPES } from "../edit/editTypes";
+import { EDIT_TYPES } from "../../domain/edit/editTypes.js";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 import { useCreateEdit } from "../edit/hooks/useCreateEdit";

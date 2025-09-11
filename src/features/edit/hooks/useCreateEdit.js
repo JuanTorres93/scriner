@@ -1,14 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEdit as createEditApi } from "../../../services/editsAPI";
 import toast from "react-hot-toast";
 import { useCurrentEdits } from "../CurrentEditsContext";
+import { useServices } from "../../../interface-adapters/react/context/AppServicesProvider";
 
 export function useCreateEdit() {
+  const { edits } = useServices();
+
   const queryClient = useQueryClient();
   const { setCurrentEditsIds } = useCurrentEdits();
 
   const { mutate: createEdit, isPending: isCreating } = useMutation({
-    mutationFn: createEditApi,
+    mutationFn: edits.create.exec,
     onSuccess: (data) => {
       // Invalidate the scripts query to refetch the updated list
       queryClient.invalidateQueries({

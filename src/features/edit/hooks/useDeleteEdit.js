@@ -1,13 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteEdit as deleteEditApi } from "../../../services/editsAPI";
 import toast from "react-hot-toast";
+import { useServices } from "../../../interface-adapters/react/context/AppServicesProvider";
 
 export function useDeleteEdit() {
+  const { edits } = useServices();
+
   const queryClient = useQueryClient();
 
   const { mutate: deleteEdit, isPending: isDeleting } = useMutation({
-    mutationFn: deleteEditApi,
+    mutationFn: edits.delete.exec,
+    // eslint-disable-next-line no-unused-vars
     onSuccess: (data) => {
+      // DOC data is the deleted edit
       queryClient.invalidateQueries({
         queryKey: ["edits"],
       });

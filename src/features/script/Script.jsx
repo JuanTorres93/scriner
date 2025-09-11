@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useUpdateScript } from "./useUpdateScript";
 import InlineEdit from "../edit/InlineEdit";
 import HoveringToolbar from "./HoverToolbar";
-import { EDIT_TYPES } from "../edit/editTypes";
+import { EDIT_TYPES } from "../../domain/edit/editTypes.js";
 
 const StyledEditable = styled(Editable)`
   border: 2px solid var(--color-grey);
