@@ -6,6 +6,6 @@ export class Signup {
   async exec(user) {
     if (!user) throw new Error("user required");
     // TODO: validate user fields?
-    return this.repo.create(user);
+    return this.repo.signup(user);
   }
 }

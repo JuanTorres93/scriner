@@ -1,5 +1,5 @@
 import { ScriptsRepo } from "../../../domain/script/ScriptsRepo.js";
-import { supabase } from "../client.js";
+import supabase from "../client.js";
 import { toEntity, toRow } from "./ScriptMapper.js";
 
 export class SupabaseScriptsRepo extends ScriptsRepo {

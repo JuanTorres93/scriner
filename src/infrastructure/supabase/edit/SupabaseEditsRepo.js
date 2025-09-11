@@ -1,12 +1,12 @@
 import { EditsRepo } from "../../../domain/edit/EditsRepo";
-import { supabase } from "../client.js";
+import supabase from "../client.js";
 import { toEntity, toRow } from "./EditMapper.js";
 
 export class SupabaseEditsRepo extends EditsRepo {
   async getAllByScript(scriptId) {
     const { data, error } = await supabase
       .from("edits")
-      .select("id,scriptId,content,created_at")
+      .select("id,scriptId,content,type,isDone,created_at")
       .eq("scriptId", scriptId);
 
     if (error) throw new Error("No se pudieron cargar las anotaciones");
@@ -17,7 +17,7 @@ export class SupabaseEditsRepo extends EditsRepo {
   async getById(id) {
     const { data, error } = await supabase
       .from("edits")
-      .select("id,scriptId,content,created_at")
+      .select("id,scriptId,content,type,isDone,created_at")
       .eq("id", id)
       .single();
 
@@ -31,7 +31,7 @@ export class SupabaseEditsRepo extends EditsRepo {
     const { data, error } = await supabase
       .from("edits")
       .insert(row)
-      .select("id,scriptId,content,created_at")
+      .select("id,scriptId,content,type,isDone,created_at")
       .single();
 
     if (error) throw new Error("No se pudo crear la anotación");
@@ -45,7 +45,7 @@ export class SupabaseEditsRepo extends EditsRepo {
       .from("edits")
       .update(row)
       .eq("id", id)
-      .select("id,scriptId,content,created_at")
+      .select("id,scriptId,content,type,isDone,created_at")
       .single();
 
     if (error) throw new Error("No se pudo actualizar la anotación");
@@ -58,7 +58,7 @@ export class SupabaseEditsRepo extends EditsRepo {
       .from("edits")
       .delete()
       .eq("id", id)
-      .select("id,scriptId,content,created_at")
+      .select("id,scriptId,content,type,isDone,created_at")
       .single();
 
     if (error) throw new Error("No se pudo eliminar la anotación");

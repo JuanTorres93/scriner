@@ -1,6 +1,6 @@
 import { UsersRepo } from "../../../domain/user/UsersRepo.js";
 import supabase from "../client.js";
-import { toEntity, toRow } from "../script/ScriptMapper.js";
+import { toEntity, toRow } from "./UserMapper.js";
 
 // TODO create an auth service to handle signup, login, logout, and getCurrentUser?
 // TODO manage toEntity and toRow when I decide how to finally implement user profiles and authentication

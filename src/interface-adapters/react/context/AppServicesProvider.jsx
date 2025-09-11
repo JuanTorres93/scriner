@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 
 /////// Repos
-import { SupabaseScriptsRepo } from "../../../infrastructure/supabase/SupabaseScriptsRepo.js";
+import { SupabaseScriptsRepo } from "../../../infrastructure/supabase/script/SupabaseScriptsRepo.js";
 import { SupabaseUsersRepo } from "../../../infrastructure/supabase/user/SupabaseUsersRepo.js";
 import { SupabaseEditsRepo } from "../../../infrastructure/supabase/edit/SupabaseEditsRepo.js";
 
