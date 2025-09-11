@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export class ScriptsRepo {
   async getAllByUser(userId) {
     throw new Error("Not implemented");

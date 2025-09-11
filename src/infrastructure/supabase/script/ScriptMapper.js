@@ -1,4 +1,4 @@
-import { Script } from "../../domain/script/Script.js";
+import { Script } from "../../../domain/script/Script.js";
 
 export function toEntity(row) {
   if (!row) return null;
@@ -9,7 +9,6 @@ export function toEntity(row) {
     title: row.title,
     content: row.content,
     createdAt: row.created_at,
-    updatedAt: row.updated_at,
   });
 }
 
