@@ -5,7 +5,7 @@ export class Signup {
     this.authService = authService;
   }
 
-  exec = async ({ fullName, email, password }) => {
+  exec = async ({ fullName, email, password } = {}) => {
     if (!fullName) throw new ValidationError("fullName required");
     if (!email) throw new ValidationError("email required");
     if (!password) throw new ValidationError("password required");
