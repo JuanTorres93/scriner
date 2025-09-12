@@ -6,7 +6,7 @@ export function toEntity(row) {
   return new Edit({
     id: row.id,
     content: row.content,
-    createdAt: row.created_at,
+    createdAt: new Date(row.created_at),
     type: row.type,
     isDone: row.isDone,
     scriptId: row.scriptId,
