@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/Work_in_progress-purple)
+![Static Badge](https://img.shields.io/badge/Status-Work_in_progress-purple)
 
 # Scriner (name work-in-progress)
 
