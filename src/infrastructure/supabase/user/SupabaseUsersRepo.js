@@ -1,5 +1,6 @@
 import { UsersRepo } from "../../../domain/user/UsersRepo.js";
 import { toEntity, toRow } from "./UserMapper.js";
+import { mapSupabaseError } from "../errors.js";
 
 // TODO create an auth service to handle signup, login, logout, and getCurrentUser?
 // TODO manage toEntity and toRow when I decide how to finally implement user profiles and authentication
@@ -24,7 +25,7 @@ export class SupabaseUsersRepo extends UsersRepo {
       },
     });
 
-    if (error) throw new Error(error.message);
+    if (error) throw mapSupabaseError(error);
 
     return data;
   }
@@ -35,7 +36,8 @@ export class SupabaseUsersRepo extends UsersRepo {
       password,
     });
 
-    if (error) throw new Error(error.message);
+    // if (error) throw new ValidationError(error.message);
+    if (error) throw mapSupabaseError(error);
 
     return data;
   }
@@ -47,7 +49,7 @@ export class SupabaseUsersRepo extends UsersRepo {
 
     const { data, error } = await this.client.auth.getUser();
 
-    if (error) throw new Error(error.message);
+    if (error) throw mapSupabaseError(error);
 
     return data?.user;
   }
@@ -55,6 +57,6 @@ export class SupabaseUsersRepo extends UsersRepo {
   async logout() {
     const { error } = await this.client.auth.signOut();
 
-    if (error) throw new Error(error.message);
+    if (error) throw mapSupabaseError(error);
   }
 }
