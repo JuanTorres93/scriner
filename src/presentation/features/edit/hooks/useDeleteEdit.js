@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useServices } from "../../../interface-adapters/react/context/AppServicesProvider";
+import { useServices } from "../../../../interface-adapters/react/context/AppServicesProvider";
 
 export function useDeleteEdit() {
   const { edits } = useServices();

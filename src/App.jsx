@@ -8,15 +8,17 @@ import {
 } from "react-router-dom";
 
 import { AppServicesProvider } from "./interface-adapters/react/context/AppServicesProvider.jsx";
-import ProtectedRoute from "./features/authentication/ProtectedRoute.jsx";
-import CurrentEditsProvider from "./features/edit/CurrentEditsContext.jsx";
-import Landing from "./pages/Landing.jsx";
-import Login from "./pages/Login.jsx";
-import ScriptEditor from "./pages/ScriptEditor";
-import Signup from "./pages/Signup.jsx";
-import GlobalStyles from "./styles/GlobalStyles.js";
-import AppLayout from "./ui/AppLayout";
-import MarketingLayout from "./ui/MarketingLayout.jsx";
+
+import ProtectedRoute from "./presentation/features/authentication/ProtectedRoute.jsx";
+import CurrentEditsProvider from "./presentation/features/edit/CurrentEditsContext.jsx";
+
+import Landing from "./presentation/pages/Landing.jsx";
+import Login from "./presentation/pages/Login.jsx";
+import ScriptEditor from "./presentation/pages/ScriptEditor";
+import Signup from "./presentation/pages/Signup.jsx";
+import GlobalStyles from "./presentation/styles/GlobalStyles.js";
+import AppLayout from "./presentation/ui/AppLayout.jsx";
+import MarketingLayout from "./presentation/ui/MarketingLayout.jsx";
 
 const router = createBrowserRouter([
   {

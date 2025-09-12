@@ -20,12 +20,12 @@ import {
   HiMiniMusicalNote,
 } from "react-icons/hi2";
 
-import { ScriptActions } from "./ScriptActions";
-import { EDIT_TYPES } from "../../domain/edit/editTypes.js";
+import { ScriptActions } from "./ScriptActions.jsx";
+import { EDIT_TYPES } from "../../../domain/edit/editTypes.js";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import { useCreateEdit } from "../edit/hooks/useCreateEdit";
-import { useDeleteEdit } from "../edit/hooks/useDeleteEdit";
+import { useCreateEdit } from "../edit/hooks/useCreateEdit.js";
+import { useDeleteEdit } from "../edit/hooks/useDeleteEdit.js";
 
 /* ======================================================
    SAFETY HELPERS
