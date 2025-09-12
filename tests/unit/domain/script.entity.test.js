@@ -3,7 +3,7 @@ import { Script } from "../../../src/domain/script/Script.js";
 
 describe("Script entity", () => {
   it("assigns entity properties", () => {
-    const s = new Script({
+    const script = new Script({
       id: "1",
       userId: "u1",
       title: "T",
@@ -11,10 +11,10 @@ describe("Script entity", () => {
       createdAt: "2025-01-01",
     });
 
-    expect(s.id).toBe("1");
-    expect(s.userId).toBe("u1");
-    expect(s.title).toBe("T");
-    expect(s.content).toBe("C");
-    expect(s.createdAt).toBe("2025-01-01");
+    expect(script.id).toBe("1");
+    expect(script.userId).toBe("u1");
+    expect(script.title).toBe("T");
+    expect(script.content).toBe("C");
+    expect(script.createdAt).toBe("2025-01-01");
   });
 });

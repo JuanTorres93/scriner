@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { ScriptsRepo } from "../../../src/domain/script/ScriptsRepo.js";
+import { EditsRepo } from "../../../src/domain/edit/EditsRepo.js";
 
-describe("Script contract", () => {
-  it("ScriptsRepo has all required methods", async () => {
-    const repo = new ScriptsRepo();
-    await expect(repo.getAllByUser("u")).rejects.toThrow(/Not implemented/);
+describe("Edit contract", () => {
+  it("EditsRepo has all required methods", async () => {
+    const repo = new EditsRepo();
+    await expect(repo.getAllByScript("u")).rejects.toThrow(/Not implemented/);
     await expect(repo.getById("1")).rejects.toThrow(/Not implemented/);
     await expect(repo.create("1")).rejects.toThrow(/Not implemented/);
     await expect(repo.update("1")).rejects.toThrow(/Not implemented/);
