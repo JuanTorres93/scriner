@@ -5,15 +5,25 @@ export function toEntity(row) {
 
   return new User({
     id: row.id,
-    name: row.name,
+    fullName: row.full_name,
     email: row.email,
+    avatar: row.avatar || "",
+    createdAt: row.created_at ? new Date(row.created_at) : new Date(),
   });
 }
 
 export function toRow(entityOrPatch) {
   if (!entityOrPatch) return null;
 
-  const { name, email } = entityOrPatch;
+  const result = {};
 
-  return { name, email };
+  if (entityOrPatch.id !== undefined) result.id = entityOrPatch.id;
+  if (entityOrPatch.fullName !== undefined)
+    result.full_name = entityOrPatch.fullName;
+  if (entityOrPatch.email !== undefined) result.email = entityOrPatch.email;
+  if (entityOrPatch.avatar !== undefined) result.avatar = entityOrPatch.avatar;
+  if (entityOrPatch.createdAt !== undefined)
+    result.created_at = entityOrPatch.createdAt;
+
+  return result;
 }

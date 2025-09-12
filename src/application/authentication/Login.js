@@ -1,13 +1,14 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from "../../domain/common/errors.js";
 
 export class Login {
-  constructor(repo) {
-    this.repo = repo;
+  constructor(authService) {
+    this.authService = authService;
   }
 
   exec = async ({ email, password }) => {
     if (!email) throw new ValidationError("email required");
     if (!password) throw new ValidationError("password required");
-    return this.repo.login({ email, password });
+
+    return this.authService.login({ email, password });
   };
 }

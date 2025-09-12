@@ -2,59 +2,45 @@ import { UsersRepo } from "../../../domain/user/UsersRepo.js";
 import { toEntity, toRow } from "./UserMapper.js";
 import { mapSupabaseError } from "../errors.js";
 
-// TODO create an auth service to handle signup, login, logout, and getCurrentUser?
-// TODO manage toEntity and toRow when I decide how to finally implement user profiles and authentication
-
+// TODO IMPORTANT, when implementing/testing check this code, it has been written by GitHub Copilot.
 export class SupabaseUsersRepo extends UsersRepo {
   constructor(client) {
-    // Client will be supabase instance. It is passed for ease of testing/mocking.
     super();
     this.client = client;
   }
 
-  async signup({ fullName, email, password }) {
-    const { data, error } = await this.client.auth.signUp({
-      email,
-      password,
-      options: {
-        // Adds data to the newly created user
-        data: {
-          fullName,
-          avatar: "",
-        },
-      },
-    });
+  async getById(id) {
+    const { data, error } = await this.client
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") return null; // Not found
+      throw mapSupabaseError(error);
+    }
+
+    return toEntity(data);
+  }
+
+  async updateProfile(id, updates) {
+    const updateData = toRow(updates);
+
+    const { data, error } = await this.client
+      .from("users")
+      .update(updateData)
+      .eq("id", id)
+      .select()
+      .single();
 
     if (error) throw mapSupabaseError(error);
 
-    return data;
+    return toEntity(data);
   }
 
-  async login({ email, password }) {
-    const { data, error } = await this.client.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) throw mapSupabaseError(error);
-
-    return data;
-  }
-
-  async getCurrentUser() {
-    const { data: session } = await this.client.auth.getSession();
-
-    if (!session.session) return null;
-
-    const { data, error } = await this.client.auth.getUser();
-
-    if (error) throw mapSupabaseError(error);
-
-    return data?.user;
-  }
-
-  async logout() {
-    const { error } = await this.client.auth.signOut();
+  async delete(id) {
+    const { error } = await this.client.from("users").delete().eq("id", id);
 
     if (error) throw mapSupabaseError(error);
   }

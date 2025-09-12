@@ -3,39 +3,48 @@ import { createContext, useContext, useMemo } from "react";
 
 import supabase from "../../../infrastructure/supabase/client.js";
 
-// Infra: repos
+// Infra: repos and services
 import { SupabaseScriptsRepo } from "../../../infrastructure/supabase/script/SupabaseScriptsRepo.js";
 import { SupabaseEditsRepo } from "../../../infrastructure/supabase/edit/SupabaseEditsRepo.js";
 import { SupabaseUsersRepo } from "../../../infrastructure/supabase/user/SupabaseUsersRepo.js";
+import { SupabaseAuthService } from "../../../infrastructure/supabase/authentication/SupabaseAuthService.js";
 
-// Application: casos de uso
+// Application: script use cases
 import { GetScriptsByUser } from "../../../application/script/GetScriptsByUser.js";
 import { GetScriptById } from "../../../application/script/GetScriptById.js";
 import { CreateScript } from "../../../application/script/CreateScript.js";
 import { UpdateScript } from "../../../application/script/UpdateScript.js";
 import { DeleteScript } from "../../../application/script/DeleteScript.js";
 
+// Application: edit use cases
 import { GetEditsByScript } from "../../../application/edit/GetEditsByScript.js";
 import { GetEditById } from "../../../application/edit/GetEditById.js";
 import { CreateEdit } from "../../../application/edit/CreateEdit.js";
 import { UpdateEdit } from "../../../application/edit/UpdateEdit.js";
 import { DeleteEdit } from "../../../application/edit/DeleteEdit.js";
 
-import { Signup } from "../../../application/user/Signup.js";
-import { Login } from "../../../application/user/Login.js";
-import { GetCurrentUser } from "../../../application/user/GetCurrentUser.js";
-import { Logout } from "../../../application/user/Logout.js";
+// Application: authentication use cases
+import { Signup } from "../../../application/authentication/Signup.js";
+import { Login } from "../../../application/authentication/Login.js";
+import { GetCurrentUser } from "../../../application/authentication/GetCurrentUser.js";
+import { Logout } from "../../../application/authentication/Logout.js";
+
+// Application: user use cases
+import { GetUserById } from "../../../application/user/GetUserById.js";
+import { UpdateUserProfile } from "../../../application/user/UpdateUserProfile.js";
+import { DeleteUser } from "../../../application/user/DeleteUser.js";
 
 const ServicesContext = createContext(null);
 
 export function AppServicesProvider({ children }) {
   const value = useMemo(() => {
-    // Repos (puedes pasar 'supabase' si un repo lo necesita en el ctor)
+    // Repos and services
     const scriptsRepo = new SupabaseScriptsRepo(supabase);
     const editsRepo = new SupabaseEditsRepo(supabase);
     const usersRepo = new SupabaseUsersRepo(supabase);
+    const authService = new SupabaseAuthService(supabase);
 
-    // Casos de uso
+    // Use cases
     const scripts = {
       getByUser: new GetScriptsByUser(scriptsRepo),
       getById: new GetScriptById(scriptsRepo),
@@ -53,13 +62,19 @@ export function AppServicesProvider({ children }) {
     };
 
     const auth = {
-      signup: new Signup(usersRepo),
-      login: new Login(usersRepo),
-      getCurrent: new GetCurrentUser(usersRepo),
-      logout: new Logout(usersRepo),
+      signup: new Signup(authService),
+      login: new Login(authService),
+      getCurrent: new GetCurrentUser(authService),
+      logout: new Logout(authService),
     };
 
-    return { scripts, edits, auth };
+    const users = {
+      getById: new GetUserById(usersRepo),
+      updateProfile: new UpdateUserProfile(usersRepo),
+      delete: new DeleteUser(usersRepo),
+    };
+
+    return { scripts, edits, auth, users };
   }, []);
 
   return (
