@@ -19,6 +19,7 @@ import Signup from "./presentation/pages/Signup.jsx";
 import GlobalStyles from "./presentation/styles/GlobalStyles.js";
 import AppLayout from "./presentation/ui/AppLayout.jsx";
 import MarketingLayout from "./presentation/ui/MarketingLayout.jsx";
+import ErrorPage from "./presentation/ui/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
         <Landing />
       </MarketingLayout>
     ),
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
@@ -37,6 +39,7 @@ const router = createBrowserRouter([
         <Login />
       </MarketingLayout>
     ),
+    errorElement: <ErrorPage />,
   },
   {
     path: "/signup",
@@ -45,15 +48,17 @@ const router = createBrowserRouter([
         <Signup />
       </MarketingLayout>
     ),
+    errorElement: <ErrorPage />,
   },
   {
     // AppLayout is the main layout for the app
+    path: "/app",
     element: (
       <ProtectedRoute>
         <AppLayout />
       </ProtectedRoute>
     ),
-    path: "/app",
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "editor",
