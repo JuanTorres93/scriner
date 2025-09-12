@@ -8,7 +8,7 @@ export function toEntity(row) {
     userId: row.user_id,
     title: row.title,
     content: row.content,
-    createdAt: row.created_at,
+    createdAt: new Date(row.created_at),
   });
 }
 
