@@ -1,0 +1,11 @@
+/// <reference types="vitest" />
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./tests/setupTests.js"],
+    globals: true,
+    coverage: { reporter: ["text", "lcov"] },
+  },
+});
