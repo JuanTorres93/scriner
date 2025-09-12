@@ -36,7 +36,6 @@ export class SupabaseUsersRepo extends UsersRepo {
       password,
     });
 
-    // if (error) throw new ValidationError(error.message);
     if (error) throw mapSupabaseError(error);
 
     return data;

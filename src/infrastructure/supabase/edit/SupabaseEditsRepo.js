@@ -1,5 +1,6 @@
 import { EditsRepo } from "../../../domain/edit/EditsRepo";
 import { toEntity, toRow } from "./EditMapper.js";
+import { InfrastructureError } from "../../../domain/common/errors.js";
 
 export class SupabaseEditsRepo extends EditsRepo {
   constructor(client) {
@@ -14,7 +15,10 @@ export class SupabaseEditsRepo extends EditsRepo {
       .select("id,scriptId,content,type,isDone,created_at")
       .eq("scriptId", scriptId);
 
-    if (error) throw new Error("No se pudieron cargar las anotaciones");
+    if (error)
+      throw new InfrastructureError("No se pudieron cargar las anotaciones", {
+        cause: error,
+      });
 
     return data.map(toEntity);
   }
@@ -26,7 +30,10 @@ export class SupabaseEditsRepo extends EditsRepo {
       .eq("id", id)
       .single();
 
-    if (error) throw new Error("No se pudo cargar la anotación");
+    if (error)
+      throw new InfrastructureError("No se pudo cargar la anotación", {
+        cause: error,
+      });
 
     return toEntity(data);
   }
@@ -39,7 +46,10 @@ export class SupabaseEditsRepo extends EditsRepo {
       .select("id,scriptId,content,type,isDone,created_at")
       .single();
 
-    if (error) throw new Error("No se pudo crear la anotación");
+    if (error)
+      throw new InfrastructureError("No se pudo crear la anotación", {
+        cause: error,
+      });
 
     return toEntity(data);
   }
@@ -53,7 +63,10 @@ export class SupabaseEditsRepo extends EditsRepo {
       .select("id,scriptId,content,type,isDone,created_at")
       .single();
 
-    if (error) throw new Error("No se pudo actualizar la anotación");
+    if (error)
+      throw new InfrastructureError("No se pudo actualizar la anotación", {
+        cause: error,
+      });
 
     return toEntity(data);
   }
@@ -66,7 +79,10 @@ export class SupabaseEditsRepo extends EditsRepo {
       .select("id,scriptId,content,type,isDone,created_at")
       .single();
 
-    if (error) throw new Error("No se pudo eliminar la anotación");
+    if (error)
+      throw new InfrastructureError("No se pudo eliminar la anotación", {
+        cause: error,
+      });
 
     return toEntity(data);
   }
