@@ -1,6 +1,8 @@
 // interface-adapters/react/context/AppServicesProvider.jsx
 import { createContext, useContext, useMemo } from "react";
 
+import supabase from "../../../infrastructure/supabase/client.js";
+
 // Infra: repos
 import { SupabaseScriptsRepo } from "../../../infrastructure/supabase/script/SupabaseScriptsRepo.js";
 import { SupabaseEditsRepo } from "../../../infrastructure/supabase/edit/SupabaseEditsRepo.js";
@@ -29,10 +31,9 @@ const ServicesContext = createContext(null);
 export function AppServicesProvider({ children }) {
   const value = useMemo(() => {
     // Repos (puedes pasar 'supabase' si un repo lo necesita en el ctor)
-    const scriptsRepo =
-      new SupabaseScriptsRepo(/* supabase inyectado si procede */);
-    const editsRepo = new SupabaseEditsRepo();
-    const usersRepo = new SupabaseUsersRepo();
+    const scriptsRepo = new SupabaseScriptsRepo(supabase);
+    const editsRepo = new SupabaseEditsRepo(supabase);
+    const usersRepo = new SupabaseUsersRepo(supabase);
 
     // Casos de uso
     const scripts = {

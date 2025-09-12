@@ -1,10 +1,15 @@
 import { EditsRepo } from "../../../domain/edit/EditsRepo";
-import supabase from "../client.js";
 import { toEntity, toRow } from "./EditMapper.js";
 
 export class SupabaseEditsRepo extends EditsRepo {
+  constructor(client) {
+    // Client will be supabase instance. It is passed for ease of testing/mocking.
+    super();
+    this.client = client;
+  }
+
   async getAllByScript(scriptId) {
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("edits")
       .select("id,scriptId,content,type,isDone,created_at")
       .eq("scriptId", scriptId);
@@ -15,7 +20,7 @@ export class SupabaseEditsRepo extends EditsRepo {
   }
 
   async getById(id) {
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("edits")
       .select("id,scriptId,content,type,isDone,created_at")
       .eq("id", id)
@@ -28,7 +33,7 @@ export class SupabaseEditsRepo extends EditsRepo {
 
   async create(edit) {
     const row = toRow(edit);
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("edits")
       .insert(row)
       .select("id,scriptId,content,type,isDone,created_at")
@@ -41,7 +46,7 @@ export class SupabaseEditsRepo extends EditsRepo {
 
   async update(id, edit) {
     const row = toRow(edit);
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("edits")
       .update(row)
       .eq("id", id)
@@ -54,7 +59,7 @@ export class SupabaseEditsRepo extends EditsRepo {
   }
 
   async delete(id) {
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("edits")
       .delete()
       .eq("id", id)

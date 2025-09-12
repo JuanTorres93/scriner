@@ -1,10 +1,15 @@
 import { ScriptsRepo } from "../../../domain/script/ScriptsRepo.js";
-import supabase from "../client.js";
 import { toEntity, toRow } from "./ScriptMapper.js";
 
 export class SupabaseScriptsRepo extends ScriptsRepo {
+  constructor(client) {
+    // Client will be supabase instance. It is passed for ease of testing/mocking.
+    super();
+    this.client = client;
+  }
+
   async getAllByUser(userId) {
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("scripts")
       .select("id,user_id,title,content,created_at")
       .eq("user_id", userId);
@@ -15,7 +20,7 @@ export class SupabaseScriptsRepo extends ScriptsRepo {
   }
 
   async getById(id) {
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("scripts")
       .select("id,user_id,title,content,created_at")
       .eq("id", id)
@@ -27,7 +32,7 @@ export class SupabaseScriptsRepo extends ScriptsRepo {
   async create(script) {
     const row = toRow(script);
 
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("scripts")
       .insert(row)
       .select("id,user_id,title,content,created_at")
@@ -39,7 +44,7 @@ export class SupabaseScriptsRepo extends ScriptsRepo {
 
   async update(id, patch) {
     const row = toRow(patch);
-    const { data, error } = await supabase
+    const { data, error } = await this.client
       .from("scripts")
       .update(row)
       .eq("id", id)
@@ -50,7 +55,7 @@ export class SupabaseScriptsRepo extends ScriptsRepo {
   }
 
   async delete(id) {
-    const { error } = await supabase.from("scripts").delete().eq("id", id);
+    const { error } = await this.client.from("scripts").delete().eq("id", id);
     if (error) throw new Error("No se pudo eliminar el guion");
   }
 }
