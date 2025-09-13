@@ -14,6 +14,9 @@ const StyledNav = styled.nav`
   background-color: var(--color-grey-t2);
   padding: 0.5rem 2rem;
   font-size: var(--font-size-base);
+  position: fixed;
+  z-index: 10;
+  width: 100%;
 
   ul {
     display: grid;
@@ -47,6 +50,10 @@ const StyledNav = styled.nav`
         padding: 0;
         margin: 0;
       }
+
+      span {
+        display: inline-block;
+      }
     }
 
     .col-1 {
@@ -57,7 +64,7 @@ const StyledNav = styled.nav`
     .col-2 {
       grid-column: 2;
 
-      li {
+      span {
         margin-right: 3rem;
       }
     }
@@ -78,34 +85,34 @@ function LandingNavigation() {
     <StyledNav>
       <ul>
         <li className="col-1">
-          <li className="nav-logo">
+          <span className="nav-logo">
             <Link to={"/"}>
               <Logo />
             </Link>
-          </li>
+          </span>
         </li>
 
         <li className="col-2">
           {navItems.map((item) => (
-            <li key={item.href}>
+            <span key={item.href}>
               <Link className="nav-item" to={item.href}>
                 {item.label}
               </Link>
-            </li>
+            </span>
           ))}
         </li>
 
         <li className="col-3">
-          <li>
+          <span>
             <Button type="secondary" as={Link} to={"/login"}>
               Inicia sesión
             </Button>
-          </li>
-          <li>
+          </span>
+          <span>
             <Button as={Link} to={"/signup"}>
               Regístrate
             </Button>
-          </li>
+          </span>
         </li>
       </ul>
     </StyledNav>
