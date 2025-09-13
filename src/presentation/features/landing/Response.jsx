@@ -1,5 +1,5 @@
 function Response() {
-  return <div>Response</div>;
+  return <section id="response">¡Mejora tus vídeos!</section>;
 }
 
 export default Response;
