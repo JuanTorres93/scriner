@@ -46,6 +46,13 @@ const StyledNav = styled.nav`
       a:link {
         color: var(--color-grey-s3);
         text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      a:hover,
+      a:focus,
+      a:active {
+        font-weight: 500;
       }
 
       .nav-item,
@@ -76,6 +83,9 @@ const StyledNav = styled.nav`
     .col-3 {
       grid-column: 3;
       justify-self: end;
+
+      display: flex;
+      gap: 1rem;
     }
 
     .nav-logo {
