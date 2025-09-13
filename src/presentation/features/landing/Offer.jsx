@@ -1,9 +1,12 @@
+import Section from "./Section";
+
 function Offer() {
+  // TODO CHANGE SECTION NAME
   return (
-    <section id="offer">
+    <Section id="offer" sectionName="¿Qué ofrezco?">
       - Menos tiempo de edición - Mayor creatividad - Hacer mejores vídeos -
       Herramienta Gratuita
-    </section>
+    </Section>
   );
 }
 

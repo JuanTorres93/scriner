@@ -7,18 +7,12 @@ const StyledSection = styled(Section)`
     height: auto;
     margin-bottom: 2rem;
   }
-
-  em {
-    display: inline;
-    font-style: italic;
-    font-weight: var(--font-weight-medium);
-    color: var(--color-accent);
-  }
 `;
 
 function Problem() {
   return (
-    <StyledSection id="problem">
+    // TODO CHANGE SECTION NAME
+    <StyledSection id="problem" sectionName="¿Cuál es el problema?">
       <img src="problem.png" alt="Un problema de creatividad" />
       <p>
         Crees que te falta creatividad, pero tienes un deseo ardiente de hacer
