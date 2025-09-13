@@ -6,7 +6,13 @@ const StyledSection = styled.section`
   position: relative;
   width: 100%;
   height: 90vh;
-  background-color: transparent;
+  /* Fallback when image is not shown */
+  background-image: linear-gradient(
+    to top right,
+    var(--color-primary-s2) 0%,
+    var(--color-primary-t2) 100%
+  );
+
   overflow: hidden;
   padding: 8rem;
   padding-top: 30rem;
@@ -36,18 +42,23 @@ const Box = styled.div`
 
   h1 {
     font-size: var(--font-size-b5);
+    font-weight: 400;
+    color: var(--color-grey-t2);
     line-height: 1.1;
+    opacity: 0.95;
     margin-bottom: 2rem;
   }
 
-  p {
-    font-size: var(--font-size-b1);
-    opacity: 0.95;
+  h2 {
+    font-size: var(--font-size-b3);
+    color: var(--color-grey-t3);
+    letter-spacing: 0.1rem;
     margin: 0 0 1.25rem;
   }
 
   .button-container {
-    max-width: 14rem;
+    margin-top: 6rem;
+    max-width: 16rem;
   }
 `;
 
@@ -57,11 +68,12 @@ function Hero() {
       <img src="/hero.jpg" alt="Hero image" />
 
       <Box>
-        <h1>¡Atención, YouTuber!</h1>
-        <p>Tus vídeos subirán al siguiente nivel...</p>
+        <h2>¿Pierdes el tiempo al editar?</h2>
+        <h1>Con YouScript mejorarás tus vídeos y ahorrarás tiempo.</h1>
+        {/* <p>Tus vídeos subirán al siguiente nivel...</p> */}
 
         <div className="button-container">
-          <Button as={Link} to={"/signup"}>
+          <Button variant="boldTextLarge" as={Link} to={"/signup"}>
             Únete ahora
           </Button>
         </div>

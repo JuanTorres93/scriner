@@ -2,6 +2,10 @@ import styled, { css } from "styled-components";
 
 const variant = {
   none: css``,
+  boldTextLarge: css`
+    padding: 1rem 2rem;
+    font-weight: 600;
+  `,
   large: css`
     padding: 1rem 2rem;
   `,
