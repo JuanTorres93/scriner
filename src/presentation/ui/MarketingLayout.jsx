@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import LandingNavigation from "../features/landing/LandingNavigation";
+import Footer from "../features/landing/Footer";
 
 const StyledMarketingLayout = styled.div`
   position: relative;
@@ -21,6 +22,7 @@ function MarketingLayout({ children }) {
     <StyledMarketingLayout>
       <LandingNavigation />
       <StyledMain>{children}</StyledMain>
+      <Footer />
     </StyledMarketingLayout>
   );
 }

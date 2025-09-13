@@ -31,9 +31,14 @@ const Content = styled.div`
   }
 `;
 
-function Section({ children, className, sectionName = "Section Name" }) {
+function Section({
+  children,
+  className,
+  sectionName = "Section Name",
+  ...props
+}) {
   return (
-    <StyledSection className={className}>
+    <StyledSection className={className} {...props}>
       <h3>{sectionName}</h3>
       <Content>{children}</Content>
     </StyledSection>

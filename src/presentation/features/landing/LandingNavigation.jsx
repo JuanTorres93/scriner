@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import Logo from "../../ui/Logo";
 import Button from "../../ui/Button";
 
 const navItems = [
-  // TODO cambiar por los que vaya a usar
-  { label: "Features", href: "#features" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "About", href: "#about" },
+  // TODO cambiar (MODIFICAR y/o quitar) por los que vaya a usar
+  { label: "Problema", href: "#problem" },
+  { label: "Amplificación", href: "#amplify" },
+  { label: "Historia", href: "#story" },
+  { label: "Testimonio", href: "#testimonial" },
+  { label: "Oferta", href: "#offer" },
+  { label: "Respuesta", href: "#response" },
 ];
 
 const StyledNav = styled.nav`
@@ -86,18 +90,18 @@ function LandingNavigation() {
       <ul>
         <li className="col-1">
           <span className="nav-logo">
-            <Link to={"/"}>
+            <HashLink smooth to={"/#hero"}>
               <Logo />
-            </Link>
+            </HashLink>
           </span>
         </li>
 
         <li className="col-2">
           {navItems.map((item) => (
             <span key={item.href}>
-              <Link className="nav-item" to={item.href}>
+              <HashLink className="nav-item" smooth to={`/${item.href}`}>
                 {item.label}
-              </Link>
+              </HashLink>
             </span>
           ))}
         </li>

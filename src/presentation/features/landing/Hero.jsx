@@ -64,7 +64,7 @@ const Box = styled.div`
 
 function Hero() {
   return (
-    <StyledSection>
+    <StyledSection id="hero">
       <img src="/hero.jpg" alt="Hero image" />
 
       <Box>
