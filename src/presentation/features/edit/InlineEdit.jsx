@@ -105,16 +105,23 @@ function InlineEdit({ leaf, ...props }) {
 
   const newLeaf = { ...leaf };
 
-  // leaf is an object, loop over its keys
+  // Loop over newLeaf's keys
   for (const key in newLeaf) {
     if (EDIT_TYPES[key.toUpperCase()]) {
-      newLeaf[key].isCurrent = isCurrentEdit({
-        type: key,
-        id: newLeaf[key].editId,
-      });
-      newLeaf[key].isDone = edits?.some(
-        (edit) => edit.id === newLeaf[key].editId && edit.isDone
-      );
+      try {
+        newLeaf[key].isCurrent = isCurrentEdit({
+          type: key,
+          id: newLeaf[key].editId,
+        });
+        newLeaf[key].isDone = edits?.some(
+          (edit) => edit.id === newLeaf[key].editId && edit.isDone
+        );
+        // eslint-disable-next-line
+      } catch (error) {
+        // The try-catch is included to prevent error when user tries to cut text with an InlineEdit.
+        // or when he tries to paste text with an InlineEdit.
+        // I don't know why just trying to catch the error works.
+      }
     }
   }
 
@@ -128,26 +135,7 @@ function InlineEdit({ leaf, ...props }) {
       newCurrentEditsIds[edit.type] = edit.editId;
     });
 
-    // set the current edits in the parent component.
-    //setCurrentEditsIds((prevCurrentEdits) => ({
-    //  ...prevCurrentEdits,
-    //  ...newCurrentEditsIds,
-    //}));
-
-    // Don't preserve previous ones. In this way it is easier for the user to keep focus
-    // on the working part of the script
     setCurrentEditsIds(newCurrentEditsIds);
-  }
-
-  // Función helper para generar el className de cada edit
-  function getEditClassName(editType) {
-    const editId = extractEditIdFromType(editType, editIds);
-    const isCurrent = isCurrentEdit({ type: editType, id: editId });
-    const isDone = edits?.some((edit) => edit.id === editId && edit.isDone);
-
-    return `inline-edit ${editType} ${isCurrent ? "current" : ""} ${
-      isDone ? "done" : ""
-    }`.trim();
   }
 
   return (
@@ -156,13 +144,6 @@ function InlineEdit({ leaf, ...props }) {
       <span>{props.children}</span>
     </StyledSpan>
   );
-}
-
-function extractEditIdFromType(type, editIds) {
-  if (!editIds || editIds.length === 0) return null;
-
-  const edit = editIds.find((edit) => edit.type === type);
-  return edit ? edit.editId : null;
 }
 
 export default InlineEdit;
