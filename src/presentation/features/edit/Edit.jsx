@@ -28,7 +28,7 @@ const StyledEdit = styled.div`
 
   &:hover {
     ${(props) =>
-      !props.isCurrent &&
+      !props["data-is-current"] &&
       css`
         background-color: var(--color-grey-t1);
       `}
@@ -44,7 +44,7 @@ const StyledEdit = styled.div`
   /* Color according type */
   ${(props) =>
     props.edit.type === "music" &&
-    props.isCurrent &&
+    props["data-is-current"] &&
     css`
       background-color: var(--color-music);
 
@@ -55,7 +55,7 @@ const StyledEdit = styled.div`
 
   ${(props) =>
     props.edit.type === "sfx" &&
-    props.isCurrent &&
+    props["data-is-current"] &&
     css`
       background-color: var(--color-sfx);
 
@@ -66,7 +66,7 @@ const StyledEdit = styled.div`
 
   ${(props) =>
     props.edit.type === "vfx" &&
-    props.isCurrent &&
+    props["data-is-current"] &&
     css`
       background-color: var(--color-vfx);
       textarea {
@@ -76,7 +76,7 @@ const StyledEdit = styled.div`
 
   ${(props) =>
     props.edit.type === "emotion" &&
-    props.isCurrent &&
+    props["data-is-current"] &&
     css`
       background-color: var(--color-emotion);
 
@@ -87,7 +87,7 @@ const StyledEdit = styled.div`
 
   ${(props) =>
     props.edit.type === "broll" &&
-    props.isCurrent &&
+    props["data-is-current"] &&
     css`
       background-color: var(--color-broll);
 
@@ -116,8 +116,6 @@ function Edit({ edit }) {
   const { updateEdit, isUpdating } = useUpdateEdit();
   const { deleteEdit, isDeleting } = useDeleteEdit();
   const { updateScript, isUpdating: isUpdatingScript } = useUpdateScript();
-
-  // const editor = useSlate();
 
   const isCurrent = isCurrentEdit(edit);
   const isLoading = isUpdating || isDeleting || isUpdatingScript;
@@ -201,7 +199,7 @@ function Edit({ edit }) {
   return (
     <StyledEdit
       edit={edit}
-      isCurrent={isCurrent}
+      data-is-current={isCurrent}
       onClick={handleSetCurrentEdit}
     >
       {isCurrent && (
