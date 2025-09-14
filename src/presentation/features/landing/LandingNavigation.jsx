@@ -1,17 +1,17 @@
-import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
-import styled from "styled-components";
-import Logo from "../../ui/Logo";
-import Button from "../../ui/Button";
+import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
+import styled from 'styled-components';
+import Logo from '../../ui/Logo';
+import Button from '../../ui/Button';
 
 const navItems = [
   // TODO cambiar (MODIFICAR y/o quitar) por los que vaya a usar
-  { label: "Problema", href: "#problem" },
-  { label: "Amplificación", href: "#amplify" },
-  { label: "Historia", href: "#story" },
-  { label: "Testimonio", href: "#testimonial" },
-  { label: "Oferta", href: "#offer" },
-  { label: "Respuesta", href: "#response" },
+  { label: 'Problema', href: '#problem' },
+  { label: 'Amplificación', href: '#amplify' },
+  { label: 'Historia', href: '#story' },
+  { label: 'Testimonio', href: '#testimonial' },
+  { label: 'Oferta', href: '#offer' },
+  { label: 'Respuesta', href: '#response' },
 ];
 
 const StyledNav = styled.nav`
@@ -21,6 +21,7 @@ const StyledNav = styled.nav`
   position: fixed;
   z-index: 10;
   width: 100%;
+  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
 
   ul {
     display: grid;
@@ -100,7 +101,7 @@ function LandingNavigation() {
       <ul>
         <li className="col-1">
           <span className="nav-logo">
-            <HashLink smooth to={"/#hero"}>
+            <HashLink smooth to={'/#hero'}>
               <Logo />
             </HashLink>
           </span>
@@ -118,12 +119,12 @@ function LandingNavigation() {
 
         <li className="col-3">
           <span>
-            <Button type="secondary" as={Link} to={"/login"}>
+            <Button type="secondary" as={Link} to={'/login'}>
               Inicia sesión
             </Button>
           </span>
           <span>
-            <Button as={Link} to={"/signup"}>
+            <Button as={Link} to={'/signup'}>
               Regístrate
             </Button>
           </span>

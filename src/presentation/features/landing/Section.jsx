@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8rem 2rem;
-  gap: 4rem;
+  padding: 6rem 2rem;
+  gap: 2rem;
   max-width: 200rem;
   margin: 0 auto;
 
@@ -14,13 +14,11 @@ const StyledSection = styled.section`
     font-size: var(--font-size-b4);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
-    margin-bottom: 4rem;
   }
 `;
 
 const Content = styled.div`
-  display: flex;
-  gap: 8rem;
+  padding: 6rem 0;
   font-size: var(--font-size-b1);
   color: var(--color-grey-s2);
   line-height: 1.4;
@@ -34,7 +32,7 @@ const Content = styled.div`
 function Section({
   children,
   className,
-  sectionName = "Section Name",
+  sectionName = 'Section Name',
   ...props
 }) {
   return (
