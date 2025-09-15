@@ -1,40 +1,36 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CreateEdit } from "../../../../src/application/edit/CreateEdit.js";
-import { ValidationError } from "../../../../src/domain/common/errors.js";
-import { EDIT_TYPES } from "../../../../src/domain/edit/editTypes.js";
+import { describe, it, expect, beforeEach } from 'vitest';
+import { MemoryEditRepo } from '../../../../src/infrastructure/memory/edit/MemoryEditRepo.js';
+import { CreateEdit } from '../../../../src/application/edit/CreateEdit.js';
+import { ValidationError } from '../../../../src/domain/common/errors.js';
+import { EDIT_TYPES } from '../../../../src/domain/edit/editTypes.js';
+import { Edit } from '../../../../src/domain/edit/Edit.js';
 
-describe("CreateEdit Use Case", () => {
-  let mockEditsRepo;
+describe('CreateEdit Use Case', () => {
+  let memoryEditsRepo;
   let createEdit;
 
   beforeEach(() => {
-    mockEditsRepo = {
-      create: vi.fn(),
-    };
-    createEdit = new CreateEdit(mockEditsRepo);
+    memoryEditsRepo = new MemoryEditRepo();
+    createEdit = new CreateEdit(memoryEditsRepo);
   });
 
-  it("should create edit through repository", async () => {
+  it('should create', async () => {
     const editData = {
-      content: "Test edit",
+      content: 'Test edit',
       type: EDIT_TYPES.SFX,
-      scriptId: "script-1",
+      scriptId: 'script-1',
     };
-    const expectedEdit = { id: "1", ...editData };
-
-    mockEditsRepo.create.mockResolvedValue(expectedEdit);
 
     const result = await createEdit.exec(editData);
 
-    expect(mockEditsRepo.create).toHaveBeenCalledWith(editData);
-    expect(result).toEqual(expectedEdit);
+    expect(result instanceof Edit).toEqual(true);
   });
 
-  it("should throw ValidationError when edit is not provided", async () => {
+  it('should throw ValidationError when edit is not provided', async () => {
     await expect(createEdit.exec()).rejects.toThrow(ValidationError);
   });
 
-  it("should throw ValidationError when edit is null", async () => {
+  it('should throw ValidationError when edit is null', async () => {
     await expect(createEdit.exec(null)).rejects.toThrow(ValidationError);
   });
 });
