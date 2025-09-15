@@ -13,8 +13,7 @@ export class EditsRepo {
     throw new Error('EditsRepo: getById Not implemented');
   }
 
-  // TODO remove when finished correct implementation
-  async create(edit) {
+  async save(edit) {
     throw new Error('EditsRepo: create Not implemented');
   }
 

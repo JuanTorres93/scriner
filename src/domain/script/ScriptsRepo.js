@@ -9,9 +9,8 @@ export class ScriptsRepo {
   async getById(id) {
     throw new Error('getById Not implemented');
   }
-  // TODO remove when finished correct implementation
-  async create(script) {
-    throw new Error('create Not implemented');
+  async save(script) {
+    throw new Error('save Not implemented');
   }
   // TODO remove when finished correct implementation
   async update(id, patch) {
@@ -19,8 +18,5 @@ export class ScriptsRepo {
   }
   async delete(id) {
     throw new Error('delete Not implemented');
-  }
-  async save(script) {
-    throw new Error('save Not implemented');
   }
 }
