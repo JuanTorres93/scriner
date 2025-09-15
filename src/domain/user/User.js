@@ -1,13 +1,50 @@
-import { ValidationError } from "../common/errors";
+import { ValidationError } from '../common/errors';
 
 export class User {
   constructor({ id, name, email, createdAt }) {
-    if (!(createdAt instanceof Date))
-      throw new ValidationError("createdAt must be a Date");
+    this._id = id;
+    this._name = name;
+    this._email = email;
+    this._createdAt = createdAt;
+  }
 
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.createdAt = createdAt;
+  static create({ id, name, email, createdAt }) {
+    if (!id || !name || !email || !createdAt) {
+      throw new ValidationError('Missing required fields');
+    }
+
+    if (!(createdAt instanceof Date))
+      throw new ValidationError('createdAt must be a Date');
+
+    return new User({ id, name, email, createdAt });
+  }
+
+  _updateName(name) {
+    if (!name || typeof name !== 'string' || name.trim() === '') {
+      throw new ValidationError(
+        'name is required and must be a non-empty string'
+      );
+    }
+    this._name = name;
+  }
+
+  update({ name }) {
+    if (name) this._updateName(name);
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  get email() {
+    return this._email;
+  }
+
+  get createdAt() {
+    return this._createdAt;
   }
 }
