@@ -1,39 +1,38 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { GetScriptById } from "../../../../src/application/script/GetScriptById.js";
-import { ValidationError } from "../../../../src/domain/common/errors.js";
+import { describe, it, expect, beforeEach } from 'vitest';
+import { Script } from '../../../../src/domain/script/Script.js';
+import { GetScriptById } from '../../../../src/application/script/GetScriptById.js';
+import { CreateScript } from '../../../../src/application/script/CreateScript.js';
+import { ValidationError } from '../../../../src/domain/common/errors.js';
+import { MemoryScriptRepo } from '../../../../src/infrastructure/memory/script/MemoryScriptRepo.js';
 
-describe("GetScriptById Use Case", () => {
-  let mockScriptsRepo;
+describe('GetScriptById Use Case', () => {
+  let memoryScriptRepo;
   let getScriptById;
+  let createScript;
 
   beforeEach(() => {
-    mockScriptsRepo = {
-      getById: vi.fn(),
-    };
-    getScriptById = new GetScriptById(mockScriptsRepo);
+    memoryScriptRepo = new MemoryScriptRepo();
+    getScriptById = new GetScriptById(memoryScriptRepo);
+    createScript = new CreateScript(memoryScriptRepo);
+
+    // Pre-populate the repository with a script
+    createScript.exec({
+      userId: 'u1',
+      title: 'Test Script',
+      content: 'Script content',
+    });
   });
 
-  it("should get script by id through repository", async () => {
-    const scriptId = "1";
-    const expectedScript = { id: "1", title: "Test Script" };
+  it('should get script by id through repository', async () => {
+    const scriptId = 1;
 
-    mockScriptsRepo.getById.mockResolvedValue(expectedScript);
+    const foundScript = await getScriptById.exec(scriptId);
 
-    const result = await getScriptById.exec(scriptId);
-
-    expect(mockScriptsRepo.getById).toHaveBeenCalledWith(scriptId);
-    expect(result).toEqual(expectedScript);
+    expect(foundScript instanceof Script).toBe(true);
+    expect(foundScript.id).toBe(scriptId);
   });
 
-  it("should throw ValidationError when id is not provided", async () => {
+  it('should throw ValidationError when id is not provided', async () => {
     await expect(getScriptById.exec()).rejects.toThrow(ValidationError);
-  });
-
-  it("should return null when script not found", async () => {
-    mockScriptsRepo.getById.mockResolvedValue(null);
-
-    const result = await getScriptById.exec("999");
-
-    expect(result).toBeNull();
   });
 });

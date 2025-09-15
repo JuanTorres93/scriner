@@ -1,12 +1,12 @@
 import { ValidationError } from '../../domain/common/errors';
 
 export class GetScriptById {
-  constructor(repo) {
-    this.repo = repo;
+  constructor(scriptRepo) {
+    this._scriptRepo = scriptRepo;
   }
 
   exec = async (id) => {
     if (!id) throw new ValidationError('An script id is required');
-    return this.repo.getById(id);
+    return this._scriptRepo.getById(id);
   };
 }
