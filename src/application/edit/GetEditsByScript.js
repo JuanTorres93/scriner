@@ -1,12 +1,14 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from '../../domain/common/errors';
 
 export class GetEditsByScript {
-  constructor(repo) {
-    this.repo = repo;
+  constructor(editsRepo) {
+    this._editsRepo = editsRepo;
   }
 
   exec = async (scriptId) => {
-    if (!scriptId) throw new ValidationError("An script id is required");
-    return this.repo.getAllByScript(scriptId); // returns Edit entities
+    if (!scriptId)
+      throw new ValidationError('GetEditsByScript: A script id is required');
+
+    return this._editsRepo.getAllByScript(scriptId); // returns array of Edit entities
   };
 }

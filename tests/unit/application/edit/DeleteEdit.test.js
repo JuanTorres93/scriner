@@ -22,7 +22,7 @@ describe('DeleteEdit Use Case', () => {
       id: 1,
       content: 'Test edit to delete',
       type: EDIT_TYPES.SFX,
-      scriptId: 'script-1',
+      scriptId: 3,
     });
 
     expect((await memoryEditsRepo.getById(edit.id)) instanceof Edit).toBe(true);

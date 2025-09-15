@@ -21,7 +21,7 @@ describe('GetEditById Use Case', () => {
       id: 1,
       content: 'Test edit',
       type: EDIT_TYPES.SFX,
-      scriptId: 'script-1',
+      scriptId: 6,
     });
 
     const result = await getEditById.exec(expectedEdit.id);

@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo } from "react";
-import ReactDOM from "react-dom";
-import styled from "styled-components";
-import { useSlate, useFocused } from "slate-react";
-import { Editor, Range, Node } from "slate";
+import React, { useEffect, useMemo } from 'react';
+import ReactDOM from 'react-dom';
+import styled from 'styled-components';
+import { useSlate, useFocused } from 'slate-react';
+import { Editor, Range, Node } from 'slate';
 import {
   useFloating,
   flip,
   shift,
   offset,
   autoUpdate,
-} from "@floating-ui/react";
-import { useParams } from "react-router-dom";
+} from '@floating-ui/react';
+import { useParams } from 'react-router-dom';
 
 import {
   HiMiniBell,
@@ -18,14 +18,14 @@ import {
   HiMiniPhoto,
   HiFilm,
   HiMiniMusicalNote,
-} from "react-icons/hi2";
+} from 'react-icons/hi2';
 
-import { ScriptActions } from "./ScriptActions.jsx";
-import { EDIT_TYPES } from "../../../domain/edit/editTypes.js";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import { useCreateEdit } from "../edit/hooks/useCreateEdit.js";
-import { useDeleteEdit } from "../edit/hooks/useDeleteEdit.js";
+import { ScriptActions } from './ScriptActions.jsx';
+import { EDIT_TYPES } from '../../../domain/edit/editTypes.js';
+import Button from '../../ui/Button';
+import Modal from '../../ui/Modal';
+import { useCreateEdit } from '../edit/hooks/useCreateEdit.js';
+import { useDeleteEdit } from '../edit/hooks/useDeleteEdit.js';
 
 /* ======================================================
    SAFETY HELPERS
@@ -52,11 +52,11 @@ function safeGetMarks(editor) {
 }
 
 function safeSelectedText(editor) {
-  if (!hasValidSelection(editor)) return "";
+  if (!hasValidSelection(editor)) return '';
   try {
     return Editor.string(editor, editor.selection);
   } catch {
-    return "";
+    return '';
   }
 }
 
@@ -135,7 +135,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
    * - `autoUpdate`: recompute position on scroll/resize/layout.
    */
   const { x, y, strategy, refs, update } = useFloating({
-    placement: "top",
+    placement: 'top',
     middleware: [offset(8), flip(), shift({ padding: 8 })],
     whileElementsMounted: (reference, floating, cleanup) => {
       const stop = autoUpdate(reference, floating, update);
@@ -159,8 +159,8 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
   /** Also update on browser `selectionchange` events */
   useEffect(() => {
     const onSelChange = () => update();
-    document.addEventListener("selectionchange", onSelChange);
-    return () => document.removeEventListener("selectionchange", onSelChange);
+    document.addEventListener('selectionchange', onSelChange);
+    return () => document.removeEventListener('selectionchange', onSelChange);
   }, [update]);
 
   /**
@@ -173,7 +173,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
   const shouldHide = (() => {
     if (!inFocus) return true;
     if (!hasValidSelection(editor)) return true;
-    if (safeSelectedText(editor) === "") return true;
+    if (safeSelectedText(editor) === '') return true;
     if (!getSelectionRect?.()) return true;
     return false;
   })();
@@ -221,9 +221,9 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
     if (!scriptId) return;
     const newEdit = {
       type,
-      content: "Nueva anotación",
+      content: 'Nueva anotación',
       isDone: false,
-      scriptId,
+      scriptId: Number(scriptId),
     };
     createEdit(newEdit, {
       onSuccess: (data) => {
@@ -250,14 +250,14 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
           top: y ?? -9999,
           left: x ?? -9999,
           opacity: 0.9,
-          pointerEvents: "auto",
+          pointerEvents: 'auto',
         }}
         onMouseDown={(e) => e.preventDefault()} // prevent stealing focus
       >
         <Button
           onClick={() => handleToggleEdit(EDIT_TYPES.MUSIC)}
           type="hoverbar"
-          variant={isMusicActive ? "activeHoverElement" : null}
+          variant={isMusicActive ? 'activeHoverElement' : null}
           disabled={isCreating}
         >
           <HiMiniMusicalNote />
@@ -266,7 +266,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
         <Button
           onClick={() => handleToggleEdit(EDIT_TYPES.SFX)}
           type="hoverbar"
-          variant={isSfxActive ? "activeHoverElement" : null}
+          variant={isSfxActive ? 'activeHoverElement' : null}
           disabled={isCreating}
         >
           <HiMiniBell />
@@ -275,7 +275,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
         <Button
           onClick={() => handleToggleEdit(EDIT_TYPES.EMOTION)}
           type="hoverbar"
-          variant={isEmotionActive ? "activeHoverElement" : null}
+          variant={isEmotionActive ? 'activeHoverElement' : null}
           disabled={isCreating}
         >
           <HiHeart />
@@ -284,7 +284,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
         <Button
           onClick={() => handleToggleEdit(EDIT_TYPES.VFX)}
           type="hoverbar"
-          variant={isVfxActive ? "activeHoverElement" : null}
+          variant={isVfxActive ? 'activeHoverElement' : null}
           disabled={isCreating}
         >
           <HiMiniPhoto />
@@ -293,7 +293,7 @@ const HoveringToolbar = ({ getSelectionRect, editableRef }) => {
         <Button
           onClick={() => handleToggleEdit(EDIT_TYPES.BROLL)}
           type="hoverbar"
-          variant={isBrollActive ? "activeHoverElement" : null}
+          variant={isBrollActive ? 'activeHoverElement' : null}
           disabled={isCreating}
         >
           <HiFilm />

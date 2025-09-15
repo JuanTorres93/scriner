@@ -10,7 +10,7 @@ describe('Edit entity', () => {
     createdAt: new Date('2025-01-01'),
     type: EDIT_TYPES.SFX,
     isDone: false,
-    scriptId: 's1',
+    scriptId: 9,
   };
 
   describe('creation', () => {
@@ -22,7 +22,7 @@ describe('Edit entity', () => {
       expect(edit.createdAt).toEqual(new Date('2025-01-01'));
       expect(edit.type).toBe(EDIT_TYPES.SFX);
       expect(edit.isDone).toBe(false);
-      expect(edit.scriptId).toBe('s1');
+      expect(edit.scriptId).toBe(9);
     });
 
     it('throws ValidationError for invalid edit type', () => {

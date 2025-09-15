@@ -18,7 +18,7 @@ describe('CreateEdit Use Case', () => {
     const editData = {
       content: 'Test edit',
       type: EDIT_TYPES.SFX,
-      scriptId: 'script-1',
+      scriptId: 3,
     };
 
     const result = await createEdit.exec(editData);
