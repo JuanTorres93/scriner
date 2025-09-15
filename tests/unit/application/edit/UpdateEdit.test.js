@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { UpdateEdit } from "../../../../src/application/edit/UpdateEdit.js";
-import { ValidationError } from "../../../../src/domain/common/errors.js";
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { UpdateEdit } from '../../../../src/application/edit/UpdateEdit.js';
+import { ValidationError } from '../../../../src/domain/common/errors.js';
 
-describe("UpdateEdit Use Case", () => {
+describe('UpdateEdit Use Case', () => {
   let mockEditsRepo;
   let updateEdit;
 
@@ -13,10 +13,10 @@ describe("UpdateEdit Use Case", () => {
     updateEdit = new UpdateEdit(mockEditsRepo);
   });
 
-  it("should update edit through repository", async () => {
-    const editId = "1";
-    const patch = { content: "Updated content" };
-    const expectedEdit = { id: "1", content: "Updated content" };
+  it('should update edit through repository', async () => {
+    const editId = 1;
+    const patch = { content: 'Updated content' };
+    const expectedEdit = { id: 1, content: 'Updated content' };
 
     mockEditsRepo.update.mockResolvedValue(expectedEdit);
 
@@ -26,15 +26,15 @@ describe("UpdateEdit Use Case", () => {
     expect(result).toEqual(expectedEdit);
   });
 
-  it("should throw ValidationError when id is not provided", async () => {
-    const patch = { content: "Updated content" };
+  it('should throw ValidationError when id is not provided', async () => {
+    const patch = { content: 'Updated content' };
 
     await expect(updateEdit.exec(null, patch)).rejects.toThrow(ValidationError);
   });
 
-  it("should throw ValidationError when id is empty string", async () => {
-    const patch = { content: "Updated content" };
+  it('should throw ValidationError when id is empty string', async () => {
+    const patch = { content: 'Updated content' };
 
-    await expect(updateEdit.exec("", patch)).rejects.toThrow(ValidationError);
+    await expect(updateEdit.exec('', patch)).rejects.toThrow(ValidationError);
   });
 });

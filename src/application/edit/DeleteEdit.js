@@ -1,12 +1,12 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from '../../domain/common/errors';
 
 export class DeleteEdit {
-  constructor(repo) {
-    this.repo = repo;
+  constructor(editsRepo) {
+    this._editsRepo = editsRepo;
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError("An edit id is required");
-    return this.repo.delete(id);
+    if (!id) throw new ValidationError('An edit id is required');
+    return this._editsRepo.delete(id);
   };
 }

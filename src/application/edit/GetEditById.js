@@ -1,13 +1,13 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from '../../domain/common/errors';
 
 export class GetEditById {
-  constructor(repo) {
-    this.repo = repo;
+  constructor(editsRepo) {
+    this._editsRepo = editsRepo;
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError("An edit id is required");
+    if (!id) throw new ValidationError('An edit id is required');
 
-    return this.repo.getById(id);
+    return this._editsRepo.getById(id);
   };
 }

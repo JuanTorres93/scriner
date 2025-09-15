@@ -17,7 +17,7 @@ export class MemoryEditRepo extends EditsRepo {
   }
 
   async getById(id) {
-    return this.edits.find((edit) => edit.id === id);
+    return this.edits.find((edit) => edit.id === id) || null;
   }
 
   async delete(id) {

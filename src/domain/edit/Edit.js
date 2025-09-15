@@ -20,6 +20,8 @@ export class Edit {
     scriptId,
   }) {
     if (!id) throw new ValidationError('Edit: id is required');
+    if (typeof id !== 'number')
+      throw new ValidationError('Edit: id must be a number');
     if (!createdAt) throw new ValidationError('Edit: createdAt is required');
     if (!type) throw new ValidationError('Edit: type is required');
     if (!scriptId) throw new ValidationError('Edit: scriptId is required');

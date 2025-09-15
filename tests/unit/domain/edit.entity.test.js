@@ -5,7 +5,7 @@ import { ValidationError } from '../../../src/domain/common/errors.js';
 
 describe('Edit entity', () => {
   const validEditData = {
-    id: '1',
+    id: 1,
     content: 'Edit content',
     createdAt: new Date('2025-01-01'),
     type: EDIT_TYPES.SFX,
@@ -17,7 +17,7 @@ describe('Edit entity', () => {
     it('creates a valid edit with all properties', () => {
       const edit = Edit.create(validEditData);
 
-      expect(edit.id).toBe('1');
+      expect(edit.id).toBe(1);
       expect(edit.content).toBe('Edit content');
       expect(edit.createdAt).toEqual(new Date('2025-01-01'));
       expect(edit.type).toBe(EDIT_TYPES.SFX);
