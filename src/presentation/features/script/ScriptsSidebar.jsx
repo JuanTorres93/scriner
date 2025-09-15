@@ -1,19 +1,19 @@
-import { useParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { HiMiniXMark } from "react-icons/hi2";
+import { useParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { HiMiniXMark } from 'react-icons/hi2';
 
-import { useUser } from "../../features/authentication/hooks/useUser";
-import { useScripts } from "./useScripts";
-import { formatDate } from "../../utils/dateUtils";
-import { useNavigate } from "react-router-dom";
-import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import { useCreateScript } from "./useCreateScript";
-import Loader from "../../ui/Loader";
-import { useDeleteScript } from "./useDeleteScript";
-import { htmlToText } from "../../utils/htmlUtils";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import Logout from "../authentication/Logout";
+import { useUser } from '../../features/authentication/hooks/useUser';
+import { useScripts } from './useScripts';
+import { formatDate } from '../../utils/dateUtils';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../ui/Button';
+import Modal from '../../ui/Modal';
+import { useCreateScript } from './useCreateScript';
+import Loader from '../../ui/Loader';
+import { useDeleteScript } from './useDeleteScript';
+import { htmlToText } from '../../utils/htmlUtils';
+import ConfirmDelete from '../../ui/ConfirmDelete';
+import Logout from '../authentication/Logout';
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -56,7 +56,7 @@ function ScriptsSidebar() {
     : [];
 
   function handleCreateScript() {
-    createScript({ title: "Nuevo guión", content: "", user_id: user.id });
+    createScript({ title: 'Nuevo guión', content: '', user_id: user.id });
   }
 
   return (
@@ -125,12 +125,12 @@ function ScriptItem({ script }) {
   const { scriptId } = useParams();
   const isActive = +scriptId === script.id;
 
-  const rawContent = JSON.parse(script?.content || "{}");
+  const rawContent = JSON.parse(script?.content || '{}');
 
   // TODO Extract more text from nodes
-  const text = rawContent[0]?.children?.[0]?.text || "";
+  const text = rawContent[0]?.children?.[0]?.text || '';
 
-  const content = htmlToText(text).split(" ").slice(0, 10).join(" ") + "...";
+  const content = htmlToText(text).split(' ').slice(0, 10).join(' ') + '...';
 
   function handleDeleteScript(e) {
     e.stopPropagation();

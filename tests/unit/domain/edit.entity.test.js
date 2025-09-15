@@ -1,78 +1,106 @@
-import { describe, it, expect } from "vitest";
-import { Edit } from "../../../src/domain/edit/Edit.js";
-import { EDIT_TYPES } from "../../../src/domain/edit/editTypes.js";
-import { ValidationError } from "../../../src/domain/common/errors.js";
+import { describe, it, expect } from 'vitest';
+import { Edit } from '../../../src/domain/edit/Edit.js';
+import { EDIT_TYPES } from '../../../src/domain/edit/editTypes.js';
+import { ValidationError } from '../../../src/domain/common/errors.js';
 
-describe("Edit entity", () => {
+describe('Edit entity', () => {
   const validEditData = {
-    id: "1",
-    content: "Edit content",
-    createdAt: new Date("2025-01-01"),
+    id: '1',
+    content: 'Edit content',
+    createdAt: new Date('2025-01-01'),
     type: EDIT_TYPES.SFX,
     isDone: false,
-    scriptId: "s1",
+    scriptId: 's1',
   };
 
-  it("creates a valid edit with all properties", () => {
-    const edit = new Edit(validEditData);
+  describe('creation', () => {
+    it('creates a valid edit with all properties', () => {
+      const edit = Edit.create(validEditData);
 
-    expect(edit.id).toBe("1");
-    expect(edit.content).toBe("Edit content");
-    expect(edit.createdAt).toEqual(new Date("2025-01-01"));
-    expect(edit.type).toBe(EDIT_TYPES.SFX);
-    expect(edit.isDone).toBe(false);
-    expect(edit.scriptId).toBe("s1");
-  });
+      expect(edit.id).toBe('1');
+      expect(edit.content).toBe('Edit content');
+      expect(edit.createdAt).toEqual(new Date('2025-01-01'));
+      expect(edit.type).toBe(EDIT_TYPES.SFX);
+      expect(edit.isDone).toBe(false);
+      expect(edit.scriptId).toBe('s1');
+    });
 
-  it("throws ValidationError for invalid edit type", () => {
-    expect(
-      () =>
-        new Edit({
+    it('throws ValidationError for invalid edit type', () => {
+      expect(() =>
+        Edit.create({
           ...validEditData,
-          type: "invalid-type",
+          type: 'invalid-type',
         })
-    ).toThrow(ValidationError);
-  });
+      ).toThrow(ValidationError);
+    });
 
-  it("throws ValidationError when required fields are missing", () => {
-    expect(() => new Edit({})).toThrow(ValidationError);
-    expect(() => new Edit({ id: "1" })).toThrow(ValidationError);
-    expect(() => new Edit({ id: "1", scriptId: "s1" })).toThrow(
-      ValidationError
-    );
-  });
+    it('throws ValidationError when required fields are missing', () => {
+      expect(() => Edit.create({})).toThrow(ValidationError);
+      expect(() => Edit.create({ id: '1' })).toThrow(ValidationError);
+      expect(() => Edit.create({ id: '1', scriptId: 's1' })).toThrow(
+        ValidationError
+      );
+    });
 
-  it("accepts all valid edit types", () => {
-    Object.values(EDIT_TYPES).forEach((type) => {
-      expect(
-        () =>
-          new Edit({
+    it('accepts all valid edit types', () => {
+      Object.values(EDIT_TYPES).forEach((type) => {
+        expect(() =>
+          Edit.create({
             ...validEditData,
             type,
           })
-      ).not.toThrow();
+        ).not.toThrow();
+      });
+    });
+
+    it('defaults isDone to false when not provided', () => {
+      const editData = { ...validEditData };
+      delete editData.isDone;
+
+      const edit = Edit.create(editData);
+      expect(edit.isDone).toBe(false);
+    });
+
+    it('accepts boolean values for isDone', () => {
+      const doneEdit = Edit.create({
+        ...validEditData,
+        isDone: true,
+      });
+      expect(doneEdit.isDone).toBe(true);
+
+      const notDoneEdit = Edit.create({
+        ...validEditData,
+        isDone: false,
+      });
+      expect(notDoneEdit.isDone).toBe(false);
     });
   });
 
-  it("defaults isDone to false when not provided", () => {
-    const editData = { ...validEditData };
-    delete editData.isDone;
-
-    const edit = new Edit(editData);
-    expect(edit.isDone).toBe(false);
-  });
-
-  it("accepts boolean values for isDone", () => {
-    const doneEdit = new Edit({
-      ...validEditData,
-      isDone: true,
+  describe('updates', () => {
+    it('updates content', async () => {
+      const edit = Edit.create(validEditData);
+      edit.update({ content: 'Updated content' });
+      expect(edit.content).toBe('Updated content');
     });
-    expect(doneEdit.isDone).toBe(true);
 
-    const notDoneEdit = new Edit({
-      ...validEditData,
-      isDone: false,
+    it('updates type', async () => {
+      const edit = Edit.create(validEditData);
+      edit.update({ type: EDIT_TYPES.BROLL });
+      expect(edit.type).toBe(EDIT_TYPES.BROLL);
     });
-    expect(notDoneEdit.isDone).toBe(false);
+
+    it('updates isDone', async () => {
+      const edit = Edit.create(validEditData);
+
+      edit.update({ isDone: true });
+      expect(edit.isDone).toBe(true);
+    });
+
+    it('throws ValidationError for invalid type update', async () => {
+      const edit = Edit.create(validEditData);
+      expect(() => edit.update({ type: 'invalid-type' })).toThrow(
+        ValidationError
+      );
+    });
   });
 });
