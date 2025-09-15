@@ -17,8 +17,7 @@ export class EditsRepo {
     throw new Error('EditsRepo: create Not implemented');
   }
 
-  // TODO remove when finished correct implementation
-  async update(edit) {
+  async updateInPersistence(id, edit) {
     throw new Error('EditsRepo: update Not implemented');
   }
 

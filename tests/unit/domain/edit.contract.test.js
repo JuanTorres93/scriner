@@ -7,7 +7,9 @@ describe('Edit contract', () => {
     await expect(repo.getAllByScript('u')).rejects.toThrow(/Not implemented/);
     await expect(repo.getById('1')).rejects.toThrow(/Not implemented/);
     await expect(repo.save('1')).rejects.toThrow(/Not implemented/);
-    await expect(repo.update('1')).rejects.toThrow(/Not implemented/);
+    await expect(repo.updateInPersistence('1')).rejects.toThrow(
+      /Not implemented/
+    );
     await expect(repo.delete('1')).rejects.toThrow(/Not implemented/);
   });
 });

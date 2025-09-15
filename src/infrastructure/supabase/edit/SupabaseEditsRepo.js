@@ -68,7 +68,7 @@ export class SupabaseEditsRepo extends EditsRepo {
     return newEdit;
   }
 
-  async update(id, edit) {
+  async updateInPersistence(id, edit) {
     const row = toRow(edit);
     const { data, error } = await this.client
       .from('edits')

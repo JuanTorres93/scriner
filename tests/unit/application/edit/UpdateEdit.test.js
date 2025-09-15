@@ -1,29 +1,42 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { MemoryEditRepo } from '../../../../src/infrastructure/memory/edit/MemoryEditRepo.js';
+import { CreateEdit } from '../../../../src/application/edit/CreateEdit.js';
 import { UpdateEdit } from '../../../../src/application/edit/UpdateEdit.js';
+import { EDIT_TYPES } from '../../../../src/domain/edit/editTypes.js';
 import { ValidationError } from '../../../../src/domain/common/errors.js';
 
+const validEditData = {
+  content: 'Initial content',
+  type: EDIT_TYPES.SFX,
+  isDone: false,
+  scriptId: 1,
+};
+
 describe('UpdateEdit Use Case', () => {
-  let mockEditsRepo;
+  let memoryEditsRepo;
   let updateEdit;
+  let createEdit;
 
   beforeEach(() => {
-    mockEditsRepo = {
-      update: vi.fn(),
-    };
-    updateEdit = new UpdateEdit(mockEditsRepo);
+    memoryEditsRepo = new MemoryEditRepo();
+    updateEdit = new UpdateEdit(memoryEditsRepo);
+    createEdit = new CreateEdit(memoryEditsRepo);
   });
 
-  it('should update edit through repository', async () => {
-    const editId = 1;
-    const patch = { content: 'Updated content' };
-    const expectedEdit = { id: 1, content: 'Updated content' };
+  it('should update edit', async () => {
+    const edit = await createEdit.exec(validEditData);
 
-    mockEditsRepo.update.mockResolvedValue(expectedEdit);
+    const patch = {
+      content: 'Updated content',
+      isDone: true,
+      type: EDIT_TYPES.BROLL,
+    };
 
-    const result = await updateEdit.exec(editId, patch);
+    const updatedEdit = await updateEdit.exec(edit.id, patch);
 
-    expect(mockEditsRepo.update).toHaveBeenCalledWith(editId, patch);
-    expect(result).toEqual(expectedEdit);
+    expect(updatedEdit.content).toEqual(patch.content);
+    expect(updatedEdit.isDone).toEqual(patch.isDone);
+    expect(updatedEdit.type).toEqual(patch.type);
   });
 
   it('should throw ValidationError when id is not provided', async () => {
@@ -36,5 +49,15 @@ describe('UpdateEdit Use Case', () => {
     const patch = { content: 'Updated content' };
 
     await expect(updateEdit.exec('', patch)).rejects.toThrow(ValidationError);
+  });
+
+  it('should throw ValidationError when patch is empty', async () => {
+    const edit = await createEdit.exec(validEditData);
+
+    const patch = {};
+
+    await expect(updateEdit.exec(edit.id, patch)).rejects.toThrow(
+      ValidationError
+    );
   });
 });

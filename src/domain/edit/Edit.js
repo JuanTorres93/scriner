@@ -75,6 +75,8 @@ export class Edit {
     if (isDone !== undefined) this._updateIsDone(isDone);
     if (type !== undefined) this._updateType(type);
     if (id !== undefined) this._updateId(id);
+
+    return this;
   }
 
   get id() {

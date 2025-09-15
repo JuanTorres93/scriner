@@ -36,4 +36,11 @@ export class MemoryEditRepo extends EditsRepo {
     }
     return edit;
   }
+
+  async updateInPersistence(id, edit) {
+    const index = this.edits.findIndex((e) => e.id === id);
+    if (index === -1) return null;
+    this.edits[index] = { ...this.edits[index], ...edit };
+    return this.edits[index];
+  }
 }
