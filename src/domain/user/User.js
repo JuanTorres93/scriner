@@ -9,9 +9,9 @@ export class User {
   }
 
   static create({ id, name, email, createdAt }) {
-    if (!id || !name || !email || !createdAt) {
-      throw new ValidationError('Missing required fields');
-    }
+    if (!name) throw new ValidationError('User: name is required');
+    if (!email) throw new ValidationError('User: email is required');
+    if (!createdAt) throw new ValidationError('User: createdAt is required');
 
     if (!(createdAt instanceof Date))
       throw new ValidationError('createdAt must be a Date');

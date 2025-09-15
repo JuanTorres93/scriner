@@ -4,7 +4,7 @@ import { ValidationError } from '../../../src/domain/common/errors.js';
 
 describe('Script entity', () => {
   const validScriptData = {
-    id: '1',
+    id: 1,
     userId: 'u1',
     title: 'Test Script',
     content: 'Script content',
@@ -15,7 +15,7 @@ describe('Script entity', () => {
     it('creates a valid script with all properties', () => {
       const script = Script.create(validScriptData);
 
-      expect(script.id).toBe('1');
+      expect(script.id).toBe(1);
       expect(script.userId).toBe('u1');
       expect(script.title).toBe('Test Script');
       expect(script.content).toBe('Script content');
@@ -82,6 +82,15 @@ describe('Script entity', () => {
         const script = Script.create(validScriptData);
         script.update({ content: {} });
       }).toThrow();
+    });
+
+    it('updates id', async () => {
+      const script = Script.create(validScriptData);
+      const newId = 2;
+
+      expect(script.id).not.toBe(newId);
+      script.update({ id: newId });
+      expect(script.id).toBe(newId);
     });
   });
 });

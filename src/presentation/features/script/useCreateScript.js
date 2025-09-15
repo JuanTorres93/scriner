@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-import { useServices } from "../../../interface-adapters/react/context/AppServicesProvider";
+import { useServices } from '../../../interface-adapters/react/context/AppServicesProvider';
 
 export function useCreateScript() {
   const { scripts } = useServices();
@@ -15,9 +15,9 @@ export function useCreateScript() {
     onSuccess: (data) => {
       // Invalidate the scripts query to refetch the updated list
       queryClient.invalidateQueries({
-        queryKey: ["scripts"],
+        queryKey: ['scripts'],
       });
-      toast.success("Script created successfully!");
+      toast.success('Script created successfully!');
       navigate(`/app/editor/${data.id}`);
     },
     onError: (error) => {

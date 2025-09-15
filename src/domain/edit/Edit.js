@@ -19,9 +19,10 @@ export class Edit {
     isDone = false,
     scriptId,
   }) {
-    if (!id || !createdAt || !type || !scriptId) {
-      throw new ValidationError('Missing required fields');
-    }
+    if (!id) throw new ValidationError('Edit: id is required');
+    if (!createdAt) throw new ValidationError('Edit: createdAt is required');
+    if (!type) throw new ValidationError('Edit: type is required');
+    if (!scriptId) throw new ValidationError('Edit: scriptId is required');
 
     if (!Object.values(EDIT_TYPES).includes(type))
       throw new ValidationError('Invalid edit type');

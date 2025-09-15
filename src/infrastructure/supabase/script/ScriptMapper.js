@@ -1,4 +1,4 @@
-import { Script } from "../../../domain/script/Script.js";
+import { Script } from '../../../domain/script/Script.js';
 
 export function toEntity(row) {
   if (!row) return null;
@@ -15,7 +15,7 @@ export function toEntity(row) {
 export function toRow(entityOrPatch) {
   if (!entityOrPatch) return null;
 
-  const { user_id, title, content } = entityOrPatch;
+  const { userId, title, content } = entityOrPatch;
 
-  return { user_id, title, content };
+  return { user_id: userId, title, content };
 }

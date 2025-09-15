@@ -1,4 +1,4 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from '../../domain/common/errors';
 
 export class GetScriptById {
   constructor(repo) {
@@ -6,7 +6,7 @@ export class GetScriptById {
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError("An script id is required");
+    if (!id) throw new ValidationError('An script id is required');
     return this.repo.getById(id);
   };
 }

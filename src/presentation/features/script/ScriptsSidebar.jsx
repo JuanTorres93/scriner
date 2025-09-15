@@ -56,7 +56,7 @@ function ScriptsSidebar() {
     : [];
 
   function handleCreateScript() {
-    createScript({ title: 'Nuevo guión', content: '', user_id: user.id });
+    createScript({ title: 'Nuevo guión', content: '', userId: user.id });
   }
 
   return (

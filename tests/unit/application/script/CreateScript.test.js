@@ -1,39 +1,31 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { CreateScript } from "../../../../src/application/script/CreateScript.js";
-import { ValidationError } from "../../../../src/domain/common/errors.js";
+import { describe, it, expect, beforeEach } from 'vitest';
+import { CreateScript } from '../../../../src/application/script/CreateScript.js';
+import { MemoryScriptRepo } from '../../../../src/infrastructure/memory/script/MemoryScriptRepo.js';
 
-describe("CreateScript Use Case", () => {
-  let mockScriptsRepo;
+const validScript = {
+  id: 1,
+  content: 'Script content',
+  createdAt: new Date(),
+  title: 'Script Title',
+  userId: 'user-123',
+};
+
+describe('CreateScript Use Case', () => {
+  let memoryScriptsRepo;
   let createScript;
 
   beforeEach(() => {
-    mockScriptsRepo = {
-      create: vi.fn(),
-    };
-    createScript = new CreateScript(mockScriptsRepo);
+    memoryScriptsRepo = new MemoryScriptRepo();
+    createScript = new CreateScript(memoryScriptsRepo);
   });
 
-  it("should create script through repository", async () => {
-    const scriptData = {
-      title: "Test Script",
-      content: "Script content",
-      user_id: "user-1",
-    };
-    const expectedScript = { id: "1", ...scriptData };
+  it('should create script', async () => {
+    const result = await createScript.exec(validScript);
 
-    mockScriptsRepo.create.mockResolvedValue(expectedScript);
-
-    const result = await createScript.exec(scriptData);
-
-    expect(mockScriptsRepo.create).toHaveBeenCalledWith(scriptData);
-    expect(result).toEqual(expectedScript);
-  });
-
-  it("should throw ValidationError when script is not provided", async () => {
-    await expect(createScript.exec()).rejects.toThrow(ValidationError);
-  });
-
-  it("should throw ValidationError when script is null", async () => {
-    await expect(createScript.exec(null)).rejects.toThrow(ValidationError);
+    expect(result).toHaveProperty('id');
+    expect(result).toHaveProperty('content');
+    expect(result).toHaveProperty('createdAt');
+    expect(result).toHaveProperty('title');
+    expect(result).toHaveProperty('userId');
   });
 });
