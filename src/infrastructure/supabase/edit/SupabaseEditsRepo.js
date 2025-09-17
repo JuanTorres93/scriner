@@ -63,7 +63,7 @@ export class SupabaseEditsRepo extends EditsRepo {
       });
 
     const newEdit = toEntity(data);
-    newEdit.update({ id: data.id }); // set the generated id
+    newEdit._updateId(data.id); // set the generated id
 
     return newEdit;
   }
