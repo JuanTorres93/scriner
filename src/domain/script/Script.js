@@ -1,15 +1,17 @@
+import { Edit } from '../edit/Edit';
 import { ValidationError } from '../common/errors';
 
 export class Script {
-  constructor({ id, content, createdAt, title, userId }) {
+  constructor({ id, content, createdAt, title, userId, edits = [] }) {
     this._id = id;
     this._content = content;
     this._createdAt = createdAt;
     this._title = title;
     this._userId = userId;
+    this._edits = edits;
   }
 
-  static create({ id, content = '', createdAt, title, userId }) {
+  static create({ id, content = '', createdAt, title, userId, edits = [] }) {
     if (!id) throw new ValidationError('Script: id is required');
     if (typeof id !== 'number')
       throw new ValidationError('Script: id must be a number');
@@ -20,7 +22,23 @@ export class Script {
     if (!(createdAt instanceof Date) || isNaN(createdAt))
       throw new ValidationError('createdAt must be a valid date');
 
-    return new Script({ id, content, createdAt, title, userId });
+    if (!Array.isArray(edits))
+      throw new ValidationError('Script: edits must be an array');
+
+    for (const edit of edits) {
+      if (!(edit instanceof Edit))
+        throw new ValidationError(
+          'Script: edits must contain objects of type Edit'
+        );
+    }
+
+    return new Script({ id, content, createdAt, title, userId, edits });
+  }
+
+  update({ title, content, id }) {
+    if (title) this._updateTitle(title);
+    if (content) this._updateContent(content);
+    if (id) this._updateId(id);
   }
 
   _updateTitle(title) {
@@ -48,12 +66,6 @@ export class Script {
     this._id = id;
   }
 
-  update({ title, content, id }) {
-    if (title) this._updateTitle(title);
-    if (content) this._updateContent(content);
-    if (id) this._updateId(id);
-  }
-
   get id() {
     return this._id;
   }
@@ -72,5 +84,9 @@ export class Script {
 
   get userId() {
     return this._userId;
+  }
+
+  get edits() {
+    return this._edits;
   }
 }
