@@ -69,7 +69,7 @@ export class SupabaseScriptsRepo extends ScriptsRepo {
       });
 
     const newScript = toEntity(data);
-    newScript.update({ id: data.id }); // set the generated id
+    newScript._updateId(data.id); // set the generated id
     return newScript;
   }
 

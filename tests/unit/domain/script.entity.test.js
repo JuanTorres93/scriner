@@ -138,7 +138,7 @@ describe('Script entity', () => {
       const newId = 2;
 
       expect(script.id).not.toBe(newId);
-      script.update({ id: newId });
+      script._updateId(newId);
       expect(script.id).toBe(newId);
     });
   });
