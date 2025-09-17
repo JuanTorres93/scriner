@@ -142,4 +142,33 @@ describe('Script entity', () => {
       expect(script.id).toBe(newId);
     });
   });
+
+  describe('edit management', () => {
+    it('adds an edit', async () => {
+      const script = Script.create(validScriptWithNoEditsData);
+      const edit = Edit.create(validEditData);
+      script.addEdit(edit);
+      expect(script.edits.length).toBe(1);
+      expect(script.edits[0]).toBe(edit);
+    });
+
+    it('throws an error if edit is not an instance of Edit', async () => {
+      const script = Script.create(validScriptWithNoEditsData);
+      expect(() => script.addEdit({})).toThrow(ValidationError);
+    });
+
+    it('removes an edit', async () => {
+      const script = Script.create(validScriptWithNoEditsData);
+      const edit = Edit.create(validEditData);
+      script.addEdit(edit);
+      expect(script.edits.length).toBe(1);
+      script.removeEdit(edit.id);
+      expect(script.edits.length).toBe(0);
+    });
+
+    it('throws an error if edit to remove is not found', async () => {
+      const script = Script.create(validScriptWithNoEditsData);
+      expect(() => script.removeEdit(999)).toThrow(ValidationError);
+    });
+  });
 });

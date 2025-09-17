@@ -19,7 +19,7 @@ export class Script {
     if (!title) throw new ValidationError('Script: title is required');
     if (!userId) throw new ValidationError('Script: userId is required');
 
-    if (!(createdAt instanceof Date) || isNaN(createdAt))
+    if (!(createdAt instanceof Date) || isNaN(createdAt.getTime()))
       throw new ValidationError('createdAt must be a valid date');
 
     if (!Array.isArray(edits))
@@ -39,6 +39,21 @@ export class Script {
     if (title) this._updateTitle(title);
     if (content) this._updateContent(content);
     if (id) this._updateId(id);
+  }
+
+  addEdit(edit) {
+    if (!(edit instanceof Edit)) {
+      throw new ValidationError('edit must be an instance of Edit');
+    }
+    this._edits.push(edit);
+  }
+
+  removeEdit(editId) {
+    const editIndex = this._edits.findIndex((edit) => edit.id === editId);
+    if (editIndex === -1) {
+      throw new ValidationError('Edit not found');
+    }
+    this._edits.splice(editIndex, 1);
   }
 
   _updateTitle(title) {
@@ -87,6 +102,6 @@ export class Script {
   }
 
   get edits() {
-    return this._edits;
+    return [...this._edits];
   }
 }
