@@ -33,4 +33,12 @@ export class MemoryScriptRepo extends ScriptsRepo {
   async save(script) {
     this._scripts.set(script.id, script);
   }
+
+  async updateInPersistence(id, patch) {
+    if (!this._scripts.has(id)) throw new NotFoundError('Script not found');
+    const script = this._scripts.get(id);
+    const updatedScript = await script.update(patch);
+    this._scripts.set(id, updatedScript);
+    return updatedScript;
+  }
 }

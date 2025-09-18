@@ -1,42 +1,45 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { UpdateScript } from "../../../../src/application/script/UpdateScript.js";
-import { ValidationError } from "../../../../src/domain/common/errors.js";
+import { describe, it, expect, beforeEach } from 'vitest';
+import { Script } from '../../../../src/domain/script/Script.js';
+import { MemoryScriptRepo } from '../../../../src/infrastructure/memory/script/MemoryScriptRepo.js';
+import { UpdateScript } from '../../../../src/application/script/UpdateScript.js';
+import { ValidationError } from '../../../../src/domain/common/errors.js';
 
-describe("UpdateScript Use Case", () => {
-  let mockScriptsRepo;
+describe('UpdateScript Use Case', () => {
+  let memoryScriptsRepo;
   let updateScript;
 
   beforeEach(() => {
-    mockScriptsRepo = {
-      update: vi.fn(),
-    };
-    updateScript = new UpdateScript(mockScriptsRepo);
+    memoryScriptsRepo = new MemoryScriptRepo();
+    updateScript = new UpdateScript(memoryScriptsRepo);
   });
 
-  it("should update script through repository", async () => {
-    const scriptId = "1";
-    const patch = { title: "Updated Title" };
-    const expectedScript = { id: "1", title: "Updated Title" };
+  it('should update script', async () => {
+    const script = Script.create({
+      id: 1,
+      userId: 1,
+      title: 'Original Title',
+      createdAt: new Date('2023-01-01'),
+    });
+    await memoryScriptsRepo.save(script);
 
-    mockScriptsRepo.update.mockResolvedValue(expectedScript);
+    const patch = { title: 'Updated Title' };
 
-    const result = await updateScript.exec(scriptId, patch);
+    const result = await updateScript.exec(script.id, patch);
 
-    expect(mockScriptsRepo.update).toHaveBeenCalledWith(scriptId, patch);
-    expect(result).toEqual(expectedScript);
+    expect(result.title).toEqual(patch.title);
   });
 
-  it("should throw ValidationError when id is not provided", async () => {
-    const patch = { title: "Updated Title" };
+  it('should throw ValidationError when id is not provided', async () => {
+    const patch = { title: 'Updated Title' };
 
     await expect(updateScript.exec(null, patch)).rejects.toThrow(
       ValidationError
     );
   });
 
-  it("should throw ValidationError when id is empty string", async () => {
-    const patch = { title: "Updated Title" };
+  it('should throw ValidationError when id is empty string', async () => {
+    const patch = { title: 'Updated Title' };
 
-    await expect(updateScript.exec("", patch)).rejects.toThrow(ValidationError);
+    await expect(updateScript.exec('', patch)).rejects.toThrow(ValidationError);
   });
 });

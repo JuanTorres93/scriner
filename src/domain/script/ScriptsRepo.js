@@ -1,22 +1,21 @@
 /* eslint-disable no-unused-vars */
 export class ScriptsRepo {
   async nextId(userId) {
-    throw new Error('nextId Not implemented');
+    throw new Error('ScriptsRepo: nextId Not implemented');
   }
   async getAllByUser(userId) {
-    throw new Error('getAllByUser Not implemented');
+    throw new Error('ScriptsRepo: getAllByUser Not implemented');
   }
   async getById(id) {
-    throw new Error('getById Not implemented');
+    throw new Error('ScriptsRepo: getById Not implemented');
   }
   async save(script) {
-    throw new Error('save Not implemented');
+    throw new Error('ScriptsRepo: save Not implemented');
   }
-  // TODO remove when finished correct implementation
-  async update(id, patch) {
-    throw new Error('update Not implemented');
+  async updateInPersistence(id, patch) {
+    throw new Error('ScriptsRepo: updateInPersistence Not implemented');
   }
   async delete(id) {
-    throw new Error('delete Not implemented');
+    throw new Error('ScriptsRepo: delete Not implemented');
   }
 }

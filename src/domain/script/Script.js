@@ -35,9 +35,11 @@ export class Script {
     return new Script({ id, content, createdAt, title, userId, edits });
   }
 
-  update({ title, content }) {
+  update({ title, content } = {}) {
     if (title) this._updateTitle(title);
     if (content) this._updateContent(content);
+
+    return this;
   }
 
   addEdit(edit) {

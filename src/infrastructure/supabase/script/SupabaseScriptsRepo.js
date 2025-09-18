@@ -73,7 +73,7 @@ export class SupabaseScriptsRepo extends ScriptsRepo {
     return newScript;
   }
 
-  async update(id, patch) {
+  async updateInPersistence(id, patch) {
     const row = toRow(patch);
     const { data, error } = await this.client
       .from('scripts')
