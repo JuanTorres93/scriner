@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { createEditor } from "slate";
-import { Slate, withReact } from "slate-react";
-import { withHistory } from "slate-history";
-import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { createEditor } from 'slate';
+import { Slate, withReact } from 'slate-react';
+import { withHistory } from 'slate-history';
+import styled from 'styled-components';
+import { useParams, useNavigate } from 'react-router-dom';
 
-import EditList from "../features/edit/EditList";
-import Script from "../features/script/Script";
-import Loader from "../ui/Loader";
-import Input from "../ui/Input";
+import EditList from '../features/edit/EditList';
+import Script from '../features/script/Script';
+import Loader from '../ui/Loader';
+import Input from '../ui/Input';
 
-import { useScript } from "../features/script/useScript";
-import { useEdits } from "../features/edit/hooks/useEdits";
-import { useUpdateScript } from "../features/script/useUpdateScript";
-import { resetEditorContent } from "../utils/slateUtils";
-import { breakpoints } from "../styles/breakpoints";
+import { useScript } from '../features/script/useScript';
+import { useEdits } from '../features/edit/hooks/useEdits';
+import { useUpdateScript } from '../features/script/useUpdateScript';
+import { handleUpdateContent, resetEditorContent } from '../utils/slateUtils';
+import { breakpoints } from '../styles/breakpoints';
+import { useDebounce } from '../hooks/useDebounce';
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -109,6 +110,8 @@ const StyledScriptEditor = styled.div`
 function ScriptEditor() {
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   const navigate = useNavigate();
+  const debouncedHandleTitleBlur = useDebounce(handleTitleBlur);
+  const debouncedHandleUpdateContent = useDebounce(handleUpdateContent, 500);
 
   const { scriptId } = useParams();
   const {
@@ -123,11 +126,11 @@ function ScriptEditor() {
     error: editsError,
   } = useEdits(scriptId);
 
-  const sfxEdits = edits?.filter((edit) => edit.type === "sfx");
-  const vfxEdits = edits?.filter((edit) => edit.type === "vfx");
-  const emotionEdits = edits?.filter((edit) => edit.type === "emotion");
-  const brollEdits = edits?.filter((edit) => edit.type === "broll");
-  const musicEdits = edits?.filter((edit) => edit.type === "music");
+  const sfxEdits = edits?.filter((edit) => edit.type === 'sfx');
+  const vfxEdits = edits?.filter((edit) => edit.type === 'vfx');
+  const emotionEdits = edits?.filter((edit) => edit.type === 'emotion');
+  const brollEdits = edits?.filter((edit) => edit.type === 'broll');
+  const musicEdits = edits?.filter((edit) => edit.type === 'music');
 
   useEffect(() => {
     if (script?.content) {
@@ -136,7 +139,7 @@ function ScriptEditor() {
   }, [script?.content, editor, scriptId]);
 
   // TODO Change and go to NOT FOUND PAGE
-  if (scriptError?.code === "PGRST116") navigate("/app", { replace: true });
+  if (scriptError?.code === 'PGRST116') navigate('/app', { replace: true });
 
   function handleUpdateScriptTitle(newTitle) {
     if (isUpdating || !newTitle) return;
@@ -153,12 +156,12 @@ function ScriptEditor() {
   }
 
   const initialValue =
-    JSON.parse(script?.content || "[]").length > 0
+    JSON.parse(script?.content || '[]').length > 0
       ? JSON.parse(script?.content)
       : [
           {
-            type: "paragraph",
-            children: [{ text: "Pega tu guion aquí" }],
+            type: 'paragraph',
+            children: [{ text: 'Pega tu guion aquí' }],
           },
         ];
 
@@ -167,11 +170,20 @@ function ScriptEditor() {
       <Slate
         key={`slate-${script?.id}`}
         editor={editor}
+        // onChange does not work in Editable Slate component
+        onChange={() =>
+          debouncedHandleUpdateContent({
+            editor,
+            script,
+            isUpdating,
+            updateScript,
+          })
+        }
         initialValue={initialValue}
       >
         <>
           <h2 className="title-music">
-            Música{" "}
+            Música{' '}
             {musicEdits?.length > 0 && <span>({musicEdits?.length})</span>}
           </h2>
           <h2 className="title-sfx">
@@ -183,17 +195,18 @@ function ScriptEditor() {
             type="plain"
             defaultValue={script?.title}
             placeholder="Nombre del guion"
+            onChange={debouncedHandleTitleBlur}
             onBlur={handleTitleBlur}
           />
           <h2 className="title-emotion">
-            Emoción{" "}
+            Emoción{' '}
             {emotionEdits?.length > 0 && <span>({emotionEdits?.length})</span>}
           </h2>
           <h2 className="title-vfx">
             VFX {vfxEdits?.length > 0 && <span>({vfxEdits?.length})</span>}
           </h2>
           <h2 className="title-broll">
-            B-Roll{" "}
+            B-Roll{' '}
             {brollEdits?.length > 0 && <span>({brollEdits?.length})</span>}
           </h2>
 

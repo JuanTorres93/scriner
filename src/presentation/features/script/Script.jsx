@@ -1,11 +1,12 @@
-import React, { useCallback, useMemo, useRef } from "react";
-import { Editable, useSlate } from "slate-react";
-import styled from "styled-components";
+import React, { useCallback, useMemo, useRef } from 'react';
+import { Editable, useSlate } from 'slate-react';
+import styled from 'styled-components';
 
-import { useUpdateScript } from "./useUpdateScript";
-import InlineEdit from "../edit/InlineEdit";
-import HoveringToolbar from "./HoverToolbar";
-import { EDIT_TYPES } from "../../../domain/edit/editTypes";
+import { useUpdateScript } from './useUpdateScript';
+import InlineEdit from '../edit/InlineEdit';
+import HoveringToolbar from './HoverToolbar';
+import { EDIT_TYPES } from '../../../domain/edit/editTypes';
+import { handleUpdateContent } from '../../utils/slateUtils';
 
 const StyledEditable = styled(Editable)`
   border: 2px solid var(--color-grey);
@@ -57,13 +58,6 @@ const Script = ({ script, className }) => {
     return <InlineEdit {...props} editIds={editIds} />;
   }, []);
 
-  function handleUpdateContent() {
-    const newContent = JSON.stringify(editor.children);
-    if (!script?.id || !newContent || isUpdating) return;
-    if (newContent === script?.content) return;
-    updateScript({ id: script?.id, data: { content: newContent } });
-  }
-
   const getSelectionRect = useMemo(() => {
     return () => {
       const sel = window.getSelection?.();
@@ -84,6 +78,7 @@ const Script = ({ script, className }) => {
           const clientRects = r.getClientRects?.();
           if (clientRects && clientRects.length) return clientRects[0];
         }
+        // eslint-disable-next-line
       } catch (_) {
         // swallow and continue to fallback
       }
@@ -98,6 +93,7 @@ const Script = ({ script, className }) => {
         const clientRects = base.getClientRects?.();
         if (clientRects && clientRects.length)
           return clientRects[clientRects.length - 1];
+        // eslint-disable-next-line
       } catch (_) {
         // final fallback → no rect
       }
@@ -117,7 +113,10 @@ const Script = ({ script, className }) => {
         className={className}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        onBlur={handleUpdateContent}
+        // onBlur does not work in general Slate component
+        onBlur={() =>
+          handleUpdateContent({ editor, script, isUpdating, updateScript })
+        }
       />
     </>
   );

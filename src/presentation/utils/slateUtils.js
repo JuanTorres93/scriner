@@ -1,8 +1,8 @@
-import { Editor, Range, Text, Transforms } from "slate";
+import { Editor, Range, Text, Transforms } from 'slate';
 
 export function resetEditorContent(editor, content) {
   try {
-    const parsed = JSON.parse(content || "[]");
+    const parsed = JSON.parse(content || '[]');
 
     const nodes = Array.isArray(parsed)
       ? parsed
@@ -15,8 +15,8 @@ export function resetEditorContent(editor, content) {
         ? nodes
         : [
             {
-              type: "paragraph",
-              children: [{ text: "Pega tu guion aquí" }],
+              type: 'paragraph',
+              children: [{ text: 'Pega tu guion aquí' }],
             },
           ];
 
@@ -28,8 +28,8 @@ export function resetEditorContent(editor, content) {
     Transforms.deselect(editor);
     editor.children = [
       {
-        type: "paragraph",
-        children: [{ text: "Pega tu guion aquí" }],
+        type: 'paragraph',
+        children: [{ text: 'Pega tu guion aquí' }],
       },
     ];
   }
@@ -76,4 +76,16 @@ export function getMarksInDocument(editor, type = null) {
   if (type) return marks.find((mark) => mark[type] !== undefined);
 
   return marks;
+}
+
+export function handleUpdateContent({
+  editor,
+  script,
+  isUpdating,
+  updateScript,
+}) {
+  const newContent = JSON.stringify(editor.children);
+  if (!script?.id || !newContent || isUpdating) return;
+  if (newContent === script?.content) return;
+  updateScript({ id: script?.id, data: { content: newContent } });
 }

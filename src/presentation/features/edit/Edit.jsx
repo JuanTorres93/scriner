@@ -1,16 +1,17 @@
 // TODO Añadir posición del edit en la base de datos para ordenarlos por orden de aparición?
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
-import { useUpdateEdit } from "./hooks/useUpdateEdit";
-import { useDeleteEdit } from "./hooks/useDeleteEdit";
-import { useCurrentEdits } from "./CurrentEditsContext";
-import Textarea from "../../ui/Textarea";
-import Button from "../../ui/Button";
-import { HiCheckCircle, HiMiniXCircle, HiTrash } from "react-icons/hi2";
-import { useSlate } from "slate-react";
-import { ScriptActions } from "../script/ScriptActions";
-import { useUpdateScript } from "../script/useUpdateScript";
-import { useEffect, useRef, useLayoutEffect } from "react";
+import { useUpdateEdit } from './hooks/useUpdateEdit';
+import { useDeleteEdit } from './hooks/useDeleteEdit';
+import { useCurrentEdits } from './CurrentEditsContext';
+import Textarea from '../../ui/Textarea';
+import Button from '../../ui/Button';
+import { HiCheckCircle, HiMiniXCircle, HiTrash } from 'react-icons/hi2';
+import { useSlate } from 'slate-react';
+import { ScriptActions } from '../script/ScriptActions';
+import { useUpdateScript } from '../script/useUpdateScript';
+import { useEffect, useRef, useLayoutEffect } from 'react';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const StyledEdit = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const StyledEdit = styled.div`
 
   &:hover {
     ${(props) =>
-      !props["data-is-current"] &&
+      !props['data-is-current'] &&
       css`
         background-color: var(--color-grey-t1);
       `}
@@ -43,8 +44,8 @@ const StyledEdit = styled.div`
 
   /* Color according type */
   ${(props) =>
-    props.edit.type === "music" &&
-    props["data-is-current"] &&
+    props.edit.type === 'music' &&
+    props['data-is-current'] &&
     css`
       background-color: var(--color-music);
 
@@ -54,8 +55,8 @@ const StyledEdit = styled.div`
     `}
 
   ${(props) =>
-    props.edit.type === "sfx" &&
-    props["data-is-current"] &&
+    props.edit.type === 'sfx' &&
+    props['data-is-current'] &&
     css`
       background-color: var(--color-sfx);
 
@@ -65,8 +66,8 @@ const StyledEdit = styled.div`
     `}
 
   ${(props) =>
-    props.edit.type === "vfx" &&
-    props["data-is-current"] &&
+    props.edit.type === 'vfx' &&
+    props['data-is-current'] &&
     css`
       background-color: var(--color-vfx);
       textarea {
@@ -75,8 +76,8 @@ const StyledEdit = styled.div`
     `}
 
   ${(props) =>
-    props.edit.type === "emotion" &&
-    props["data-is-current"] &&
+    props.edit.type === 'emotion' &&
+    props['data-is-current'] &&
     css`
       background-color: var(--color-emotion);
 
@@ -86,8 +87,8 @@ const StyledEdit = styled.div`
     `}
 
   ${(props) =>
-    props.edit.type === "broll" &&
-    props["data-is-current"] &&
+    props.edit.type === 'broll' &&
+    props['data-is-current'] &&
     css`
       background-color: var(--color-broll);
 
@@ -116,14 +117,15 @@ function Edit({ edit }) {
   const { updateEdit, isUpdating } = useUpdateEdit();
   const { deleteEdit, isDeleting } = useDeleteEdit();
   const { updateScript, isUpdating: isUpdatingScript } = useUpdateScript();
+  const debouncedHandleUpdateEdit = useDebounce(handleUpdateEdit);
 
   const isCurrent = isCurrentEdit(edit);
   const isLoading = isUpdating || isDeleting || isUpdatingScript;
 
   function autosize(el) {
     if (!el) return;
-    el.style.height = "0px"; // reset for better computation
-    el.style.height = el.scrollHeight + "px";
+    el.style.height = '0px'; // reset for better computation
+    el.style.height = el.scrollHeight + 'px';
   }
 
   // Adjust on mount and when initial content changes (e.g., when selecting another edit)
@@ -206,6 +208,7 @@ function Edit({ edit }) {
         <Textarea
           onClick={(e) => e.stopPropagation()}
           ref={textareaRef}
+          onChange={debouncedHandleUpdateEdit} // Debounced to avoid excessive calls
           onBlur={handleUpdateEdit}
           onInput={(e) => autosize(e.currentTarget)} // Triggers on every input
           rows={1} // Start with 1 row, will expand as needed
@@ -218,7 +221,7 @@ function Edit({ edit }) {
 
       <div className="actions-box">
         <Button
-          type={edit?.isDone ? "secondary" : "confirm"}
+          type={edit?.isDone ? 'secondary' : 'confirm'}
           disabled={isLoading}
           onClick={handleToggleIsDone}
         >
