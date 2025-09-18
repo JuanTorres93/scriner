@@ -186,7 +186,7 @@ function Edit({ edit }) {
     });
   }
 
-  function handleSetCurrentEdit(e) {
+  function handleSetCurrentEdit() {
     if (isCurrent) {
       // remove from current
       return setCurrentEditsIds((prev) => {
