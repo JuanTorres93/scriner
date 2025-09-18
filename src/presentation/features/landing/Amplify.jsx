@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import Section from './Section';
 import SplitRow from '../../ui/SplitRow';
+import React from 'react';
 
 // NOTE: Bullet points generated with ChatGPT from original text below
 // TODO: Check before deployment and adjust if needed
@@ -41,7 +42,7 @@ const AmplifyDescription = styled.div`
   line-height: 1.4;
 
   ${(props) =>
-    props.isTextLeft
+    props.$isTextLeft
       ? css`
           text-align: left;
         `
@@ -76,17 +77,19 @@ function Amplify() {
       {items.map((item, index) => {
         const isEven = index % 2 === 0;
         return (
-          <>
-            <SplitRow key={item.title} spacing="12rem">
+          <React.Fragment key={item.title}>
+            <SplitRow spacing="12rem">
               {item.image && isEven && <img src={item.image} alt="" />}
-              <AmplifyDescription isTextLeft={isEven}>
+
+              <AmplifyDescription $isTextLeft={isEven}>
                 <h4>{item.title}</h4>
                 <p>{item.description}</p>
               </AmplifyDescription>
+
               {item.image && !isEven && <img src={item.image} alt="" />}
             </SplitRow>
             <RowSpacing />
-          </>
+          </React.Fragment>
         );
       })}
     </AmplifySection>
