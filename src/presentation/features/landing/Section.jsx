@@ -15,6 +15,15 @@ const StyledSection = styled.section`
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
   }
+
+  // TODO Review styling
+  .subtitle {
+    font-size: var(--font-size-regular);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-grey-s2);
+    text-align: center;
+    max-width: 60rem;
+  }
 `;
 
 const Content = styled.div`
@@ -24,8 +33,8 @@ const Content = styled.div`
   line-height: 1.4;
 
   em {
-    font-weight: var(--font-weight-medium);
-    color: var(--color-accent);
+    /* font-weight: var(--font-weight-medium); */
+    color: var(--color-primary-s2);
   }
 `;
 
@@ -33,11 +42,14 @@ function Section({
   children,
   className,
   sectionName = 'Section Name',
+  subtitle,
   ...props
 }) {
   return (
     <StyledSection className={className} {...props}>
       <h3>{sectionName}</h3>
+
+      {subtitle && <h4 className="subtitle">{subtitle}</h4>}
       <Content>{children}</Content>
     </StyledSection>
   );
