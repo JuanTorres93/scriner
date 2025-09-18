@@ -1,4 +1,4 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from '../../domain/common/errors';
 
 export class GetScriptsByUser {
   constructor(repo) {
@@ -6,7 +6,8 @@ export class GetScriptsByUser {
   }
 
   exec = async (userId) => {
-    if (!userId) throw new ValidationError("A user id is required");
+    if (!userId)
+      throw new ValidationError('GetScriptsByUser: A user id is required');
 
     return this.repo.getAllByUser(userId); // returns Script entities
   };

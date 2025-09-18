@@ -6,7 +6,7 @@ export class GetEditById {
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError('An edit id is required');
+    if (!id) throw new ValidationError('GetEditById: An edit id is required');
 
     return this._editsRepo.getById(id);
   };

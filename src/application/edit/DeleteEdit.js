@@ -6,7 +6,7 @@ export class DeleteEdit {
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError('An edit id is required');
+    if (!id) throw new ValidationError('DeleteEdit: An edit id is required');
     return this._editsRepo.delete(id);
   };
 }

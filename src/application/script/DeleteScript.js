@@ -1,12 +1,13 @@
-import { ValidationError } from "../../domain/common/errors";
+import { ValidationError } from '../../domain/common/errors';
 
 export class DeleteScript {
-  constructor(repo) {
-    this.repo = repo;
+  constructor(scriptsRepo) {
+    this._scriptsRepo = scriptsRepo;
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError("An script id is required");
-    return this.repo.delete(id);
+    if (!id)
+      throw new ValidationError('DeleteScript: An script id is required');
+    return this._scriptsRepo.delete(id);
   };
 }

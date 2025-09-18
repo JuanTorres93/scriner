@@ -6,7 +6,8 @@ export class GetScriptById {
   }
 
   exec = async (id) => {
-    if (!id) throw new ValidationError('An script id is required');
+    if (!id)
+      throw new ValidationError('GetScriptById: An script id is required');
     return this._scriptRepo.getById(id);
   };
 }

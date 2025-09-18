@@ -1,4 +1,3 @@
-// TODO NEXT: Delete this use case and substitute it with AddEditToScript
 import { Edit } from '../../domain/edit/Edit';
 import { ValidationError } from '../../domain/common/errors';
 

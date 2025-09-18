@@ -7,7 +7,8 @@ export class CreateScript {
   }
 
   exec = async (script) => {
-    if (!script) throw new ValidationError('An script is required');
+    if (!script)
+      throw new ValidationError('CreateScript: An script is required');
 
     const newScriptData = { ...script };
 
