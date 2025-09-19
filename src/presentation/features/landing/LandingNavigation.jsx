@@ -5,13 +5,10 @@ import Logo from '../../ui/Logo';
 import Button from '../../ui/Button';
 
 const navItems = [
-  // TODO cambiar (MODIFICAR y/o quitar) por los que vaya a usar
   { label: 'Problema', href: '#problem' },
-  { label: 'Amplificación', href: '#amplify' },
-  { label: 'Historia', href: '#story' },
-  { label: 'Testimonio', href: '#testimonial' },
-  { label: 'Oferta', href: '#offer' },
-  { label: 'Respuesta', href: '#response' },
+  { label: 'Consecuencias', href: '#amplify' },
+  { label: 'Método', href: '#story' },
+  { label: 'Beneficios', href: '#response' },
 ];
 
 const StyledNav = styled.nav`

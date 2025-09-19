@@ -72,8 +72,7 @@ const AmplifySection = styled(Section)`
 
 function Amplify() {
   return (
-    // TODO CHANGE SECTION NAME
-    <AmplifySection id="amplify" sectionName="Amplifica tu creatividad">
+    <AmplifySection id="amplify" sectionName="¿Qué pierdes si no cambias nada?">
       {items.map((item, index) => {
         const isEven = index % 2 === 0;
         return (

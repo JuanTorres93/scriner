@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import { FaXmark, FaCheck } from 'react-icons/fa6';
 import Section from './Section';
+import ListItemIcon from '../../ui/ListItemIcon';
 
 const StorySection = styled(Section)`
   .lists-wrapper {
@@ -18,7 +20,17 @@ const StorySection = styled(Section)`
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
 
+      h4 {
+        font-size: var(--font-size-b2);
+        font-weight: 500;
+        color: var(--color-text);
+        margin: 0;
+      }
+
       .list {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
         list-style: none;
         padding: 0;
         margin: 0;
@@ -30,16 +42,18 @@ const StorySection = styled(Section)`
       }
 
       .wrong-list {
-        li::before {
-          content: '❌ ';
-          margin-right: 0.5rem;
+        svg {
+          fill: var(--color-error);
+          font-size: 1.2em;
+          flex-shrink: 0;
         }
       }
 
       .right-list {
-        li::before {
-          content: '✅ ';
-          margin-right: 0.5rem;
+        svg {
+          fill: var(--color-success-s1);
+          font-size: 1.2em;
+          flex-shrink: 0;
         }
       }
     }
@@ -48,32 +62,43 @@ const StorySection = styled(Section)`
 
 function Story() {
   return (
-    // TODO CHANGE SECTION NAME
     <StorySection
       id="story"
-      sectionName="La historia detrás de la creatividad"
-      subtitle={'No te falta creatividad, te falta el medio adecuado'}
+      sectionName="No te falta creatividad, te falta el medio adecuado"
     >
+      {/* TODO */}
+      {/* <p>Explicar algo de usar el guion como GPS</p> */}
+
       <div className="lists-wrapper">
         <div className="list-container">
           <h4>
-            🌀 Editar sobre el <em>timeline</em>
+            Editar sobre el <em>timeline</em>
           </h4>
           <ul className="list wrong-list">
-            <li>Caótico y lento</li>
-            <li>Solo ves lo inmediato</li>
-            <li>Pierdes claridad sobre la visión global</li>
+            <ListItemIcon icon={<FaXmark />}>Caótico y lento</ListItemIcon>
+            <ListItemIcon icon={<FaXmark />}>
+              Solo ves lo inmediato
+            </ListItemIcon>
+            <ListItemIcon icon={<FaXmark />}>
+              Pierdes claridad sobre la visión global
+            </ListItemIcon>
           </ul>
         </div>
 
         <div className="list-container">
           <h4>
-            🌟 Diseñar sobre el <em>guion</em>
+            Diseñar sobre el <em>guion</em>
           </h4>
           <ul className="list right-list">
-            <li>Todo el proyecto de un vistazo</li>
-            <li>Decides emociones en cada parte</li>
-            <li>Avanzas rápido y con claridad</li>
+            <ListItemIcon icon={<FaCheck />}>
+              Todo el proyecto de un vistazo
+            </ListItemIcon>
+            <ListItemIcon icon={<FaCheck />}>
+              Decides emociones en cada parte
+            </ListItemIcon>
+            <ListItemIcon icon={<FaCheck />}>
+              Avanzas rápido y con claridad
+            </ListItemIcon>
           </ul>
         </div>
       </div>

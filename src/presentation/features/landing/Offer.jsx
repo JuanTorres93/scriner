@@ -1,39 +1,23 @@
 import styled from 'styled-components';
 import Section from './Section';
+import { FaCheck } from 'react-icons/fa6';
+import ListItemIcon from '../../ui/ListItemIcon';
 
 const OfferSection = styled(Section)`
-  /* background-color: var(--color-accent-t1); */
   padding: 4rem 2rem;
   text-align: center;
 
-  h3 {
-    font-size: var(--font-size-b3);
-    color: var(--color-text);
-    margin-bottom: 2rem;
-  }
-
   ul {
-    list-style: none;
-    margin: 0 auto;
-    padding: 0;
-    display: grid;
-    gap: 1rem;
-    max-width: 40ch;
-  }
-
-  li {
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: var(--font-size-b1);
-    color: var(--color-grey-s2);
-    text-align: left;
-  }
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    list-style: none;
+    gap: 0.6rem;
 
-  li::before {
-    content: '✓';
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
+    li svg {
+      fill: var(--color-primary-s1);
+    }
   }
 
   .highlight {
@@ -46,11 +30,13 @@ const OfferSection = styled(Section)`
 
 function Offer() {
   return (
-    <OfferSection id="offer" sectionName="Con mi herramienta conseguirás">
+    <OfferSection id="offer" sectionName="Editormind te ofrece:">
       <ul>
-        <li>Menos tiempo de edición</li>
-        <li>Mayor creatividad</li>
-        <li>Vídeos más coherentes y atractivos</li>
+        <ListItemIcon icon={<FaCheck />}>Menos tiempo de edición</ListItemIcon>
+        <ListItemIcon icon={<FaCheck />}>Mayor creatividad</ListItemIcon>
+        <ListItemIcon icon={<FaCheck />}>
+          Vídeos más coherentes y atractivos
+        </ListItemIcon>
       </ul>
       <div className="highlight">✨ Y además: ¡Es 100% gratuita!</div>
     </OfferSection>

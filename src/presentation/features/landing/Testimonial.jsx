@@ -1,5 +1,7 @@
 import Section from './Section';
 import styled from 'styled-components';
+import ListItemIcon from '../../ui/ListItemIcon';
+import { FaCheck } from 'react-icons/fa6';
 
 const TestimonialSection = styled(Section)`
   background-color: var(--color-grey-t2);
@@ -18,8 +20,9 @@ const Quote = styled.figure`
 
   blockquote {
     margin: 0;
-    font-size: var(--font-size-b2);
+    font-size: var(--font-size-b4);
     font-style: italic;
+    font-weight: 500;
     line-height: 1.5;
     color: var(--color-primary-s2);
   }
@@ -27,6 +30,7 @@ const Quote = styled.figure`
   figcaption {
     font-size: var(--font-size-base);
     color: var(--color-grey-s2);
+    margin-left: auto;
   }
 `;
 
@@ -42,25 +46,16 @@ const Proof = styled.div`
   }
 
   ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 0.6rem;
-  }
-
-  li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.6rem;
+    display: flex;
+    flex-direction: column;
     align-items: start;
-    color: var(--color-grey-s2);
-  }
+    justify-content: start;
+    list-style: none;
+    gap: 0.6rem;
 
-  li::before {
-    content: '✓';
-    color: var(--color-primary);
-    font-weight: var(--font-weight-semibold);
+    li svg {
+      fill: var(--color-primary-s1);
+    }
   }
 `;
 
@@ -69,6 +64,7 @@ const Person = styled.div`
   align-items: center;
   gap: 0.8rem;
   margin-top: 0.2rem;
+  justify-self: end;
 
   img {
     max-width: 5.5rem;
@@ -90,23 +86,34 @@ const Person = styled.div`
 
 function Testimonial() {
   return (
-    <TestimonialSection id="testimonial" sectionName="Testimonio">
-      <Wrap>
+    <TestimonialSection
+      id="testimonial"
+      sectionName={
         <Quote>
           <blockquote>
             “La creatividad es inteligencia divirtiéndose.”
           </blockquote>
           <figcaption>— Albert Einstein</figcaption>
         </Quote>
-
+      }
+    >
+      <Wrap>
         <Proof>
           <div>
             <h4>Lo que he notado desde que uso el guion como GPS</h4>
             <ul>
-              <li>Menos tiempo atascado en la edición</li>
-              <li>Claridad sobre la emoción de cada parte</li>
-              <li>Edits coherentes con la emoción del momento</li>
-              <li>Base sólida para improvisar y ser más creativo</li>
+              <ListItemIcon icon={<FaCheck />}>
+                Menos tiempo atascado en la edición
+              </ListItemIcon>
+              <ListItemIcon icon={<FaCheck />}>
+                Claridad sobre la emoción de cada parte
+              </ListItemIcon>
+              <ListItemIcon icon={<FaCheck />}>
+                Edits coherentes con la emoción del momento
+              </ListItemIcon>
+              <ListItemIcon icon={<FaCheck />}>
+                Base sólida para improvisar y ser más creativo
+              </ListItemIcon>
             </ul>
           </div>
           <Person>
