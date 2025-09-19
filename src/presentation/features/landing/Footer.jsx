@@ -66,7 +66,7 @@ function Footer() {
       </div>
 
       <div className="legal">
-        © {new Date().getFullYear()} Tu Proyecto. Todos los derechos reservados.
+        © {new Date().getFullYear()} Editormind. Todos los derechos reservados.
       </div>
     </StyledFooter>
   );
