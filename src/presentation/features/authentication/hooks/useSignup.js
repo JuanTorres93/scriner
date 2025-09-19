@@ -1,10 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
-import { useServices } from "../../../../interface-adapters/react/context/AppServicesProvider";
+import { useServices } from '../../../../interface-adapters/react/context/AppServicesProvider';
 
 export function useSignup() {
   const { auth } = useServices();
+  const navigate = useNavigate();
 
   const {
     mutate: signup,
@@ -14,12 +16,13 @@ export function useSignup() {
     mutationFn: auth.signup.exec,
     onSuccess: () => {
       toast.success(
-        "Cuenta creada! Por favor, revisa tu email para verificarla."
+        'Cuenta creada! Por favor, revisa tu email para verificarla.'
       );
+      navigate('/confirm-email');
     },
     onError: () => {
       toast.error(
-        "Error al crear la cuenta. Por favor, inténtalo de nuevo más tarde."
+        'Error al crear la cuenta. Por favor, inténtalo de nuevo más tarde.'
       );
     },
   });

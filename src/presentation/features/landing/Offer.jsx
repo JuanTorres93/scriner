@@ -38,7 +38,9 @@ function Offer() {
           Vídeos más coherentes y atractivos
         </ListItemIcon>
       </ul>
-      <div className="highlight">✨ Y además: ¡Es 100% gratuita!</div>
+      <div className="highlight">
+        ✨ Y además: ¡Es 100% gratuita!... Por ahora 😏
+      </div>
     </OfferSection>
   );
 }

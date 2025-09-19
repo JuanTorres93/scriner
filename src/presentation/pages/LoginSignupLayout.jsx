@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const LoginSignupLayout = styled.main`
-  min-height: 100vh;
+  min-height: 89.6vh;
   display: grid;
   grid-template-columns: 100rem;
   align-content: center;

@@ -1,30 +1,31 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import { AppServicesProvider } from "./interface-adapters/react/context/AppServicesProvider.jsx";
+import { AppServicesProvider } from './interface-adapters/react/context/AppServicesProvider.jsx';
 
-import ProtectedRoute from "./presentation/features/authentication/ProtectedRoute.jsx";
-import CurrentEditsProvider from "./presentation/features/edit/CurrentEditsContext.jsx";
+import ProtectedRoute from './presentation/features/authentication/ProtectedRoute.jsx';
+import CurrentEditsProvider from './presentation/features/edit/CurrentEditsContext.jsx';
 
-import Landing from "./presentation/pages/Landing.jsx";
-import Login from "./presentation/pages/Login.jsx";
-import ScriptEditor from "./presentation/pages/ScriptEditor";
-import Signup from "./presentation/pages/Signup.jsx";
-import GlobalStyles from "./presentation/styles/GlobalStyles.js";
-import AppLayout from "./presentation/ui/AppLayout.jsx";
-import MarketingLayout from "./presentation/ui/MarketingLayout.jsx";
-import ErrorPage from "./presentation/ui/ErrorPage.jsx";
+import Landing from './presentation/pages/Landing.jsx';
+import Login from './presentation/pages/Login.jsx';
+import ScriptEditor from './presentation/pages/ScriptEditor';
+import Signup from './presentation/pages/Signup.jsx';
+import GlobalStyles from './presentation/styles/GlobalStyles.js';
+import AppLayout from './presentation/ui/AppLayout.jsx';
+import MarketingLayout from './presentation/ui/MarketingLayout.jsx';
+import ErrorPage from './presentation/ui/ErrorPage.jsx';
+import EmailConfirmation from './presentation/pages/EmailConfirmation.jsx';
 
 const router = createBrowserRouter([
   {
     // TODO remove, just for development
-    path: "/",
+    path: '/',
     element: (
       <MarketingLayout>
         <Landing />
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/login",
+    path: '/login',
     element: (
       <MarketingLayout>
         <Login />
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/signup",
+    path: '/signup',
     element: (
       <MarketingLayout>
         <Signup />
@@ -51,8 +52,17 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: '/confirm-email',
+    element: (
+      <MarketingLayout>
+        <EmailConfirmation />
+      </MarketingLayout>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
     // AppLayout is the main layout for the app
-    path: "/app",
+    path: '/app',
     element: (
       <ProtectedRoute>
         <AppLayout />
@@ -61,7 +71,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "editor",
+        path: 'editor',
         children: [
           {
             index: true,
@@ -70,7 +80,7 @@ const router = createBrowserRouter([
           },
           {
             // This is the main page of the app
-            path: ":scriptId",
+            path: ':scriptId',
             element: <ScriptEditor />,
           },
         ],
@@ -100,7 +110,7 @@ function App() {
             <Toaster
               position="bottom-center"
               gutter={12}
-              containerStyle={{ margin: "8px" }}
+              containerStyle={{ margin: '8px' }}
               toastOptions={{
                 success: {
                   duration: 3000,
@@ -109,14 +119,14 @@ function App() {
                   duration: 5000,
                 },
                 style: {
-                  fontSize: "1.6rem",
-                  maxWidth: "500px",
-                  padding: "16px 24px",
-                  backgroundColor: "var(--color-grey-t2)",
-                  color: "var(--color-grey-s2)",
+                  fontSize: '1.6rem',
+                  maxWidth: '500px',
+                  padding: '16px 24px',
+                  backgroundColor: 'var(--color-grey-t2)',
+                  color: 'var(--color-grey-s2)',
                 },
               }}
-            />{" "}
+            />{' '}
           </AppServicesProvider>
         </QueryClientProvider>
       </CurrentEditsProvider>
