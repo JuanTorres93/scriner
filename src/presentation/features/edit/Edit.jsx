@@ -7,11 +7,12 @@ import { useCurrentEdits } from './CurrentEditsContext';
 import Textarea from '../../ui/Textarea';
 import Button from '../../ui/Button';
 import { HiCheckCircle, HiMiniXCircle, HiTrash } from 'react-icons/hi2';
-import { useSlate } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import { ScriptActions } from '../script/ScriptActions';
 import { useUpdateScript } from '../script/useUpdateScript';
 import { useEffect, useRef, useLayoutEffect } from 'react';
 import { useDebounce } from '../../hooks/useDebounce';
+import { Editor, Text, Transforms } from 'slate';
 
 const StyledEdit = styled.div`
   display: flex;
@@ -187,15 +188,42 @@ function Edit({ edit }) {
   }
 
   function handleSetCurrentEdit() {
+    // Remove from current if already current
     if (isCurrent) {
-      // remove from current
       return setCurrentEditsIds((prev) => {
         const newIds = { ...prev };
         delete newIds[edit.type];
         return newIds;
       });
     }
+
     setCurrentEditsIds((prev) => ({ ...prev, [edit.type]: edit.id }));
+
+    // Move cursor to the position of this edit in the editor
+
+    // Wait for React to paint the changes (decorations/leafs) and then select.
+    requestAnimationFrame(() => {
+      // Look for the first node that has this edit type and id
+      const first = Array.from(
+        Editor.nodes(editor, {
+          at: [], // Whole document
+          match: (n) => Text.isText(n) && n[edit._type]?.editId === edit.id,
+        })
+      )[0];
+
+      if (!first) return;
+
+      const [, path] = first;
+
+      // Move cursor to the start of that node
+      Editor.withoutNormalizing(editor, () => {
+        // In some browsers it helps to focus before selecting
+        ReactEditor.focus(editor);
+
+        const point = Editor.start(editor, path);
+        Transforms.select(editor, { anchor: point, focus: point });
+      });
+    });
   }
 
   return (

@@ -1,15 +1,15 @@
-import styled, { css } from "styled-components";
-import { useParams } from "react-router-dom";
+import styled, { css } from 'styled-components';
+import { useParams } from 'react-router-dom';
 
-import { EDIT_TYPES } from "../../../domain/edit/editTypes.js";
-import { useCurrentEdits } from "./CurrentEditsContext";
-import { useEdits } from "./hooks/useEdits";
+import { EDIT_TYPES } from '../../../domain/edit/editTypes.js';
+import { useCurrentEdits } from './CurrentEditsContext';
+import { useEdits } from './hooks/useEdits';
 
-const BORDER_WIDTH = "0.7rem";
-const INCREASED_BORDER_WIDTH = "1rem";
+const BORDER_WIDTH = '0.7rem';
+const INCREASED_BORDER_WIDTH = '1rem';
 
 export const getBorderByType = (leaf, type) => {
-  if (!leaf?.[type]) return "";
+  if (!leaf?.[type]) return '';
 
   if (leaf[type].isDone) return css`--border-${type}: var(--color-grey);`;
 
@@ -31,7 +31,7 @@ export const getBorderByType = (leaf, type) => {
 };
 
 export const getEmotionBackground = (leaf) => {
-  if (!leaf?.[EDIT_TYPES.EMOTION]) return "";
+  if (!leaf?.[EDIT_TYPES.EMOTION]) return '';
 
   if (leaf[EDIT_TYPES.EMOTION].isDone)
     return css`

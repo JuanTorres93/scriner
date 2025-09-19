@@ -25,7 +25,6 @@ import RouteForNotAuthenticated from './presentation/features/authentication/Rou
 
 const router = createBrowserRouter([
   {
-    // TODO remove, just for development
     path: '/',
     element: (
       <MarketingLayout>
