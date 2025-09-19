@@ -3,6 +3,7 @@ import { HashLink } from 'react-router-hash-link';
 import styled from 'styled-components';
 import Logo from '../../ui/Logo';
 import Button from '../../ui/Button';
+import { useUser } from '../authentication/hooks/useUser';
 
 const navItems = [
   { label: 'Problema', href: '#problem' },
@@ -93,6 +94,8 @@ const StyledNav = styled.nav`
 `;
 
 function LandingNavigation() {
+  const { isAuthenticated } = useUser();
+
   return (
     <StyledNav>
       <ul>
@@ -115,16 +118,28 @@ function LandingNavigation() {
         </li>
 
         <li className="col-3">
-          <span>
-            <Button type="secondary" as={Link} to={'/login'}>
-              Inicia sesión
-            </Button>
-          </span>
-          <span>
-            <Button as={Link} to={'/signup'}>
-              Regístrate
-            </Button>
-          </span>
+          {!isAuthenticated && (
+            <>
+              <span>
+                <Button type="secondary" as={Link} to={'/login'}>
+                  Inicia sesión
+                </Button>
+              </span>
+              <span>
+                <Button as={Link} to={'/signup'}>
+                  Regístrate
+                </Button>
+              </span>
+            </>
+          )}
+
+          {isAuthenticated && (
+            <span>
+              <Button as={Link} to={'/app'}>
+                Ir a la app
+              </Button>
+            </span>
+          )}
         </li>
       </ul>
     </StyledNav>

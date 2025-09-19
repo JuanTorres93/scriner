@@ -21,6 +21,7 @@ import AppLayout from './presentation/ui/AppLayout.jsx';
 import MarketingLayout from './presentation/ui/MarketingLayout.jsx';
 import ErrorPage from './presentation/ui/ErrorPage.jsx';
 import EmailConfirmation from './presentation/pages/EmailConfirmation.jsx';
+import RouteForNotAuthenticated from './presentation/features/authentication/RouteForNotAuthenticated.jsx';
 
 const router = createBrowserRouter([
   {
@@ -36,18 +37,22 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: (
-      <MarketingLayout>
-        <Login />
-      </MarketingLayout>
+      <RouteForNotAuthenticated>
+        <MarketingLayout>
+          <Login />
+        </MarketingLayout>
+      </RouteForNotAuthenticated>
     ),
     errorElement: <ErrorPage />,
   },
   {
     path: '/signup',
     element: (
-      <MarketingLayout>
-        <Signup />
-      </MarketingLayout>
+      <RouteForNotAuthenticated>
+        <MarketingLayout>
+          <Signup />
+        </MarketingLayout>
+      </RouteForNotAuthenticated>
     ),
     errorElement: <ErrorPage />,
   },
