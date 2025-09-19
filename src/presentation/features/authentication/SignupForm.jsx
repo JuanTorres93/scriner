@@ -1,13 +1,12 @@
-import { useForm } from "react-hook-form";
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
-import FormRowVertical from "../../ui/FormRowVertical";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import { useSignup } from "./hooks/useSignup";
+import { useForm } from 'react-hook-form';
+import Button from '../../ui/Button';
+import Form from '../../ui/Form';
+import FormRowVertical from '../../ui/FormRowVertical';
+import FormRow from '../../ui/FormRow';
+import Input from '../../ui/Input';
+import { useSignup } from './hooks/useSignup';
 
-// Email regex: /\S+@\S+\.\S+/
-
+// TODO: Poner mensajes de error en español
 function SignupForm() {
   const { signup, isLoading } = useSignup();
   const { register, formState, getValues, handleSubmit, reset } = useForm();
@@ -31,7 +30,7 @@ function SignupForm() {
           type="text"
           id="fullName"
           disabled={isLoading}
-          {...register("fullName", { required: "This field is required" })}
+          {...register('fullName', { required: 'This field is required' })}
         />
       </FormRowVertical>
 
@@ -40,11 +39,11 @@ function SignupForm() {
           type="email"
           id="email"
           disabled={isLoading}
-          {...register("email", {
-            required: "This field is required",
+          {...register('email', {
+            required: 'This field is required',
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: "Please enter a valid email address",
+              message: 'Please enter a valid email address',
             },
           })}
         />
@@ -58,11 +57,11 @@ function SignupForm() {
           type="password"
           id="password"
           disabled={isLoading}
-          {...register("password", {
-            required: "This field is required",
+          {...register('password', {
+            required: 'This field is required',
             minLength: {
               value: 8,
-              message: "Password must be at least 8 characters long",
+              message: 'Password must be at least 8 characters long',
             },
           })}
         />
@@ -76,10 +75,10 @@ function SignupForm() {
           type="password"
           id="passwordConfirm"
           disabled={isLoading}
-          {...register("passwordConfirm", {
-            required: "This field is required",
+          {...register('passwordConfirm', {
+            required: 'This field is required',
             validate: (value) =>
-              value === getValues().password || "Passwords do not match",
+              value === getValues().password || 'Passwords do not match',
           })}
         />
       </FormRowVertical>
@@ -87,9 +86,9 @@ function SignupForm() {
       <FormRow>
         {/* type is an HTML attribute! */}
         <Button variation="secondary" type="reset" disabled={isLoading}>
-          Cancel
+          Reset
         </Button>
-        <Button disabled={isLoading}>Create new user</Button>
+        <Button disabled={isLoading}>Crear nuevo usuario</Button>
       </FormRow>
     </Form>
   );

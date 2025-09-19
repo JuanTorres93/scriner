@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { Script } from '../../../../src/domain/script/Script.js';
+import { MemoryScriptRepo } from '../../../../src/infrastructure/memory/script/MemoryScriptRepo.js';
 import { MemoryEditRepo } from '../../../../src/infrastructure/memory/edit/MemoryEditRepo.js';
-import { CreateEdit } from '../../../../src/application/edit/CreateEdit.js';
+import { AddEditToScript } from '../../../../src/application/script/AddEditToScript.js';
 import { UpdateEdit } from '../../../../src/application/edit/UpdateEdit.js';
 import { EDIT_TYPES } from '../../../../src/domain/edit/editTypes.js';
 import { ValidationError } from '../../../../src/domain/common/errors.js';
@@ -14,17 +16,27 @@ const validEditData = {
 
 describe('UpdateEdit Use Case', () => {
   let memoryEditsRepo;
+  let memoryScriptRepo;
   let updateEdit;
-  let createEdit;
+  let addEditToScript;
+  let script;
 
   beforeEach(() => {
+    script = Script.create({
+      id: 1,
+      title: 'Test Script',
+      createdAt: new Date(),
+      userId: 1,
+    });
     memoryEditsRepo = new MemoryEditRepo();
+    memoryScriptRepo = new MemoryScriptRepo();
+    memoryScriptRepo.save(script);
     updateEdit = new UpdateEdit(memoryEditsRepo);
-    createEdit = new CreateEdit(memoryEditsRepo);
+    addEditToScript = new AddEditToScript(memoryScriptRepo, memoryEditsRepo);
   });
 
   it('should update edit', async () => {
-    const edit = await createEdit.exec(validEditData);
+    const edit = await addEditToScript.exec(validEditData);
 
     const patch = {
       content: 'Updated content',
@@ -52,7 +64,7 @@ describe('UpdateEdit Use Case', () => {
   });
 
   it('should throw ValidationError when patch is empty', async () => {
-    const edit = await createEdit.exec(validEditData);
+    const edit = await addEditToScript.exec(validEditData);
 
     const patch = {};
 
