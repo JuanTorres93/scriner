@@ -50,7 +50,7 @@ function Footer() {
   return (
     <StyledFooter>
       <p>
-        <strong>Tu Proyecto</strong> — Mejora tus vídeos con claridad y
+        <strong>Editormind</strong> — Mejora tus vídeos con claridad y
         creatividad
       </p>
 

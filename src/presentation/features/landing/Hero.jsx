@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import Button from "../../ui/Button";
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import Button from '../../ui/Button';
 
 const StyledSection = styled.section`
   position: relative;
@@ -69,11 +69,11 @@ function Hero() {
 
       <Box>
         <h2>¿Pierdes el tiempo al editar?</h2>
-        <h1>Con YouScript mejorarás tus vídeos y ahorrarás tiempo.</h1>
+        <h1>Con Editormind mejorarás tus vídeos y ahorrarás tiempo.</h1>
         {/* <p>Tus vídeos subirán al siguiente nivel...</p> */}
 
         <div className="button-container">
-          <Button variant="boldTextLarge" as={Link} to={"/signup"}>
+          <Button variant="boldTextLarge" as={Link} to={'/signup'}>
             Únete ahora
           </Button>
         </div>

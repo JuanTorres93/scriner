@@ -113,8 +113,7 @@ function Testimonial() {
             <img src="/yo.jpg" alt="" />
             <div>
               <div className="name">Juan T.</div>
-              {/* TODO IMPORTANT modificar el nombre si lo cambio */}
-              <div className="role">Creador de YouScript</div>
+              <div className="role">Creador de Editormind</div>
             </div>
           </Person>
         </Proof>
