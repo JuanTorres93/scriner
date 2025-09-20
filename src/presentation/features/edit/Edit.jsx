@@ -207,7 +207,7 @@ function Edit({ edit }) {
       const first = Array.from(
         Editor.nodes(editor, {
           at: [], // Whole document
-          match: (n) => Text.isText(n) && n[edit._type]?.editId === edit.id,
+          match: (n) => Text.isText(n) && n[edit.type]?.editId === edit.id,
         })
       )[0];
 
