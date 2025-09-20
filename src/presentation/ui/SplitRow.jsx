@@ -21,6 +21,13 @@ const StyledSplitRow = styled.div`
 
   img {
     max-width: 40rem;
+
+    ${(props) =>
+      props.$maxWidth &&
+      css`
+        max-width: ${props.$maxWidth};
+      `}
+
     border-radius: 1rem;
 
     // Is first child
@@ -35,8 +42,12 @@ const StyledSplitRow = styled.div`
   }
 `;
 
-function SplitRow({ children, ...props }) {
-  return <StyledSplitRow {...props}>{children}</StyledSplitRow>;
+function SplitRow({ children, imageMaxWidth, ...props }) {
+  return (
+    <StyledSplitRow $maxWidth={imageMaxWidth} {...props}>
+      {children}
+    </StyledSplitRow>
+  );
 }
 
 export default SplitRow;

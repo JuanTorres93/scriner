@@ -3,12 +3,24 @@ import { FaXmark, FaCheck } from 'react-icons/fa6';
 import Section from './Section';
 import ListItemIcon from '../../ui/ListItemIcon';
 
+const Paragraph = styled.p`
+  max-width: 70ch;
+  font-size: var(--font-size-b1);
+  line-height: 1.75;
+  color: var(--color-text);
+  margin: 0 0 1.25rem 0;
+
+  strong {
+    color: var(--color-primary-s1);
+    font-weight: 600;
+  }
+`;
 const StorySection = styled(Section)`
   .lists-wrapper {
     display: flex;
     justify-content: space-around;
-    gap: 4rem;
-    margin-top: 2rem;
+    gap: 6rem;
+    margin-top: 8rem;
 
     .list-container {
       display: flex;
@@ -66,8 +78,19 @@ function Story() {
       id="story"
       sectionName="No te falta creatividad, te falta el medio adecuado"
     >
-      {/* TODO */}
-      {/* <p>Explicar algo de usar el guion como GPS</p> */}
+      <Paragraph>
+        Muchos piensan que les falta creatividad, pero en realidad lo que suele
+        faltar es el <strong>medio adecuado</strong>. Cuando editas únicamente
+        sobre el <em>timeline</em>, es como caminar perdido en una ciudad nueva
+        buscando una pastelería: terminas llegando… pero tras giros confusos y
+        mucho tiempo invertido.
+      </Paragraph>
+
+      <Paragraph>
+        En cambio, diseñar sobre el <em>guion</em> es como usar un GPS: ves el
+        mapa completo, sabes dónde estás y hacia dónde vas. Así decides qué
+        emociones transmitir en cada parte y avanzas con claridad y rapidez.
+      </Paragraph>
 
       <div className="lists-wrapper">
         <div className="list-container">

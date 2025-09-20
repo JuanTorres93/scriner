@@ -17,24 +17,7 @@ const ResponseSection = styled(Section)`
     font-size: var(--font-size-b1);
     color: var(--color-grey-s2);
     max-width: 50ch;
-    margin: 0 auto 2.4rem;
-  }
-
-  .cta {
-    text-align: center !important;
-    display: inline-block;
-    background-color: var(--color-primary);
-    color: #111;
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-base);
-    padding: 1rem 2rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background-color: var(--color-primary-s1);
-    }
+    margin: 0 auto 4rem;
   }
 `;
 

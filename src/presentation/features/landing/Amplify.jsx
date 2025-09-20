@@ -77,7 +77,7 @@ function Amplify() {
         const isEven = index % 2 === 0;
         return (
           <React.Fragment key={item.title}>
-            <SplitRow spacing="12rem">
+            <SplitRow spacing="12rem" imageMaxWidth="32rem">
               {item.image && isEven && <img src={item.image} alt="" />}
 
               <AmplifyDescription $isTextLeft={isEven}>

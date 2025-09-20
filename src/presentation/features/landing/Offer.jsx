@@ -21,7 +21,7 @@ const OfferSection = styled(Section)`
   }
 
   .highlight {
-    margin-top: 2rem;
+    margin-top: 6rem;
     font-weight: var(--font-weight-semibold);
     color: var(--color-primary-s2);
     font-size: var(--font-size-b2);
@@ -39,7 +39,9 @@ function Offer() {
         </ListItemIcon>
       </ul>
       <div className="highlight">
-        ✨ Y además: ¡Es 100% gratuita!... Por ahora 😏
+        <p>
+          ¡Y además es <strong>100% gratuita</strong>! Por ahora... 😏
+        </p>
       </div>
     </OfferSection>
   );

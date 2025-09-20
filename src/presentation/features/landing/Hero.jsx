@@ -69,7 +69,7 @@ function Hero() {
 
       <Box>
         <h2>¿Pierdes el tiempo al editar?</h2>
-        <h1>Con Editormind mejorarás tus vídeos y ahorrarás tiempo.</h1>
+        <h1>Mejora tus vídeos y acelera la edición.</h1>
         {/* <p>Tus vídeos subirán al siguiente nivel...</p> */}
 
         <div className="button-container">

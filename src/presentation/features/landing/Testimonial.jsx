@@ -100,7 +100,8 @@ function Testimonial() {
       <Wrap>
         <Proof>
           <div>
-            <h4>Lo que he notado desde que uso el guion como GPS</h4>
+            {/* <h4>Lo que he notado desde que uso el guion como GPS</h4> */}
+            <h4>Lo que he notado desde que utilizo el guion como GPS</h4>
             <ul>
               <ListItemIcon icon={<FaCheck />}>
                 Menos tiempo atascado en la edición
