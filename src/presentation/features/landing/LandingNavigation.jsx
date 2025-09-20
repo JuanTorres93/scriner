@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Logo from '../../ui/Logo';
 import Button from '../../ui/Button';
 import { useUser } from '../authentication/hooks/useUser';
+import { breakpoints } from '../../styles/breakpoints';
 
 const navItems = [
   { label: 'Problema', href: '#problem' },
@@ -29,6 +30,10 @@ const StyledNav = styled.nav`
     list-style: none;
     padding: 0;
     margin: 0;
+
+    @media screen and (max-width: ${breakpoints.navBarLogin}) {
+      grid-template-columns: 1fr 3fr 1.5fr;
+    }
 
     li {
       display: inline-block;

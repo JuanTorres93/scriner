@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { breakpoints } from '../styles/breakpoints';
 
 const LoginSignupLayout = styled.main`
   min-height: 89.6vh;
@@ -8,6 +9,10 @@ const LoginSignupLayout = styled.main`
   justify-content: center;
   gap: 3.2rem;
   background-color: var(--color-grey-t3);
+
+  @media (max-width: ${breakpoints.reduceFont}) {
+    min-height: 90.6vh;
+  }
 `;
 
 export default LoginSignupLayout;

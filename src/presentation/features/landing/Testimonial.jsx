@@ -17,6 +17,7 @@ const Quote = styled.figure`
   margin: 0;
   display: grid;
   gap: 1rem;
+  text-align: center;
 
   blockquote {
     margin: 0;
@@ -30,7 +31,7 @@ const Quote = styled.figure`
   figcaption {
     font-size: var(--font-size-base);
     color: var(--color-grey-s2);
-    margin-left: auto;
+    /* margin-left: auto; */
   }
 `;
 

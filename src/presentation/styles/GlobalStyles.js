@@ -1,4 +1,5 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
+import { breakpoints } from './breakpoints';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -125,6 +126,10 @@ const GlobalStyles = createGlobalStyle`
     font-style: normal;
 
     color: var(--color-text);
+
+    @media (max-width: ${breakpoints.reduceFont}) {
+      font-size: 56.25%; // 9px
+    }
   }
 
   body {

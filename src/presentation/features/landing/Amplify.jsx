@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import Section from './Section';
 import SplitRow from '../../ui/SplitRow';
 import React from 'react';
+import { breakpoints } from '../../styles/breakpoints';
 
 // NOTE: Bullet points generated with ChatGPT from original text below
 // TODO: Check before deployment and adjust if needed
@@ -50,6 +51,12 @@ const AmplifyDescription = styled.div`
           text-align: right;
         `}
 
+  @media (max-width: ${breakpoints.amplify4}) {
+    text-align: center;
+    align-items: center;
+    padding-bottom: 0;
+  }
+
   h4 {
     font-weight: 500;
     font-size: var(--font-size-b2);
@@ -57,17 +64,58 @@ const AmplifyDescription = styled.div`
   }
 
   p {
+    max-width: 50ch;
     font-size: var(--font-size-base-b1);
     color: var(--color-grey-s1);
   }
 `;
 
 const RowSpacing = styled.div`
-  height: 12rem;
+  height: 8rem;
+
+  @media (max-width: ${breakpoints.amplify}) {
+    height: 4rem;
+  }
+
+  @media (max-width: ${breakpoints.amplify2}) {
+    height: 0rem;
+  }
 `;
 
 const AmplifySection = styled(Section)`
   background-color: var(--color-grey-t2);
+
+  .split-row {
+    @media (max-width: ${breakpoints.amplify2}) {
+      gap: 8rem;
+    }
+
+    @media (max-width: ${breakpoints.amplify3}) {
+      gap: 4rem;
+    }
+
+    @media (max-width: ${breakpoints.amplify4}) {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, min-content);
+
+      img {
+        justify-self: center;
+      }
+
+      .order-image {
+        grid-row: 2;
+      }
+
+      .order-text {
+        grid-row: 1;
+      }
+
+      // first AmplifyDescription item
+      &.index-0 div {
+        padding-top: 0;
+      }
+    }
+  }
 `;
 
 function Amplify() {
@@ -77,15 +125,23 @@ function Amplify() {
         const isEven = index % 2 === 0;
         return (
           <React.Fragment key={item.title}>
-            <SplitRow spacing="12rem" imageMaxWidth="32rem">
-              {item.image && isEven && <img src={item.image} alt="" />}
+            <SplitRow
+              className={`split-row index-${index}`}
+              spacing="12rem"
+              imageMaxWidth="32rem"
+            >
+              {item.image && isEven && (
+                <img className="order-image" src={item.image} alt="" />
+              )}
 
-              <AmplifyDescription $isTextLeft={isEven}>
+              <AmplifyDescription className="order-text" $isTextLeft={isEven}>
                 <h4>{item.title}</h4>
                 <p>{item.description}</p>
               </AmplifyDescription>
 
-              {item.image && !isEven && <img src={item.image} alt="" />}
+              {item.image && !isEven && (
+                <img className="order-image" src={item.image} alt="" />
+              )}
             </SplitRow>
             <RowSpacing />
           </React.Fragment>

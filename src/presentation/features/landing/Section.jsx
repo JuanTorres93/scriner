@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { breakpoints } from '../../styles/breakpoints';
 
 const StyledSection = styled.section`
   display: flex;
@@ -10,13 +11,16 @@ const StyledSection = styled.section`
   max-width: 200rem;
   margin: 0 auto;
 
-  h3 {
+  .section-title {
     font-size: var(--font-size-b4);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
+
+    @media (max-width: ${breakpoints.reduceFont}) {
+      text-align: center;
+    }
   }
 
-  // TODO Review styling
   .subtitle {
     font-size: var(--font-size-regular);
     font-weight: var(--font-weight-regular);
@@ -47,7 +51,7 @@ function Section({
 }) {
   return (
     <StyledSection className={className} {...props}>
-      <h3>{sectionName}</h3>
+      <h3 className="section-title">{sectionName}</h3>
 
       {subtitle && <h4 className="subtitle">{subtitle}</h4>}
       <Content>{children}</Content>
