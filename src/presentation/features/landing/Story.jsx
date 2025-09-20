@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import Section from './Section';
 import ListItemIcon from '../../ui/ListItemIcon';
+import { breakpoints } from '../../styles/breakpoints';
 
 const Paragraph = styled.p`
   max-width: 70ch;
@@ -10,11 +11,17 @@ const Paragraph = styled.p`
   color: var(--color-text);
   margin: 0 0 1.25rem 0;
 
+  @media (max-width: ${breakpoints.story2}) {
+    width: clamp(24ch, 100%, 36ch);
+    margin: 0 auto;
+  }
+
   strong {
     color: var(--color-primary-s1);
     font-weight: 600;
   }
 `;
+
 const StorySection = styled(Section)`
   .lists-wrapper {
     display: flex;
@@ -22,15 +29,26 @@ const StorySection = styled(Section)`
     gap: 6rem;
     margin-top: 8rem;
 
+    @media (max-width: ${breakpoints.story}) {
+      flex-direction: column;
+      align-items: center;
+    }
+
     .list-container {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      width: 36ch;
       gap: 6rem;
       background-color: var(--color-white);
       padding: 1rem 2rem;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
+
+      @media (max-width: ${breakpoints.story2}) {
+        width: clamp(24ch, 100%, 36ch);
+        margin: 0 auto;
+      }
 
       h4 {
         font-size: var(--font-size-b2);

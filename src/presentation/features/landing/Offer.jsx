@@ -15,8 +15,11 @@ const OfferSection = styled(Section)`
     list-style: none;
     gap: 0.6rem;
 
-    li svg {
-      fill: var(--color-primary-s1);
+    li {
+      text-align: left;
+      svg {
+        fill: var(--color-primary-s1);
+      }
     }
   }
 

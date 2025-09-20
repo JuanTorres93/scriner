@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { breakpoints } from '../../styles/breakpoints';
 
 const StyledSection = styled.section`
   display: flex;
@@ -15,10 +14,7 @@ const StyledSection = styled.section`
     font-size: var(--font-size-b4);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
-
-    @media (max-width: ${breakpoints.reduceFont}) {
-      text-align: center;
-    }
+    text-align: center;
   }
 
   .subtitle {
