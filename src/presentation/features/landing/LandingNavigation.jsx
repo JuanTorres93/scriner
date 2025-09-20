@@ -22,6 +22,10 @@ const StyledNav = styled.nav`
   width: 100%;
   box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
 
+  .login-text-short {
+    display: none;
+  }
+
   ul {
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;
@@ -33,6 +37,22 @@ const StyledNav = styled.nav`
 
     @media screen and (max-width: ${breakpoints.navBarLogin}) {
       grid-template-columns: 1fr 3fr 1.5fr;
+    }
+
+    @media screen and (max-width: ${breakpoints.navBar2}) {
+      grid-template-columns: 0.62fr 4fr 1.5fr;
+
+      .login-text-short {
+        display: inline;
+      }
+
+      .login-text-long {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: ${breakpoints.navBar3}) {
+      grid-template-columns: 1fr 0.1fr 1fr;
     }
 
     li {
@@ -79,8 +99,16 @@ const StyledNav = styled.nav`
     .col-2 {
       grid-column: 2;
 
+      @media screen and (max-width: ${breakpoints.navBar3}) {
+        display: none;
+      }
+
       span {
         margin-right: 3rem;
+
+        @media screen and (max-width: ${breakpoints.navBar2}) {
+          margin-right: 1.5rem;
+        }
       }
     }
 
@@ -127,7 +155,8 @@ function LandingNavigation() {
             <>
               <span>
                 <Button type="secondary" as={Link} to={'/login'}>
-                  Inicia sesión
+                  <span className="login-text-long">Inicia sesión</span>
+                  <span className="login-text-short">Entrar</span>
                 </Button>
               </span>
               <span>

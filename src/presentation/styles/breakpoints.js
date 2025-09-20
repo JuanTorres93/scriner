@@ -1,8 +1,11 @@
 export const breakpoints = {
   amplify4: '651px',
   problem2: '665px',
-  problem: '824px',
+  navBar3: '669px',
   amplify3: '800px',
+  problem: '824px',
+  navBar2: '863px',
+  hero: '927px',
   reduceFont: '960px',
   amplify2: '1100px',
   navBarLogin: '1273px',

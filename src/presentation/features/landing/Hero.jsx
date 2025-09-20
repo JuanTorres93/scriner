@@ -1,8 +1,17 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../../ui/Button';
+import { breakpoints } from '../../styles/breakpoints';
 
 const StyledSection = styled.section`
+  display: grid;
+  grid-template-columns: 0.5fr minmax(min-content, max-content) 1fr;
+  grid-template-rows: minmax(10rem, 1fr) min-content 3fr;
+
+  @media screen and (max-width: ${breakpoints.hero}) {
+    grid-template-rows: minmax(10rem, 1fr) min-content 1fr;
+  }
+
   position: relative;
   width: 100%;
   height: 90vh;
@@ -14,8 +23,6 @@ const StyledSection = styled.section`
   );
 
   overflow: hidden;
-  padding: 8rem;
-  padding-top: 30rem;
 
   img {
     position: absolute;
@@ -28,6 +35,9 @@ const StyledSection = styled.section`
 `;
 
 const Box = styled.div`
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+
   max-width: 80rem;
   color: var(--color-grey-t2);
   background: color-mix(
@@ -70,7 +80,6 @@ function Hero() {
       <Box>
         <h2>¿Pierdes el tiempo al editar?</h2>
         <h1>Mejora tus vídeos y acelera la edición.</h1>
-        {/* <p>Tus vídeos subirán al siguiente nivel...</p> */}
 
         <div className="button-container">
           <Button variant="boldTextLarge" as={Link} to={'/signup'}>
