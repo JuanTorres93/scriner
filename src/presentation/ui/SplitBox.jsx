@@ -1,9 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { breakpoints } from '../styles/breakpoints';
 
 const StyledSplitBox = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 50rem;
+
   align-items: center;
   /* justify-items: center; */
   border-radius: var(--border-radius-l1);
@@ -15,11 +17,17 @@ const StyledSplitBox = styled.div`
     object-fit: contain;
     object-position: center;
   }
+
+  &.auth-split-box {
+    @media (max-width: ${breakpoints.auth}) {
+      grid-template-columns: 1fr 0fr;
+    }
+  }
 `;
 
-function SplitBox({ child1, child2 }) {
+function SplitBox({ child1, child2, ...props }) {
   return (
-    <StyledSplitBox>
+    <StyledSplitBox {...props}>
       {child1}
       {child2}
     </StyledSplitBox>

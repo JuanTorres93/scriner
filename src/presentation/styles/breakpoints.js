@@ -9,6 +9,7 @@ export const breakpoints = {
   story: '874px',
   hero: '927px',
   reduceFont: '960px',
+  auth: '1033px',
   amplify2: '1100px',
   navBarLogin: '1273px',
   amplify: '1273px',

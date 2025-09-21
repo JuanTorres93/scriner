@@ -1,8 +1,8 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 const StyledForm = styled.form`
   ${(props) =>
-    props.type === "regular" &&
+    props.type === 'regular' &&
     css`
       padding: 2.4rem 4rem;
 
@@ -14,7 +14,7 @@ const StyledForm = styled.form`
     `}
 
   ${(props) =>
-    props.type === "modal" &&
+    props.type === 'modal' &&
     css`
       width: 80rem;
     `}
@@ -25,7 +25,7 @@ const StyledForm = styled.form`
 
 function Form({ children, ...props }) {
   return (
-    <StyledForm {...props} type={props.type || "regular"}>
+    <StyledForm {...props} type={props.type || 'regular'}>
       {children}
     </StyledForm>
   );

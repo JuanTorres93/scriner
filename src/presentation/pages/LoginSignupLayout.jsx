@@ -13,6 +13,10 @@ const LoginSignupLayout = styled.main`
   @media (max-width: ${breakpoints.reduceFont}) {
     min-height: 90.6vh;
   }
+
+  @media (max-width: ${breakpoints.auth}) {
+    grid-template-columns: 90%;
+  }
 `;
 
 export default LoginSignupLayout;

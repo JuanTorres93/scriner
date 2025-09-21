@@ -6,7 +6,6 @@ import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
 import { useSignup } from './hooks/useSignup';
 
-// TODO: Poner mensajes de error en español
 function SignupForm() {
   const { signup, isLoading } = useSignup();
   const { register, formState, getValues, handleSubmit, reset } = useForm();
@@ -25,32 +24,33 @@ function SignupForm() {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRowVertical label="Full name" error={errors?.fullName?.message}>
+      <FormRowVertical label="Tu nombre" error={errors?.fullName?.message}>
         <Input
           type="text"
           id="fullName"
           disabled={isLoading}
-          {...register('fullName', { required: 'This field is required' })}
+          {...register('fullName', { required: 'Este campo es obligatorio' })}
         />
       </FormRowVertical>
 
-      <FormRowVertical label="Email address" error={errors?.email?.message}>
+      <FormRowVertical label="Tu email" error={errors?.email?.message}>
         <Input
           type="email"
           id="email"
           disabled={isLoading}
           {...register('email', {
-            required: 'This field is required',
+            required: 'Este campo es obligatorio',
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: 'Please enter a valid email address',
+              message:
+                'Por favor ingresa una dirección de correo electrónico válida',
             },
           })}
         />
       </FormRowVertical>
 
       <FormRowVertical
-        label="Password (min 8 characters)"
+        label="Contraseña (mínimo 8 caracteres)"
         error={errors?.password?.message}
       >
         <Input
@@ -58,17 +58,17 @@ function SignupForm() {
           id="password"
           disabled={isLoading}
           {...register('password', {
-            required: 'This field is required',
+            required: 'Este campo es obligatorio',
             minLength: {
               value: 8,
-              message: 'Password must be at least 8 characters long',
+              message: 'La contraseña debe tener al menos 8 caracteres',
             },
           })}
         />
       </FormRowVertical>
 
       <FormRowVertical
-        label="Repeat password"
+        label="Repetir contraseña"
         error={errors?.passwordConfirm?.message}
       >
         <Input
@@ -76,9 +76,9 @@ function SignupForm() {
           id="passwordConfirm"
           disabled={isLoading}
           {...register('passwordConfirm', {
-            required: 'This field is required',
+            required: 'Este campo es obligatorio',
             validate: (value) =>
-              value === getValues().password || 'Passwords do not match',
+              value === getValues().password || 'Las contraseñas no coinciden',
           })}
         />
       </FormRowVertical>
@@ -86,7 +86,7 @@ function SignupForm() {
       <FormRow>
         {/* type is an HTML attribute! */}
         <Button variation="secondary" type="reset" disabled={isLoading}>
-          Reset
+          Restablecer
         </Button>
         <Button disabled={isLoading}>Crear nuevo usuario</Button>
       </FormRow>
