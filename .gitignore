@@ -27,3 +27,5 @@ design
 public/hero-*
 public/logo-*
 .env
+
+public/favicon_io
