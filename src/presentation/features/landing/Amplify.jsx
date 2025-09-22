@@ -11,25 +11,25 @@ const items = [
     title: 'El peso invisible del tiempo',
     description:
       'Cada minuto perdido frente a un proyecto que no avanza no solo retrasa tu canal, también erosiona tu confianza. Lo que empezó como ilusión se convierte en frustración acumulada que llevas como una mochila cada vez más pesada.',
-    image: '/amplify/amplify1.png',
+    image: '/amplify/amplify1.jpg',
   },
   {
     title: 'El sueño que se apaga',
     description:
       'Lo que imaginaste como un canal vibrante y lleno de vida empieza a apagarse en silencio. Esa chispa creativa que te movía al principio ahora se siente como un recuerdo lejano, casi inalcanzable.',
-    image: '/amplify/amplify2.png',
+    image: '/amplify/amplify2.jpg',
   },
   {
     title: 'La trampa de la improductividad',
     description:
       'Cuanto más tiempo pasas sin resultados, más dudas te invaden. Te convences de que no eres lo suficientemente bueno, cuando en realidad el problema no eres tú, sino el sistema en el que trabajas.',
-    image: '/amplify/amplify3.png',
+    image: '/amplify/amplify3.jpg',
   },
   {
     title: 'El coste emocional oculto',
     description:
       'No se trata solo de vídeos que no avanzan: es el desánimo de ver cómo tus metas personales se alejan. Esa sensación de cargar con horas muertas mina tu motivación y te roba la energía incluso fuera de YouTube.',
-    image: '/amplify/amplify4.png',
+    image: '/amplify/amplify4.jpg',
   },
 ];
 

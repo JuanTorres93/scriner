@@ -39,7 +39,7 @@ function Problem() {
       sectionName="¿Por qué no sabes qué hacer en tu editor?"
     >
       <SplitRow className="problem-content" spacing="6rem">
-        <img src="problem.png" alt="Un problema de creatividad" />
+        <img src="problem.jpg" alt="Un problema de creatividad" />
         <p>
           Crees que te falta creatividad, pero quieres hacer vídeos. Tu proceso
           actual se basa en ver tu vídeo una y otra vez en tu <em>timeline</em>{' '}
