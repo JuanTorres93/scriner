@@ -6,6 +6,7 @@ import {
   Navigate,
   RouterProvider,
 } from 'react-router-dom';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 import { AppServicesProvider } from './interface-adapters/react/context/AppServicesProvider.jsx';
 
@@ -105,35 +106,37 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <>
-      <GlobalStyles />
-      <CurrentEditsProvider>
-        <QueryClientProvider client={queryClient}>
-          <AppServicesProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <RouterProvider router={router} />
-            <Toaster
-              position="bottom-center"
-              gutter={12}
-              containerStyle={{ margin: '8px' }}
-              toastOptions={{
-                success: {
-                  duration: 3000,
-                },
-                error: {
-                  duration: 5000,
-                },
-                style: {
-                  fontSize: '1.6rem',
-                  maxWidth: '500px',
-                  padding: '16px 24px',
-                  backgroundColor: 'var(--color-grey-t2)',
-                  color: 'var(--color-grey-s2)',
-                },
-              }}
-            />{' '}
-          </AppServicesProvider>
-        </QueryClientProvider>
-      </CurrentEditsProvider>
+      <HelmetProvider>
+        <GlobalStyles />
+        <CurrentEditsProvider>
+          <QueryClientProvider client={queryClient}>
+            <AppServicesProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <RouterProvider router={router} />
+              <Toaster
+                position="bottom-center"
+                gutter={12}
+                containerStyle={{ margin: '8px' }}
+                toastOptions={{
+                  success: {
+                    duration: 3000,
+                  },
+                  error: {
+                    duration: 5000,
+                  },
+                  style: {
+                    fontSize: '1.6rem',
+                    maxWidth: '500px',
+                    padding: '16px 24px',
+                    backgroundColor: 'var(--color-grey-t2)',
+                    color: 'var(--color-grey-s2)',
+                  },
+                }}
+              />{' '}
+            </AppServicesProvider>
+          </QueryClientProvider>
+        </CurrentEditsProvider>
+      </HelmetProvider>
     </>
   );
 }

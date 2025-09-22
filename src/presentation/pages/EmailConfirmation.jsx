@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import LoginSignupLayout from './LoginSignupLayout';
-
-// Página simple de confirmación de email con jerarquía tipográfica usando variables globales
+import SEO from '../../seo/SEO';
 
 const Wrapper = styled.main`
   height: 100%;
@@ -48,19 +47,27 @@ const Note = styled.p`
 
 export default function EmailConfirmation() {
   return (
-    <LoginSignupLayout>
-      <Wrapper>
-        <Card>
-          <Title>Confirma tu email</Title>
-          <Subtitle>
-            Te hemos enviado un correo de verificación. Revisa tu bandeja de
-            entrada y haz clic en el enlace para activar tu cuenta.
-          </Subtitle>
-          <Note>
-            Si no lo ves, mira en <em>Spam</em> o <em>Promociones</em>.
-          </Note>
-        </Card>
-      </Wrapper>
-    </LoginSignupLayout>
+    <>
+      <SEO
+        title="Confirma tu email — EditorMind"
+        description="Revisa tu bandeja de entrada para completar el registro."
+        robots="noindex,nofollow"
+      />
+
+      <LoginSignupLayout>
+        <Wrapper>
+          <Card>
+            <Title>Confirma tu email</Title>
+            <Subtitle>
+              Te hemos enviado un correo de verificación. Revisa tu bandeja de
+              entrada y haz clic en el enlace para activar tu cuenta.
+            </Subtitle>
+            <Note>
+              Si no lo ves, mira en <em>Spam</em> o <em>Promociones</em>.
+            </Note>
+          </Card>
+        </Wrapper>
+      </LoginSignupLayout>
+    </>
   );
 }

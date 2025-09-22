@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { Outlet } from "react-router-dom";
-import ScriptsSidebar from "../features/script/ScriptsSidebar";
+import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
+import SEO from '../../seo/SEO';
+import ScriptsSidebar from '../features/script/ScriptsSidebar';
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -18,13 +19,21 @@ const StyledMain = styled.main`
 
 function AppLayout() {
   return (
-    <StyledAppLayout>
-      <ScriptsSidebar />
+    <>
+      <SEO
+        title="Editor — EditorMind"
+        description="Edita tus guiones."
+        robots="noindex,nofollow"
+      />
 
-      <StyledMain>
-        <Outlet />
-      </StyledMain>
-    </StyledAppLayout>
+      <StyledAppLayout>
+        <ScriptsSidebar />
+
+        <StyledMain>
+          <Outlet />
+        </StyledMain>
+      </StyledAppLayout>
+    </>
   );
 }
 

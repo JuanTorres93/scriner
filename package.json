@@ -14,6 +14,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@dr.pogodin/react-helmet": "^3.0.4",
     "@floating-ui/react": "^0.27.15",
     "@supabase/supabase-js": "^2.53.0",
     "@tanstack/react-query": "^5.83.0",

@@ -5,6 +5,7 @@ import { withHistory } from 'slate-history';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import SEO from '../../seo/SEO';
 import EditList from '../features/edit/EditList';
 import Script from '../features/script/Script';
 import Loader from '../ui/Loader';
@@ -166,127 +167,136 @@ function ScriptEditor() {
         ];
 
   return (
-    <StyledScriptEditor>
-      <Slate
-        key={`slate-${script?.id}`}
-        editor={editor}
-        // onChange does not work in Editable Slate component
-        onChange={() =>
-          debouncedHandleUpdateContent({
-            editor,
-            script,
-            isUpdating,
-            updateScript,
-          })
-        }
-        initialValue={initialValue}
-      >
-        <>
-          <h2 className="title-music">
-            Música{' '}
-            {musicEdits?.length > 0 && <span>({musicEdits?.length})</span>}
-          </h2>
-          <h2 className="title-sfx">
-            SFX {sfxEdits?.length > 0 && <span>({sfxEdits?.length})</span>}
-          </h2>
-          <Input
-            className="title-script"
-            key={`script-title-${script?.id}`}
-            type="plain"
-            defaultValue={script?.title}
-            placeholder="Nombre del guion"
-            onChange={debouncedHandleTitleBlur}
-            onBlur={handleTitleBlur}
-          />
-          <h2 className="title-emotion">
-            Emoción{' '}
-            {emotionEdits?.length > 0 && <span>({emotionEdits?.length})</span>}
-          </h2>
-          <h2 className="title-vfx">
-            VFX {vfxEdits?.length > 0 && <span>({vfxEdits?.length})</span>}
-          </h2>
-          <h2 className="title-broll">
-            B-Roll{' '}
-            {brollEdits?.length > 0 && <span>({brollEdits?.length})</span>}
-          </h2>
+    <>
+      <SEO
+        title="Editor — EditorMind"
+        description="Edita tus guiones."
+        robots="noindex,nofollow"
+      />
+      <StyledScriptEditor>
+        <Slate
+          key={`slate-${script?.id}`}
+          editor={editor}
+          // onChange does not work in Editable Slate component
+          onChange={() =>
+            debouncedHandleUpdateContent({
+              editor,
+              script,
+              isUpdating,
+              updateScript,
+            })
+          }
+          initialValue={initialValue}
+        >
+          <>
+            <h2 className="title-music">
+              Música{' '}
+              {musicEdits?.length > 0 && <span>({musicEdits?.length})</span>}
+            </h2>
+            <h2 className="title-sfx">
+              SFX {sfxEdits?.length > 0 && <span>({sfxEdits?.length})</span>}
+            </h2>
+            <Input
+              className="title-script"
+              key={`script-title-${script?.id}`}
+              type="plain"
+              defaultValue={script?.title}
+              placeholder="Nombre del guion"
+              onChange={debouncedHandleTitleBlur}
+              onBlur={handleTitleBlur}
+            />
+            <h2 className="title-emotion">
+              Emoción{' '}
+              {emotionEdits?.length > 0 && (
+                <span>({emotionEdits?.length})</span>
+              )}
+            </h2>
+            <h2 className="title-vfx">
+              VFX {vfxEdits?.length > 0 && <span>({vfxEdits?.length})</span>}
+            </h2>
+            <h2 className="title-broll">
+              B-Roll{' '}
+              {brollEdits?.length > 0 && <span>({brollEdits?.length})</span>}
+            </h2>
 
-          {/* Music edits */}
-          {isLoadingEdits ? (
-            <Loader
-              className="loader content-music"
-              type="spinner"
-              size="5rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <EditList className="content-music" edits={musicEdits} />
-          )}
+            {/* Music edits */}
+            {isLoadingEdits ? (
+              <Loader
+                className="loader content-music"
+                type="spinner"
+                size="5rem"
+                cssVarColor="--color-primary-t1"
+              />
+            ) : (
+              <EditList className="content-music" edits={musicEdits} />
+            )}
 
-          {/* SFX edits */}
-          {isLoadingEdits ? (
-            <Loader
-              className="loader content-sfx"
-              type="spinner"
-              size="5rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <EditList className="content-sfx" edits={sfxEdits} />
-          )}
+            {/* SFX edits */}
+            {isLoadingEdits ? (
+              <Loader
+                className="loader content-sfx"
+                type="spinner"
+                size="5rem"
+                cssVarColor="--color-primary-t1"
+              />
+            ) : (
+              <EditList className="content-sfx" edits={sfxEdits} />
+            )}
 
-          {/* Script */}
-          {isLoadingScript || isLoadingEdits ? (
-            <Loader
-              className="loader content-script"
-              type="spinner"
-              size="10rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <Script
-              key={`script-${script.id}`}
-              className="content-script"
-              script={script}
-            />
-          )}
-          {/* emotion edits */}
-          {isLoadingEdits ? (
-            <Loader
-              className="loader content-emotion"
-              type="spinner"
-              size="5rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <EditList className="content-emotion" edits={emotionEdits} />
-          )}
+            {/* Script */}
+            {isLoadingScript || isLoadingEdits ? (
+              <Loader
+                className="loader content-script"
+                type="spinner"
+                size="10rem"
+                cssVarColor="--color-primary-t1"
+              />
+            ) : (
+              <Script
+                key={`script-${script.id}`}
+                className="content-script"
+                script={script}
+              />
+            )}
+            {/* emotion edits */}
+            {isLoadingEdits ? (
+              <Loader
+                className="loader content-emotion"
+                type="spinner"
+                size="5rem"
+                cssVarColor="--color-primary-t1"
+              />
+            ) : (
+              <EditList className="content-emotion" edits={emotionEdits} />
+            )}
 
-          {/* VFX edits */}
-          {isLoadingEdits ? (
-            <Loader
-              className="loader content-vfx"
-              type="spinner"
-              size="5rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <EditList className="content-vfx" edits={vfxEdits} />
-          )}
+            {/* VFX edits */}
+            {isLoadingEdits ? (
+              <Loader
+                className="loader content-vfx"
+                type="spinner"
+                size="5rem"
+                cssVarColor="--color-primary-t1"
+              />
+            ) : (
+              <EditList className="content-vfx" edits={vfxEdits} />
+            )}
 
-          {/* B-Roll edits */}
-          {isLoadingEdits ? (
-            <Loader
-              className="loader content-broll"
-              type="spinner"
-              size="5rem"
-              cssVarColor="--color-primary-t1"
-            />
-          ) : (
-            <EditList className="content-broll" edits={brollEdits} />
-          )}
-        </>
-      </Slate>
-    </StyledScriptEditor>
+            {/* B-Roll edits */}
+            {isLoadingEdits ? (
+              <Loader
+                className="loader content-broll"
+                type="spinner"
+                size="5rem"
+                cssVarColor="--color-primary-t1"
+              />
+            ) : (
+              <EditList className="content-broll" edits={brollEdits} />
+            )}
+          </>
+        </Slate>
+      </StyledScriptEditor>
+    </>
   );
 }
 
