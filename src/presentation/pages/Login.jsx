@@ -16,7 +16,7 @@ function Login() {
         <SplitBox
           className="auth-split-box"
           child1={<LoginForm />}
-          child2={<img src="login-image.png" alt="Login image" />}
+          child2={<img src="login-image.jpg" alt="Login image" />}
         />
       </LoginSignupLayout>
     </>
