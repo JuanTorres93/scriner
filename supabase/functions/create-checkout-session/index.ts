@@ -85,6 +85,7 @@ Deno.serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       mode, // 'payment' | 'subscription'
       line_items: [{ price: price_id, quantity }],
+      // TODO IMPORTANT: create this page or redirect to a better place
       success_url: `${PUBLIC_SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${PUBLIC_SITE_URL}/checkout/cancelled`,
       customer: customerId,
