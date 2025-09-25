@@ -26,7 +26,9 @@ const RETURN_URL = Deno.env.get('PUBLIC_SITE_URL')! + '/app';
 
 function cors(res: Response) {
   const h = new Headers(res.headers);
-  h.set('Access-Control-Allow-Origin', 'https://www.editormind.com');
+  // h.set('Access-Control-Allow-Origin', 'https://www.editormind.com');
+  // TODO IMPORTANT: Uncomment above and delete below in production
+  h.set('Access-Control-Allow-Origin', '*');
   h.set(
     'Access-Control-Allow-Headers',
     'authorization, x-client-info, apikey, content-type'

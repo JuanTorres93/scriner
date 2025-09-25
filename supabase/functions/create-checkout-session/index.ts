@@ -16,7 +16,9 @@ const ALLOWED_PRICE_IDS = (Deno.env.get('ALLOWED_PRICE_IDS') ?? '')
 // Basic CORS handling
 function cors(res: Response) {
   const headers = new Headers(res.headers);
-  headers.set('Access-Control-Allow-Origin', 'https://www.editormind.com');
+  // headers.set('Access-Control-Allow-Origin', 'https://www.editormind.com');
+  // TODO IMPORTANT: Uncomment above and delete below in production
+  headers.set('Access-Control-Allow-Origin', '*');
   headers.set(
     'Access-Control-Allow-Headers',
     'authorization, x-client-info, apikey, content-type'
@@ -86,8 +88,10 @@ Deno.serve(async (req) => {
       mode, // 'payment' | 'subscription'
       line_items: [{ price: price_id, quantity }],
       // TODO IMPORTANT: create this page or redirect to a better place
-      success_url: `${PUBLIC_SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${PUBLIC_SITE_URL}/checkout/cancelled`,
+      // success_url: `${PUBLIC_SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${PUBLIC_SITE_URL}/app`,
+      // cancel_url: `${PUBLIC_SITE_URL}/checkout/cancelled`,
+      cancel_url: `${PUBLIC_SITE_URL}`,
       customer: customerId,
       client_reference_id: user.id,
       metadata: { supabase_uid: user.id }, // useful for linking in the webhook
