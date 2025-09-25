@@ -15,7 +15,7 @@ export class SupabaseAuthService extends AuthService {
         // Adds data to the newly created user
         data: {
           fullName,
-          subscriptionStatus: 'trialing', // Comes from Stripe terminology
+          subscriptionStatus: 'trialing', // Comes from Stripe terminology. I don't want the user to have to input their payment info right away. If I change my mind, I can use trial functionality from Stripe. Remove this line here (and from DB trigger) and use the webhook instead.
         },
         emailRedirectTo: `${window.location.origin}/app`,
       },
