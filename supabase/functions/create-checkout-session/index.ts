@@ -6,6 +6,8 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET')!);
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
+const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!; // To write in profiles if needed (Create stripe customer ID, etc)
+const PUBLIC_SITE_URL = Deno.env.get('PUBLIC_SITE_URL')!;
 const ALLOWED_PRICE_IDS = (Deno.env.get('ALLOWED_PRICE_IDS') ?? '')
   .split(',')
   .map((s) => s.trim())
@@ -29,6 +31,7 @@ Deno.serve(async (req) => {
     return cors(new Response(null, { status: 204 }));
 
   try {
+    // 1) Authentication
     // Authenticate the user with token from the Authorization header
     // NOTE: In this way, ONLY logged-in users can create a checkout session
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -41,25 +44,56 @@ Deno.serve(async (req) => {
     if (authErr || !user)
       return cors(new Response('Unauthorized', { status: 401 }));
 
-    const { price_id, quantity = 1, mode = 'subscription' } = await req.json();
+    // 2) Parse body
+    const { price_id } = await req.json();
+    const quantity = 1;
+    const mode = 'subscription'; // 'payment' for one-time, 'subscription' for recurring
 
     // Prevent price manipulation from client
     if (!ALLOWED_PRICE_IDS.includes(price_id)) {
       return cors(new Response('Invalid price', { status: 400 }));
     }
 
-    // For simplicity: use the user's email (Stripe creates/links the customer)
+    // 3) Find / Create Stripe Customer
+    const supabaseNoRLS = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const { data: profile } = await supabaseNoRLS
+      .from('profiles')
+      .select('id, user_id, username, stripe_customer_id')
+      .eq('user_id', user.id)
+      .single();
+
+    let customerId = profile?.stripe_customer_id ?? null;
+
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: user.email,
+        metadata: { supabase_uid: user.id },
+        name: profile?.username ?? undefined,
+      });
+      customerId = customer.id;
+
+      const { data, error } = await supabaseNoRLS
+        .from('profiles')
+        .update({
+          stripe_customer_id: customerId,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('user_id', user.id);
+    }
+
+    // 4) Create Checkout Session
     const session = await stripe.checkout.sessions.create({
       mode, // 'payment' | 'subscription'
       line_items: [{ price: price_id, quantity }],
-      success_url: `${Deno.env.get(
-        'PUBLIC_SITE_URL'
-      )}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${Deno.env.get('PUBLIC_SITE_URL')}/checkout/cancelled`,
-      customer_email: user.email ?? undefined,
+      success_url: `${PUBLIC_SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${PUBLIC_SITE_URL}/checkout/cancelled`,
+      customer: customerId,
       client_reference_id: user.id,
       metadata: { supabase_uid: user.id }, // useful for linking in the webhook
       allow_promotion_codes: true,
+      // TODO IMPORTANT stripe tax. Uncomment and make research about how taxes are handled with stripe
+      //automatic_tax: { enabled: true },
+      //billin_address_collection: 'auto',
     });
 
     return cors(
