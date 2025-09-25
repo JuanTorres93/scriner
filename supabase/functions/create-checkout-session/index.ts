@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
       });
       customerId = customer.id;
 
-      const { data, error } = await supabaseNoRLS
+      await supabaseNoRLS
         .from('profiles')
         .update({
           stripe_customer_id: customerId,

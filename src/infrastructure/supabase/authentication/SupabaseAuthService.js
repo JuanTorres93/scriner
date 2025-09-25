@@ -1,6 +1,5 @@
 import { AuthService } from '../../../domain/authentication/AuthService.js';
 import { mapSupabaseError } from '../errors.js';
-import { SubscriptionStatus } from '../../../domain/subscription/subscriptionStatus.js';
 
 export class SupabaseAuthService extends AuthService {
   constructor(client) {
@@ -16,7 +15,7 @@ export class SupabaseAuthService extends AuthService {
         // Adds data to the newly created user
         data: {
           fullName,
-          subscriptionStatus: SubscriptionStatus.TRIAL,
+          subscriptionStatus: 'trialing', // Comes from Stripe terminology
         },
         emailRedirectTo: `${window.location.origin}/app`,
       },
