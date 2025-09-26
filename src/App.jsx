@@ -11,6 +11,7 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { AppServicesProvider } from './interface-adapters/react/context/AppServicesProvider.jsx';
 
 import ProtectedRoute from './presentation/features/authentication/ProtectedRoute.jsx';
+import PaidRoute from './presentation/features/subscription/PaidRoute.jsx';
 import CurrentEditsProvider from './presentation/features/edit/CurrentEditsContext.jsx';
 
 import Landing from './presentation/pages/Landing.jsx';
@@ -70,7 +71,9 @@ const router = createBrowserRouter([
     path: '/app',
     element: (
       <ProtectedRoute>
-        <AppLayout />
+        <PaidRoute>
+          <AppLayout />
+        </PaidRoute>
       </ProtectedRoute>
     ),
     errorElement: <ErrorPage />,

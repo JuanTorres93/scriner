@@ -75,7 +75,13 @@ function ScriptsSidebar() {
         ))}
       {scriptsByDate?.length === 0 && !isLoading && <p>No tienes guiones</p>}
 
-      <div style={{ marginTop: 'auto' }}>
+      <div
+        style={{
+          marginTop: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <PricingButtons />
       </div>
     </StyledScriptsSidebar>

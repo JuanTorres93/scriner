@@ -1,12 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import { useServices } from "../../../../interface-adapters/react/context/AppServicesProvider";
+import { useQuery } from '@tanstack/react-query';
+import { useServices } from '../../../../interface-adapters/react/context/AppServicesProvider';
 
 export function useUser() {
   const { auth } = useServices();
   const { isLoading, data: user } = useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: auth.getCurrent.exec,
   });
 
-  return { isLoading, user, isAuthenticated: user?.role === "authenticated" };
+  const isAuthenticated = user?.role === 'authenticated';
+  const isAllowed =
+    user?.subscription_status === 'active' ||
+    user?.subscription_status === 'free' ||
+    (user?.subscription_status === 'trialing' &&
+      new Date(user?.trial_ends_at) > new Date());
+
+  return { isLoading, user, isAuthenticated, isAllowed };
 }
