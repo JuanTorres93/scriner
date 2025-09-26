@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Button from '../ui/Button';
 import {
   goToCheckout,
   openBillingPortal,
@@ -28,17 +29,16 @@ export default function PricingButtons() {
     }
   };
 
-  // TODO IMPORTANT: Style these buttons
   return (
     <div>
       {user?.subscription_status === 'active' ? (
-        <button onClick={handlePortal} disabled={loading}>
+        <Button type="secondary" onClick={handlePortal} disabled={loading}>
           Administrar suscripción
-        </button>
+        </Button>
       ) : (
-        <button onClick={handleCheckout} disabled={loading}>
+        <Button onClick={handleCheckout} disabled={loading}>
           Suscríbete
-        </button>
+        </Button>
       )}
     </div>
   );
