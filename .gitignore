@@ -29,3 +29,5 @@ public/logo-*
 .env
 
 public/favicon_io
+.branches
+.temp

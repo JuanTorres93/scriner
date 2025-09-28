@@ -1,5 +1,5 @@
-import { AuthService } from "../../../domain/authentication/AuthService.js";
-import { mapSupabaseError } from "../errors.js";
+import { AuthService } from '../../../domain/authentication/AuthService.js';
+import { mapSupabaseError } from '../errors.js';
 
 export class SupabaseAuthService extends AuthService {
   constructor(client) {
@@ -15,8 +15,8 @@ export class SupabaseAuthService extends AuthService {
         // Adds data to the newly created user
         data: {
           fullName,
-          avatar: "",
         },
+        emailRedirectTo: `${window.location.origin}/app`,
       },
     });
 
@@ -45,7 +45,16 @@ export class SupabaseAuthService extends AuthService {
 
     if (error) throw mapSupabaseError(error);
 
-    return data?.user;
+    // join with profile data
+    const { data: profile, error: profileError } = await this.client
+      .from('profiles')
+      .select('subscription_status,trial_ends_at')
+      .eq('user_id', data?.user?.id)
+      .single();
+
+    if (profileError) throw mapSupabaseError(profileError);
+
+    return { ...data?.user, ...profile };
   }
 
   async logout() {

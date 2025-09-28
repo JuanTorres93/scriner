@@ -4,11 +4,14 @@ import { FaCheck } from 'react-icons/fa6';
 import ListItemIcon from '../../ui/ListItemIcon';
 
 const OfferSection = styled(Section)`
+  justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
 
   ul {
     display: flex;
+    max-width: 34ch;
+    margin: 0 auto;
     flex-direction: column;
     align-items: start;
     justify-content: start;
@@ -26,8 +29,23 @@ const OfferSection = styled(Section)`
   .highlight {
     margin-top: 6rem;
     font-weight: var(--font-weight-semibold);
-    color: var(--color-primary-s2);
-    font-size: var(--font-size-b2);
+    font-size: var(--font-size-b1);
+    color: var(--color-grey-s1);
+
+    strong {
+      color: var(--color-primary-s2);
+    }
+
+    /* First paragraph */
+    p:first-of-type {
+      margin-bottom: 2rem;
+    }
+
+    .comparison {
+      margin-top: 1rem;
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-regular);
+    }
   }
 `;
 
@@ -43,8 +61,13 @@ function Offer() {
       </ul>
       <div className="highlight">
         <p>
-          ¡Y además es <strong>100% gratuita</strong>! Por ahora... 😏
+          Pruébalo <strong>gratis</strong> durante <strong>14 días</strong>.
         </p>
+        <p>
+          Tras el periodo de prueba, disfruta de todo por{' '}
+          <strong>2€/mes</strong>.
+        </p>
+        <p className="comparison">(Sí, lo que vale un café ☕)</p>
       </div>
     </OfferSection>
   );

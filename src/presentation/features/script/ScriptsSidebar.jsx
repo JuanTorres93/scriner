@@ -14,6 +14,7 @@ import { useDeleteScript } from './useDeleteScript';
 import { htmlToText } from '../../utils/htmlUtils';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Logout from '../authentication/Logout';
+import PricingButtons from '../../ui/PricingButtons';
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -66,16 +67,23 @@ function ScriptsSidebar() {
       <Button disabled={isCreating} type="primary" onClick={handleCreateScript}>
         + Nuevo guión
       </Button>
-
       {isLoading && <Loader className="loader" type="spinner" />}
       {error && <p>Error al cargar los guiones</p>}
-
       {scriptsByDate?.length > 0 &&
         scriptsByDate.map((script) => (
           <ScriptItem key={script.id} script={script} />
         ))}
-
       {scriptsByDate?.length === 0 && !isLoading && <p>No tienes guiones</p>}
+
+      <div
+        style={{
+          marginTop: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <PricingButtons />
+      </div>
     </StyledScriptsSidebar>
   );
 }

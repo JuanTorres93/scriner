@@ -1,16 +1,8 @@
-import styled from "styled-components";
-import { useUser } from "./hooks/useUser";
-import Loader from "../../ui/Loader";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
-const FullPage = styled.div`
-  height: 100vh;
-  background-color: var(--color-grey-t3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import { useUser } from './hooks/useUser';
+import Loader from '../../ui/Loader';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import FullPage from '../../ui/FullPage';
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
@@ -21,7 +13,7 @@ function ProtectedRoute({ children }) {
   // If there is NO authenticated user, redirect to /login
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
-      navigate("/login");
+      navigate('/login');
     }
   }, [isAuthenticated, navigate, isLoading]);
 

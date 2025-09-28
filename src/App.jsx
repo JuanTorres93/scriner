@@ -11,6 +11,7 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { AppServicesProvider } from './interface-adapters/react/context/AppServicesProvider.jsx';
 
 import ProtectedRoute from './presentation/features/authentication/ProtectedRoute.jsx';
+import PaidRoute from './presentation/features/subscription/PaidRoute.jsx';
 import CurrentEditsProvider from './presentation/features/edit/CurrentEditsContext.jsx';
 
 import Landing from './presentation/pages/Landing.jsx';
@@ -23,6 +24,7 @@ import MarketingLayout from './presentation/ui/MarketingLayout.jsx';
 import ErrorPage from './presentation/ui/ErrorPage.jsx';
 import EmailConfirmation from './presentation/pages/EmailConfirmation.jsx';
 import RouteForNotAuthenticated from './presentation/features/authentication/RouteForNotAuthenticated.jsx';
+import Subscribe from './presentation/pages/Subscribe.jsx';
 
 const router = createBrowserRouter([
   {
@@ -66,11 +68,22 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: '/subscribe',
+    element: (
+      <MarketingLayout>
+        <Subscribe />
+      </MarketingLayout>
+    ),
+    errorElement: <ErrorPage />,
+  },
+  {
     // AppLayout is the main layout for the app
     path: '/app',
     element: (
       <ProtectedRoute>
-        <AppLayout />
+        <PaidRoute>
+          <AppLayout />
+        </PaidRoute>
       </ProtectedRoute>
     ),
     errorElement: <ErrorPage />,
