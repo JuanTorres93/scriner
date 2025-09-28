@@ -14,7 +14,8 @@ export default function PricingButtons() {
     try {
       setLoading(true);
       // TODO IMPORTANT: Change dynamically based on selected plan
-      await goToCheckout('price_1SA9YDEt3CkqZGIjRCiCabIP');
+      // IMPORTANT: When updating prices, make sure to include them in the supabase env variable ALLOWED_PRICE_IDS
+      await goToCheckout('price_1SCHalIFhZGwD9P4AvPgmPyQ');
     } finally {
       setLoading(false);
     }
