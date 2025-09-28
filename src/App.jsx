@@ -71,7 +71,9 @@ const router = createBrowserRouter([
     path: '/subscribe',
     element: (
       <MarketingLayout>
-        <Subscribe />
+        <ProtectedRoute>
+          <Subscribe />
+        </ProtectedRoute>
       </MarketingLayout>
     ),
     errorElement: <ErrorPage />,
