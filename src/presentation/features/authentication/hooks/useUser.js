@@ -3,12 +3,13 @@ import { useServices } from '../../../../interface-adapters/react/context/AppSer
 
 export function useUser() {
   const { auth } = useServices();
-  const { isLoading, data: user } = useQuery({
+  const { isPending: isLoading, data: user } = useQuery({
     queryKey: ['user'],
     queryFn: auth.getCurrent.exec,
   });
 
   const isAuthenticated = user?.role === 'authenticated';
+
   const isAllowed =
     user?.subscription_status === 'active' ||
     user?.subscription_status === 'free' ||

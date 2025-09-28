@@ -46,11 +46,13 @@ export class SupabaseAuthService extends AuthService {
     if (error) throw mapSupabaseError(error);
 
     // join with profile data
-    const { data: profile } = await this.client
+    const { data: profile, error: profileError } = await this.client
       .from('profiles')
       .select('subscription_status,trial_ends_at')
       .eq('user_id', data?.user?.id)
       .single();
+
+    if (profileError) throw mapSupabaseError(profileError);
 
     return { ...data?.user, ...profile };
   }

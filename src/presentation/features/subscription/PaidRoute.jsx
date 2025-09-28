@@ -1,32 +1,27 @@
-import styled from 'styled-components';
 import { useUser } from '../authentication/hooks/useUser';
 import Loader from '../../ui/Loader';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-
-const FullPage = styled.div`
-  height: 100vh;
-  background-color: var(--color-grey-t3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import FullPage from '../../ui/FullPage';
 
 function PaidRoute({ children }) {
   const navigate = useNavigate();
 
   // Load the authenticated user
-  const { isLoading, isAllowed } = useUser();
+  const { isLoading, isAllowed, user } = useUser();
 
   // If user has no active subscription, redirect to /subscribe
   useEffect(() => {
+    // Due to caching (probably), user.subscription_status is initially undefined. So we wait until it's defined to do the redirect check.
+    if (!user.subscription_status) return;
+
     if (!isAllowed && !isLoading) {
       navigate('/subscribe');
     }
-  }, [isAllowed, navigate, isLoading]);
+  }, [isAllowed, navigate, isLoading, user.subscription_status]);
 
   // While loading, show a spinner
-  if (isLoading)
+  if (isLoading || !user.subscription_status)
     return (
       <FullPage>
         <Loader type="spinner" />

@@ -1,6 +1,5 @@
-// presentation/pages/Subscribe.jsx
 import styled from 'styled-components';
-import MarketingLayout from '../ui/MarketingLayout';
+import { FaCcStripe } from 'react-icons/fa';
 import PricingButtons from '../ui/PricingButtons';
 
 const Wrapper = styled.section`
@@ -52,6 +51,21 @@ const Price = styled.div`
   }
 `;
 
+const SecurePayment = styled.div`
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: var(--font-size-s1);
+  color: var(--color-grey);
+
+  .stripe {
+    color: var(--stripe-brand, #635bff); /* stripe brand color */
+    flex-shrink: 0;
+  }
+`;
+
 function Subscribe() {
   return (
     <Wrapper>
@@ -67,6 +81,11 @@ function Subscribe() {
         </Price>
 
         <PricingButtons />
+
+        <SecurePayment>
+          <span>Pagos 100% seguros con</span>
+          <FaCcStripe size="3rem" className="stripe" />
+        </SecurePayment>
       </Card>
     </Wrapper>
   );
