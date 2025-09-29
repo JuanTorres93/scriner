@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { createEditor } from 'slate';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Slate, withReact } from 'slate-react';
-import { withHistory } from 'slate-history';
 import styled from 'styled-components';
-import { useParams, useNavigate } from 'react-router-dom';
 
 import SEO from '../../seo/SEO';
 import EditList from '../features/edit/EditList';
 import Script from '../features/script/Script';
-import Loader from '../ui/Loader';
 import Input from '../ui/Input';
+import Loader from '../ui/Loader';
 
-import { useScript } from '../features/script/useScript';
 import { useEdits } from '../features/edit/hooks/useEdits';
+import { useScript } from '../features/script/useScript';
 import { useUpdateScript } from '../features/script/useUpdateScript';
-import { handleUpdateContent, resetEditorContent } from '../utils/slateUtils';
-import { breakpoints } from '../styles/breakpoints';
 import { useDebounce } from '../hooks/useDebounce';
+import { breakpoints } from '../styles/breakpoints';
+import { handleUpdateContent, resetEditorContent } from '../utils/slateUtils';
+import { withHistory } from 'slate-history';
+import { createEditor } from 'slate';
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -134,10 +134,10 @@ function ScriptEditor() {
   const musicEdits = edits?.filter((edit) => edit.type === 'music');
 
   useEffect(() => {
-    if (script?.content) {
+    if (script?.content && Number(scriptId) !== script?.id) {
       resetEditorContent(editor, script.content, scriptId);
     }
-  }, [script?.content, editor, scriptId]);
+  }, [script?.content, editor, scriptId, script?.id]);
 
   // TODO Change and go to NOT FOUND PAGE
   if (scriptError?.code === 'PGRST116') navigate('/app', { replace: true });
