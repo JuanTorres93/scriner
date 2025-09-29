@@ -26,8 +26,6 @@ import EmailConfirmation from './presentation/pages/EmailConfirmation.jsx';
 import RouteForNotAuthenticated from './presentation/features/authentication/RouteForNotAuthenticated.jsx';
 import Subscribe from './presentation/pages/Subscribe.jsx';
 
-import EditorProvider from './presentation/features/script/EditorContext.jsx';
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -125,36 +123,34 @@ function App() {
     <>
       <HelmetProvider>
         <GlobalStyles />
-        <EditorProvider>
-          <CurrentEditsProvider>
-            <QueryClientProvider client={queryClient}>
-              <AppServicesProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
-                <RouterProvider router={router} />
-                <Toaster
-                  position="bottom-center"
-                  gutter={12}
-                  containerStyle={{ margin: '8px' }}
-                  toastOptions={{
-                    success: {
-                      duration: 3000,
-                    },
-                    error: {
-                      duration: 5000,
-                    },
-                    style: {
-                      fontSize: '1.6rem',
-                      maxWidth: '500px',
-                      padding: '16px 24px',
-                      backgroundColor: 'var(--color-grey-t2)',
-                      color: 'var(--color-grey-s2)',
-                    },
-                  }}
-                />{' '}
-              </AppServicesProvider>
-            </QueryClientProvider>
-          </CurrentEditsProvider>
-        </EditorProvider>
+        <CurrentEditsProvider>
+          <QueryClientProvider client={queryClient}>
+            <AppServicesProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+              <RouterProvider router={router} />
+              <Toaster
+                position="bottom-center"
+                gutter={12}
+                containerStyle={{ margin: '8px' }}
+                toastOptions={{
+                  success: {
+                    duration: 3000,
+                  },
+                  error: {
+                    duration: 5000,
+                  },
+                  style: {
+                    fontSize: '1.6rem',
+                    maxWidth: '500px',
+                    padding: '16px 24px',
+                    backgroundColor: 'var(--color-grey-t2)',
+                    color: 'var(--color-grey-s2)',
+                  },
+                }}
+              />{' '}
+            </AppServicesProvider>
+          </QueryClientProvider>
+        </CurrentEditsProvider>
       </HelmetProvider>
     </>
   );
