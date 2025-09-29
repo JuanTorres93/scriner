@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { createEditor } from 'slate';
-import { Slate, withReact } from 'slate-react';
-import { withHistory } from 'slate-history';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Slate } from 'slate-react';
 import styled from 'styled-components';
-import { useParams, useNavigate } from 'react-router-dom';
 
 import SEO from '../../seo/SEO';
 import EditList from '../features/edit/EditList';
 import Script from '../features/script/Script';
-import Loader from '../ui/Loader';
 import Input from '../ui/Input';
+import Loader from '../ui/Loader';
 
-import { useScript } from '../features/script/useScript';
 import { useEdits } from '../features/edit/hooks/useEdits';
+import { useEditor } from '../features/script/EditorContext';
+import { useScript } from '../features/script/useScript';
 import { useUpdateScript } from '../features/script/useUpdateScript';
-import { handleUpdateContent, resetEditorContent } from '../utils/slateUtils';
-import { breakpoints } from '../styles/breakpoints';
 import { useDebounce } from '../hooks/useDebounce';
+import { breakpoints } from '../styles/breakpoints';
+import { handleUpdateContent, resetEditorContent } from '../utils/slateUtils';
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -109,7 +108,7 @@ const StyledScriptEditor = styled.div`
 `;
 
 function ScriptEditor() {
-  const [editor] = useState(() => withReact(withHistory(createEditor())));
+  const { editor } = useEditor();
   const navigate = useNavigate();
   const debouncedHandleTitleBlur = useDebounce(handleTitleBlur);
   const debouncedHandleUpdateContent = useDebounce(handleUpdateContent, 500);
@@ -134,10 +133,10 @@ function ScriptEditor() {
   const musicEdits = edits?.filter((edit) => edit.type === 'music');
 
   useEffect(() => {
-    if (script?.content) {
+    if (script?.content && Number(scriptId) !== script?.id) {
       resetEditorContent(editor, script.content, scriptId);
     }
-  }, [script?.content, editor, scriptId]);
+  }, [script?.content, editor, scriptId, script?.id]);
 
   // TODO Change and go to NOT FOUND PAGE
   if (scriptError?.code === 'PGRST116') navigate('/app', { replace: true });
