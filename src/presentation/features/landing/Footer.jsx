@@ -27,6 +27,10 @@ const StyledFooter = styled.footer`
 
   .social {
     margin-top: 1rem;
+
+    a {
+      display: inline !important;
+    }
   }
 
   .social a {
@@ -55,14 +59,8 @@ function Footer() {
       </p>
 
       <div className="social">
-        <a
-          href="https://www.linkedin.com/in/juantorresnavarro/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaLinkedin className="linkedin-icon" />
-          ¿Alguna duda? Contáctame en LinkedIn
-        </a>
+        Contacta conmigo enviando un email a{' '}
+        <a href="mailto:juan@juantorres.me">juan@juantorres.me</a>
       </div>
 
       <div className="legal">
