@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import Button from "./Button";
+import styled from 'styled-components';
+import Button from './Button';
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
@@ -10,6 +10,10 @@ const StyledConfirmDelete = styled.div`
   & p {
     color: var(--color-grey-s2);
     margin-bottom: 1.2rem;
+  }
+
+  & span {
+    font-weight: 600;
   }
 
   & div {
@@ -30,10 +34,11 @@ function ConfirmDelete({
     <StyledConfirmDelete>
       <h3>Borrar {resourceType}</h3>
       <p>
-        ¿Estás seguro de que deseas eliminar permanentemente{" "}
-        {resourceName ? resourceName : `este ${resourceType}`}? Esta acción no
-        se puede deshacer.
+        ¿Estás seguro de que deseas eliminar permanentemente{' '}
+        <span>{resourceName ? resourceName : `este ${resourceType}`}</span>?
       </p>
+
+      <p>Esta acción no se puede deshacer.</p>
 
       <div>
         <Button type="secondary" disabled={disabled} onClick={onCloseModal}>
