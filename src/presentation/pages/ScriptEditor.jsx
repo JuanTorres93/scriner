@@ -17,6 +17,7 @@ import { breakpoints } from '../styles/breakpoints';
 import { handleUpdateContent, resetEditorContent } from '../utils/slateUtils';
 import { withHistory } from 'slate-history';
 import { createEditor } from 'slate';
+import EditListTitle from '../features/edit/EditListTitle';
 
 const StyledScriptEditor = styled.div`
   display: grid;
@@ -189,13 +190,12 @@ function ScriptEditor() {
           initialValue={initialValue}
         >
           <>
-            <h2 className="title-music">
-              Música{' '}
-              {musicEdits?.length > 0 && <span>({musicEdits?.length})</span>}
-            </h2>
-            <h2 className="title-sfx">
-              SFX {sfxEdits?.length > 0 && <span>({sfxEdits?.length})</span>}
-            </h2>
+            <EditListTitle
+              className="title-music"
+              title="Música"
+              edits={musicEdits}
+            />
+            <EditListTitle className="title-sfx" title="SFX" edits={sfxEdits} />
             <Input
               className="title-script"
               key={`script-title-${script?.id}`}
@@ -205,19 +205,17 @@ function ScriptEditor() {
               onChange={debouncedHandleTitleBlur}
               onBlur={handleTitleBlur}
             />
-            <h2 className="title-emotion">
-              Emoción{' '}
-              {emotionEdits?.length > 0 && (
-                <span>({emotionEdits?.length})</span>
-              )}
-            </h2>
-            <h2 className="title-vfx">
-              VFX {vfxEdits?.length > 0 && <span>({vfxEdits?.length})</span>}
-            </h2>
-            <h2 className="title-broll">
-              B-Roll{' '}
-              {brollEdits?.length > 0 && <span>({brollEdits?.length})</span>}
-            </h2>
+            <EditListTitle
+              className="title-emotion"
+              title="Emoción"
+              edits={emotionEdits}
+            />
+            <EditListTitle className="title-vfx" title="VFX" edits={vfxEdits} />
+            <EditListTitle
+              className="title-broll"
+              title="B-Roll"
+              edits={brollEdits}
+            />
 
             {/* Music edits */}
             {isLoadingEdits ? (
