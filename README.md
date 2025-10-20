@@ -3,7 +3,7 @@
 # 🧠 Editormind
 
 <p >
-  <img src="https://editormind.com/logo.png" alt="editormind logo" width="100"/>
+  <img src="public/logo.png" alt="editormind logo" width="100"/>
 </p>
 
 _Plan your video edits like a professional creator._
