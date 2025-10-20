@@ -1,23 +1,40 @@
 import Button from '../../ui/Button';
 import { useEdits } from '../edit/hooks/useEdits';
 
+/**
+ * Button that converts a Slate.js rich-text document into plain text
+ * and lets the user download it as a .txt file for teleprompter use.
+ */
 function ExportScriptButton({ script }) {
   const { edits } = useEdits(script?.id);
 
-  if (!script) {
-    return null;
-  }
+  // No script loaded → nothing to export
+  if (!script) return null;
+
+  const handleExport = () => {
+    // Convert the Slate content to plain text using the parser below
+    const text = parseSlateToPlainText(script.content, edits);
+
+    // Create a text blob in UTF-8 encoding
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+
+    // Generate a temporary URL for the blob
+    const url = URL.createObjectURL(blob);
+
+    // Create a hidden <a> tag to trigger the download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = sanitizeFilename(`${script.title || 'script'}.txt`);
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up DOM and memory
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
 
   return (
-    <Button
-      type="secondary"
-      onClick={() => {
-        const text = parseSlateToPlainText(script.content, edits);
-        // TODO DELETE THESE DEBUG LOGS
-        console.log('text');
-        console.log(text);
-      }}
-    >
+    <Button type="secondary" onClick={handleExport}>
       Exportar a teleprompter
     </Button>
   );
@@ -25,6 +42,26 @@ function ExportScriptButton({ script }) {
 
 export default ExportScriptButton;
 
+/**
+ * Replaces invalid filename characters with underscores.
+ * Prevents issues on Windows, macOS, and Linux.
+ */
+function sanitizeFilename(name) {
+  return String(name || 'archivo.txt').replace(/[<>:"/\\|?*]/g, '_');
+}
+
+/* -------------------------------------------------------------------------- */
+/*                           parseSlateToPlainText                            */
+/* -------------------------------------------------------------------------- */
+/**
+ * Converts a Slate.js rich-text structure into plain text.
+ * Handles emotions (custom tags) and formatting between paragraphs.
+ *
+ * @param {any} content - Slate JSON or serialized string
+ * @param {Array} scriptEdits - list of emotion mappings (id → label)
+ * @param {Object} options - optional configuration for separators and trimming
+ * @returns {string} plain text ready for teleprompter export
+ */
 function parseSlateToPlainText(
   content,
   scriptEdits = [],
@@ -41,7 +78,7 @@ function parseSlateToPlainText(
 ) {
   const nodes = typeof content === 'string' ? JSON.parse(content) : content;
 
-  // Crear mapa: editId/id -> content (nombre de la emoción)
+  /* ---------------------- Build a map of editId → label ---------------------- */
   const editMap = new Map();
   for (const e of scriptEdits || []) {
     const key = String(e?.editId ?? e?.id ?? e?.ID ?? e?.Id ?? '');
@@ -56,15 +93,18 @@ function parseSlateToPlainText(
     if (key && val) editMap.set(key, String(val));
   }
 
+  /* ------------------------- Helper: emotion → label ------------------------ */
   const emotionToLabel = (emo) => {
     if (!emo) return '';
     if (typeof emo === 'string' || typeof emo === 'number') return String(emo);
+
     const key =
       emo.editId ?? emo.id ?? emo.ID ?? emo.Id ?? emo.value ?? emo.slug;
     if (key != null) {
       const label = editMap.get(String(key));
       if (label) return label;
     }
+
     return (
       emo.label ??
       emo.name ??
@@ -76,7 +116,7 @@ function parseSlateToPlainText(
     );
   };
 
-  // Recoge hojas de texto de un nodo
+  /* ---------------------- Collect all text leaves recursively ---------------------- */
   const collectLeaves = (node, acc) => {
     if (!node || typeof node !== 'object') return;
     if ('text' in node) {
@@ -87,7 +127,10 @@ function parseSlateToPlainText(
     for (const k of kids) collectLeaves(k, acc);
   };
 
-  // Devuelve texto plano del párrafo + primera emoción real
+  /**
+   * Serialize a single paragraph to plain text
+   * and detect its first emotion (if any).
+   */
   const serializeParagraphAndEmotion = (node) => {
     const leaves = [];
     collectLeaves(node, leaves);
@@ -109,6 +152,7 @@ function parseSlateToPlainText(
   const lines = [];
   let prevEmotion = '';
 
+  /* ------------------------- Iterate over all blocks ------------------------ */
   for (const n of arr) {
     const isParagraphLike =
       !n?.type ||
@@ -124,10 +168,11 @@ function parseSlateToPlainText(
       continue;
     }
 
+    // If the paragraph has an emotion, insert it only when it changes
     if (paragraphEmotion) {
       const emotionUpper = paragraphEmotion.toUpperCase();
       if (emotionUpper !== prevEmotion) {
-        // etiqueta con 4 saltos antes y después
+        // Add 4 line breaks before and after for teleprompter clarity
         const tagBlock = `\n\n\n\n>>>> ${emotionUpper} <<<<\n\n\n\n`;
         lines.push(tagBlock + line);
         prevEmotion = emotionUpper;
@@ -140,6 +185,7 @@ function parseSlateToPlainText(
     }
   }
 
+  /* ---------------------- Compact consecutive empty lines -------------------- */
   const compacted = lines.filter((l, i, a) => l !== '' || a[i - 1] !== '');
   return compacted.join(paragraphSeparator).trim();
 }
