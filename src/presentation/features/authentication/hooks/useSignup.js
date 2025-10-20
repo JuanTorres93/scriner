@@ -10,7 +10,7 @@ export function useSignup() {
 
   const {
     mutate: signup,
-    isLoading,
+    isPending: isLoading,
     error,
   } = useMutation({
     mutationFn: auth.signup.exec,
