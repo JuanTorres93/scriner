@@ -15,6 +15,16 @@ import { htmlToText } from '../../utils/htmlUtils';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Logout from '../authentication/Logout';
 import PricingButtons from '../../ui/PricingButtons';
+import ExportScriptButton from './ExportScriptButton';
+
+const BottomContainer = styled.div`
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const StyledScriptsSidebar = styled.aside`
   display: flex;
@@ -49,6 +59,8 @@ function ScriptsSidebar() {
   const { user } = useUser();
   const { scripts, error, isLoading } = useScripts(user.id);
   const { createScript, isCreating } = useCreateScript();
+  const { scriptId } = useParams();
+  const activeScript = scripts?.find((script) => script.id === +scriptId);
 
   const scriptsByDate = scripts
     ? [...scripts]?.sort(
@@ -75,15 +87,10 @@ function ScriptsSidebar() {
         ))}
       {scriptsByDate?.length === 0 && !isLoading && <p>No tienes guiones</p>}
 
-      <div
-        style={{
-          marginTop: 'auto',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+      <BottomContainer>
+        <ExportScriptButton script={activeScript} />
         <PricingButtons />
-      </div>
+      </BottomContainer>
     </StyledScriptsSidebar>
   );
 }
