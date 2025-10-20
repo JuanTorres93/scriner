@@ -12,25 +12,20 @@ function ExportScriptButton({ script }) {
   if (!script) return null;
 
   const handleExport = () => {
-    // Convert the Slate content to plain text using the parser below
+    // Guard: browser only
+    if (typeof document === 'undefined') return;
+
     const text = parseSlateToPlainText(script.content, edits);
 
-    // Create a text blob in UTF-8 encoding
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    // Usa data URL en lugar de Blob/URL.createObjectURL
+    const dataUrl = 'data:text/plain;charset=utf-8,' + encodeURIComponent(text);
 
-    // Generate a temporary URL for the blob
-    const url = URL.createObjectURL(blob);
-
-    // Create a hidden <a> tag to trigger the download
     const a = document.createElement('a');
-    a.href = url;
+    a.href = dataUrl;
     a.download = sanitizeFilename(`${script.title || 'script'}.txt`);
     document.body.appendChild(a);
     a.click();
-
-    // Clean up DOM and memory
     a.remove();
-    URL.revokeObjectURL(url);
   };
 
   return (
