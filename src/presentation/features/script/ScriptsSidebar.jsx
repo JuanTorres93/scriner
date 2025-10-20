@@ -88,7 +88,7 @@ function ScriptsSidebar() {
       {scriptsByDate?.length === 0 && !isLoading && <p>No tienes guiones</p>}
 
       <BottomContainer>
-        <ExportScriptButton script={activeScript} />
+        {/* <ExportScriptButton script={activeScript} /> */}
         <PricingButtons />
       </BottomContainer>
     </StyledScriptsSidebar>
