@@ -6,6 +6,9 @@
  * and lets the user download it as a .txt file for teleprompter use.
  */
 function ExportScriptButton({ script }) {
+  // TODO DELETE THESE DEBUG LOGS
+  console.log('script');
+  console.log(script);
   //const { edits } = useEdits(script?.id);
 
   //// No script loaded → nothing to export

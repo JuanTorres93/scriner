@@ -122,11 +122,7 @@ function ScriptEditor() {
     error: scriptError,
   } = useScript(scriptId);
   const { updateScript, isUpdating } = useUpdateScript();
-  const {
-    edits,
-    isLoading: isLoadingEdits,
-    error: editsError,
-  } = useEdits(scriptId);
+  const { edits, isLoading: isLoadingEdits } = useEdits(scriptId);
 
   const sfxEdits = edits?.filter((edit) => edit.type === 'sfx');
   const vfxEdits = edits?.filter((edit) => edit.type === 'vfx');
