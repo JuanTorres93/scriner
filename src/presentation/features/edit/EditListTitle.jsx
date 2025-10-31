@@ -1,27 +1,46 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const EditListTitleStyled = styled.h2`
+  text-align: center;
+`;
 
 const SpanCurrentDone = styled.span`
   color: var(--color-grey-s1);
+`;
+
+const SpanCountAllDone = styled.span`
+  ${(props) =>
+    props['data-all-completed'] &&
+    css`
+      &,
+      & > * {
+        color: var(--color-primary);
+      }
+    `}
 `;
 
 function EditListTitle({ title, edits, className }) {
   const hasEdits = edits && edits.length > 0;
   const doneEditsCount = edits?.filter((edit) => edit.isDone).length;
   const hasDoneEdits = doneEditsCount > 0;
+  const allEditsDone = hasEdits && doneEditsCount === edits.length;
 
   return (
-    <h2 className={className}>
+    <EditListTitleStyled className={className}>
+      {/* {allEditsDone && '🏅 '} */}
+      {/* {allEditsDone && '🏆 '} */}
+      {allEditsDone && '💪 '}
       {title}{' '}
       {hasEdits && (
-        <span>
+        <SpanCountAllDone data-all-completed={allEditsDone}>
           (
           <SpanCurrentDone>
             {hasDoneEdits && `${doneEditsCount}/`}
           </SpanCurrentDone>
           {edits?.length})
-        </span>
+        </SpanCountAllDone>
       )}
-    </h2>
+    </EditListTitleStyled>
   );
 }
 
